@@ -1,0 +1,18 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
+  <persistence-unit name="traxpet">
+  <jta-data-source>jdbc/traxpet-db</jta-data-source>
+
+    <class>model.Usuario</class>
+
+    <properties>
+      <property name="eclipselink.target-database" value="DERBY"/>
+      <property name="eclipselink.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
+      <property name="eclipselink.jdbc.url" value="jdbc:derby://localhost:1527/traxpet-db"/>
+      <property name="eclipselink.jdbc.user" value="APP"/>
+      <property name="eclipselink.jdbc.password" value="APP"/>
+      <property name="eclipselink.logging.level" value="SEVERE" />
+      <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
+    </properties>
+  
+  </persistence-unit>
+</persistence>

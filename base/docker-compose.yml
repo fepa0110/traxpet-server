@@ -1,0 +1,38 @@
+version: '3.7'
+# 10.000km
+
+services:
+  server:
+    image: labprog/server
+    # container_name: labprog-server
+    command: ant start-docker
+    restart: always
+    ports:
+      - "28002:8080"
+      - "4848:4848"
+      - "28001:1527"
+    # stdin_open y tty mantienen el servidor funcionando sin commandos en ejecución
+    stdin_open: true
+    tty: true
+    volumes:
+      # Directorios de la aplicación
+      - ./base/server/build.xml:/root/app/build.xml
+      - ./base/server/config:/root/app/config
+      - ./base/server/lib:/root/app/lib
+      - ./base/server/etc/web.xml:/root/app/etc/web/WEB-INF/web.xml:ro
+      #- ./base/server/etc/sql:/root/app/etc/sql
+      # Código
+      - ./src/server/model:/root/app/src/model
+      - ./src/server/servlet:/root/app/src/servlet
+      - ./src/server/stateless:/root/app/src/stateless
+      - ./src/server/etc/sql:/root/app/etc/sql
+      # Etc
+      - ./src/server/etc/persistence.xml:/root/app/etc/persistence/META-INF/persistence.xml:ro
+      # Persistencia de glassfish y base de datos
+      - glassfish:/usr/local/glassfish5/glassfish
+      # Directorios de ejemplos
+      # - ./ejemplos/server:/root/app/ejemplos
+
+volumes:
+  glassfish:
+  

@@ -1,0 +1,7 @@
+#!/bin/bash
+sudo ./votes down
+echo "Deteniendo docker..."
+sudo systemctl stop docker
+echo "Iniciando docker..."
+sudo systemctl start docker
+sudo ./votes up

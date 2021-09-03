@@ -1,0 +1,150 @@
+{
+"SALA": [
+	{
+		"ID" : 1,
+		"NOMBRE" : "Sala de rosa",
+		"USUARIO" : 1,
+		"CONTRASENIA" : "hola1234T",
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 2,
+		"NOMBRE" : "Voten",
+		"USUARIO" : 1,
+		"CONTRASENIA" : "1234Karen",
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 3,
+		"NOMBRE" : "miopl",
+		"USUARIO" : 7,
+		"CONTRASENIA" : null,
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 4,
+		"NOMBRE" : "pedro",
+		"USUARIO" : 3,
+		"CONTRASENIA" : null,
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 5,
+		"NOMBRE" : "karen78",
+		"USUARIO" : 9,
+		"CONTRASENIA" : null,
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 6,
+		"NOMBRE" : "nico",
+		"USUARIO" : 1,
+		"CONTRASENIA" : null,
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 7,
+		"NOMBRE" : "karen89",
+		"USUARIO" : 10,
+		"CONTRASENIA" : null,
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 8,
+		"NOMBRE" : "parque",
+		"USUARIO" : 1,
+		"CONTRASENIA" : null,
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 9,
+		"NOMBRE" : "Momento inolvidables",
+		"USUARIO" : 1,
+		"CONTRASENIA" : null,
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 10,
+		"NOMBRE" : "Prueba ",
+		"USUARIO" : 1,
+		"CONTRASENIA" : null,
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 11,
+		"NOMBRE" : "Prueba2",
+		"USUARIO" : 1,
+		"CONTRASENIA" : null,
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 12,
+		"NOMBRE" : "Prueba3",
+		"USUARIO" : 1,
+		"CONTRASENIA" : null,
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 13,
+		"NOMBRE" : "Prueba4",
+		"USUARIO" : 1,
+		"CONTRASENIA" : null,
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 14,
+		"NOMBRE" : "Prueba5",
+		"USUARIO" : 1,
+		"CONTRASENIA" : null,
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 15,
+		"NOMBRE" : "Prueba6",
+		"USUARIO" : 1,
+		"CONTRASENIA" : null,
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 16,
+		"NOMBRE" : "Prueba7",
+		"USUARIO" : 1,
+		"CONTRASENIA" : null,
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 17,
+		"NOMBRE" : "Otra sala",
+		"USUARIO" : 3,
+		"CONTRASENIA" : null,
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 18,
+		"NOMBRE" : "Entrando",
+		"USUARIO" : 1,
+		"CONTRASENIA" : null,
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 19,
+		"NOMBRE" : "jiojhgb",
+		"USUARIO" : 1,
+		"CONTRASENIA" : null,
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 20,
+		"NOMBRE" : "juan",
+		"USUARIO" : 1,
+		"CONTRASENIA" : null,
+		"ESTADO" : "PENDIENTE"
+	},
+	{
+		"ID" : 21,
+		"NOMBRE" : "Hola mario",
+		"USUARIO" : 1,
+		"CONTRASENIA" : null,
+		"ESTADO" : "PENDIENTE"
+	}
+]}

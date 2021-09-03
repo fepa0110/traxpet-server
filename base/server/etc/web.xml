@@ -1,0 +1,31 @@
+<web-app version="2.5"
+  xmlns="http://java.sun. com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+  <filter>
+      <filter-name>cors</filter-name>
+      <filter-class>servlet.CORSFilter</filter-class>
+  </filter>
+  <filter-mapping>
+      <filter-name>cors</filter-name>
+      <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <display-name>Licencia RESTFul Example</display-name>
+  <servlet>
+      <servlet-name>Licencia</servlet-name>
+      <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+      <init-param>
+          <param-name>jersey.config.server.provider.packages</param-name>
+          <param-value>servlet</param-value>
+      </init-param>
+      <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>Licencia</servlet-name>
+    <url-pattern>/rest/*</url-pattern>
+  </servlet-mapping>
+
+</web-app>

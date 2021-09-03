@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "Conectando al servidor..."
+ssh aluingdesa@if012pf.fi.mdn.unp.edu.ar -p 28000

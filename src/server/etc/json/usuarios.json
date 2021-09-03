@@ -1,0 +1,37 @@
+[
+    {
+        "__COMENTARIO": "COPIAR LOS USUARIOS DE A UNO EN POSTMAN"
+    },
+    {
+        "username": "Rosa98",
+        "contrasenia": "rosita",
+        "nombre": "Rosa",
+        "apellido": "Hernandez",
+        "correoElectronico": "rosa_98@gmail.com",
+        "dni": "32878221"
+    },
+    {
+        "username": "Sandra_76",
+        "contrasenia": "sandrita",
+        "nombre": "Sandra",
+        "apellido": "Gonzales",
+        "correoElectronico": "sandragonzales76@gmail.com",
+        "dni": "22090846"
+    },
+    {
+        "username": "Pepe",
+        "contrasenia": "pepito",
+        "nombre": "Pedro",
+        "apellido": "Sanchez",
+        "correoElectronico": "el_pedrito_piola@gmail.com",
+        "dni": "39773420"
+    },
+    {
+        "username": "queen2000",
+        "contrasenia": "lareina2",
+        "nombre": "Elena",
+        "apellido": "Del Carril",
+        "correoElectronico": "elen_queen@gmail.com",
+        "dni": "39773210"
+    }
+]

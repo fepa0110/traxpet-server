@@ -1,0 +1,6 @@
+#!/bin/bash
+echo "Iniciando docker"
+sudo systemctl start docker
+./votes up
+echo "Abriendo bash server..."
+./votes bash server
