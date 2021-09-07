@@ -1,0 +1,72 @@
+<div>
+    <div class="table">
+        <h3><u>Historial de articulos del cliente N° {{numeroCliente}}</u></h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center">Articulo</th>
+                    <th class="text-center">Cantidad</th>
+                    <th class="text-center">Precio</th>
+                    <th class="text-center">Subtotal</th>
+                    <th class="text-center">Pedido</th>
+                    <th class="text-center">Fecha de pedido</th>
+                    <th class="text-center">Remito</th>
+                    <th class="text-center">Entregado</th>
+                    <th class="text-center">Factura</th>
+                </tr>
+            </thead>
+            <tr *ngFor="let articuloPedido of resultsPage.results">
+                <td class="">{{ articuloPedido.articulo.nombre }}</td>
+                <td class="text-end">{{ articuloPedido.cantidad }}</td>
+                <td class="text-end">${{ articuloPedido.precio }}</td>
+                <td class="text-end">${{ articuloPedido.cantidad * articuloPedido.precio }}</td>
+                <td class="text-center">{{ articuloPedido.pedido.pedido }}
+                    <a routerLink="/pedidos/view/{{articuloPedido.pedido.pedido}}">
+                        <i class="fa fa-eye" placement="top" ngbTooltip="Ver pedido"></i>
+                    </a>
+                </td>
+                <td class="text-center">{{ articuloPedido.pedido.fecha }}</td>
+
+                <td *ngIf="articuloPedido.remito" class="text-center">{{ articuloPedido.remito.remito }}
+                    <a routerLink="/remitos/{{articuloPedido.remito.remito}}">
+                        <i class="fa fa-eye" placement="top" ngbTooltip="Ver remito"></i>
+                    </a>
+                </td>
+                <td *ngIf="!articuloPedido.remito" class="text-center">-</td>
+                <td *ngIf="articuloPedido.remito" class="text-center">{{ articuloPedido.remito.entregado == true ? "Si" : "No"}}</td>
+                <td *ngIf="!articuloPedido.remito" class="text-center">-</td>
+
+                <td *ngIf="articuloPedido.factura" class="text-center">{{ articuloPedido.factura.factura }}
+                    <a routerLink="/facturas/{{articuloPedido.factura.factura}}">
+                        <i class="fas fa-receipt" placement="top" ngbTooltip="Ver factura"></i>
+                    </a>
+                </td>
+                <td *ngIf="!articuloPedido.factura" class="text-center">-</td>
+            </tr>
+        </table>
+    </div>
+
+    <nav aria-label="Page navigation example" [hidden]="resultsPage.count <= 1">
+        <ul class="pagination pagination-centered justify-content-center">
+            <li class="page-item">
+                <a class="page-link" (click)="showPage(-2)">&laquo;</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" (click)="showPage(-1)">&lsaquo;</a>
+            </li>
+            <li *ngFor="let t of pages; trackBy: $index" [ngClass]="{true: 'active'}[t+1 === currentPage]">
+                <a class="page-link" (click)="showPage(t + 1)"> {{t+1}} </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" (click)="showPage(-3)">&rsaquo;</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" (click)="showPage(-4)">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="text-center">
+        <button (click)="goBack()" class="btn btn-outline-primary">Atrás</button>
+    </div>
+</div>

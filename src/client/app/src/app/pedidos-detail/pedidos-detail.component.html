@@ -1,0 +1,174 @@
+<div *ngIf="pedido">
+        <h2>{{ pedido && pedido.pedido ? 'Pedido Nº ' + pedido.pedido : 'Nuevo pedido' }}</h2>
+
+        <div class="alert alert-primary alert-dismissible fade show" role="alert" *ngIf="showMessage">
+            <i class="fas fa-info-circle pe-2"></i>
+            {{ alertMessage }}
+            <button type="button" (click)="closeAlert()" 
+                class="btn-close">
+            </button>
+        </div>
+
+        <form #form="ngForm">
+            <br />
+
+            <label for="cliente">Cliente </label>
+            <input
+                [(ngModel)]="pedido.cliente"
+                name="cliente"
+                placeholder="Cliente"
+                class="form-control"
+                [disabled]="view"
+                required
+                [ngbTypeahead]="searchCliente"
+                [editable]="false"
+                [resultFormatter]="resultFormatCliente"
+                [inputFormatter]="inputFormatCliente"
+            />
+
+            <br />
+
+            <label for="domicilioEntrega">Domicilio de entrega </label>
+            <select name="domicilioEntrega" class="form-select" 
+                    [(ngModel)]="pedido.domicilioEntrega"
+                    *ngIf="!view">
+                <option [ngValue]="item" 
+                    *ngFor="let item of getDomiciliosEntrega()">
+                    {{item.calle}} {{item.altura}} - {{item.localidad.nombre}}
+                </option>
+            </select>
+            <input name="domicilioEntregaView"
+                *ngIf="view"
+                placeholder="{{pedido.domicilioEntrega.calle}} {{pedido.domicilioEntrega.altura}} - {{pedido.domicilioEntrega.localidad.nombre}}"
+                class="form-control"
+                readonly>
+
+            <br />
+
+            <label for="fecha">Fecha de pedido</label>
+                <div class="input-group col-3">
+                    <input  class="form-control" 
+                            placeholder="Fecha de pedido"
+                            name="fechaDate" 
+                            [(ngModel)]="fechaDate" 
+                            [disabled]="view"
+                            ngbDatepicker 
+                            #d="ngbDatepicker">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-primary calendar" 
+                                (click)="d.toggle()"
+                                *ngIf="!view"
+                                type="button">
+                                    <i class="fa fa-calendar">
+                            </i>
+                        </button>
+                    </div>
+                </div>
+
+            <br />
+
+            <label for="observaciones">Observaciones</label>
+            <input name="observaciones" 
+                    [(ngModel)]="pedido.observaciones" 
+                    class="form-control"
+                    [disabled]="view">
+
+            <br />
+            
+            <div class="table-responsive">
+                <h3 for="articulos">Articulos</h3>
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Articulo</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th *ngIf="view">Remito</th>
+                        <th *ngIf="view">Factura</th>
+                        <th><button (click)="addArticulo()" *ngIf="!view" class="btn btn-primary">Agregar</button></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let articuloPedido of articulosPedido; index as i">
+                            <td>{{ i + 1}}</td>
+                            <td>
+                                <input
+                                    [(ngModel)]="articuloPedido.articulo"
+                                    name="articulo{{i}}"
+                                    placeholder="Articulo"
+                                    class="form-control"
+                                    [disabled]="view"
+                                    required
+                                    [ngbTypeahead]="searchArticulo"
+                                    [editable]="false"
+                                    [resultFormatter]="resultFormatArticulo"
+                                    [inputFormatter]="inputFormatArticulo"
+                                />
+                            </td>
+                            <td>
+                                <input name="articuloCantidad{{i}}" 
+                                        [(ngModel)]="articuloPedido.cantidad"
+                                        [disabled]="view"
+                                        required
+                                        class="form-control">
+                            </td>
+                            <td>
+                                <input name="articuloPedidoPrecio{{i}}" 
+                                        [(ngModel)]="articuloPedido.precio"
+                                        *ngIf="!view"
+                                        placeholder="${{articuloPedido.articulo ? articuloPedido.cantidad*articuloPedido.articulo.precioUnitario : '0'}}"
+                                        [disabled]="true"
+                                        class="form-control"
+                                        readonly>
+                                <input name="articuloPedidoPrecio{{i}}" 
+                                        *ngIf="view"
+                                        placeholder="${{articuloPedido.cantidad*articuloPedido.articulo.precioUnitario}}"
+                                        [disabled]="true"
+                                        class="form-control"
+                                        readonly>
+                            </td>
+
+                            <td *ngIf="view && articuloPedido.remito" class="text-center"> {{ articuloPedido.remito.remito }}
+                                <a routerLink="/remitos/{{articuloPedido.remito.remito}}">
+                                    <i class="fa fa-eye" placement="top" ngbTooltip="Ver remito"></i>
+                                </a>
+                            </td>
+                            <td class="text-center" *ngIf="view && !articuloPedido.remito">-</td>
+
+                            <td *ngIf="view && articuloPedido.factura" class="text-center"> {{ articuloPedido.factura.factura }}
+                                <a routerLink="/facturas/{{articuloPedido.factura.factura}}">
+                                    <i class="fas fa-receipt" placement="top" ngbTooltip="Ver factura"></i>
+                                </a>
+                            </td>
+                            <td class="text-center" *ngIf="view && !articuloPedido.factura">-</td>
+
+                            <td>
+                                <button (click)="removeArticulo(articuloPedido)" 
+                                    *ngIf="!view" 
+                                    class="btn btn-default">
+                                        <i class="fa fa-remove"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot *ngIf="view">
+                        <td></td>
+                        <td></td>
+                        <td> </td>
+                        <td>Precio total:<strong>${{ precioTotal.precioTotal }}</strong></td>
+                    </tfoot>
+                </table>
+            </div>
+
+            <button *ngIf="!view" (click)="goBack()" class="btn btn-outline-primary">Atrás</button>
+            &nbsp;
+            <button (click)="save()" *ngIf="!view" [disabled]="!form.valid" class="btn btn-primary">
+            Guardar
+            </button>
+        </form>
+        <div class="text-center pb-4">
+            <button *ngIf="view" (click)="goBack()" class="btn btn-outline-primary">Atrás</button>
+        </div>
+        <br />
+    </div>

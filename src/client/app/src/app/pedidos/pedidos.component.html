@@ -1,0 +1,65 @@
+<div class="d-flex justify-content-between">
+    <div>
+        <h2 *ngIf="!byCliente">Pedidos</h2>
+        <h2 *ngIf="byCliente">Pedidos del cliente N° {{numeroCliente}}</h2>
+    </div>
+    <div>
+        <a *ngIf="!byCliente" routerLink="/pedidos/new/0" class="btn btn-primary">
+            Nuevo pedido
+        </a>
+        <a *ngIf="byCliente" routerLink="/pedidos/new/{{numeroCliente}}" class="btn btn-primary">
+            Nuevo pedido
+        </a>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th class="text-center">Pedido</th>
+                <th class="text-center">Fecha</th>
+                <th class="text-center">Cliente</th>
+                <th class="text-center">Domicilio</th>
+                <th class="text-center"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let pedido of resultsPage.results">
+                <td class="text-center">{{ pedido.pedido }}</td>
+                <td class="text-center">{{ pedido.fecha }}</td>
+                <td class="text-center">{{ pedido.cliente.cliente }} - {{ pedido.cliente.razonSocial }}</td>
+                <td class="text-center">{{ pedido.domicilioEntrega.calle }} {{ pedido.domicilioEntrega.altura }} - {{ pedido.domicilioEntrega.localidad.nombre }}</td>
+                <td class="text-center">
+                    <a routerLink="/pedidos/view/{{pedido.pedido}}"><i class="fa fa-eye" placement="top" ngbTooltip="Ver pedido"></i></a>
+                    <!-- <a routerLink="/plays/{{play.code}}"><i class="fa fa-pencil"></i></a> -->
+                    <!-- <a (click)="remove(play.code)" [routerLink]=""><i class="fa fa-remove"></i></a> -->
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <nav aria-label="Page navigation example" [hidden]="resultsPage.count <= 1">
+        <ul class="pagination pagination-centered justify-content-center">
+            <li class="page-item">
+                <a class="page-link" (click)="showPage(-2)">&laquo;</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" (click)="showPage(-1)">&lsaquo;</a>
+            </li>
+            <li *ngFor="let t of pages; trackBy: $index" [ngClass]="{true: 'active'}[t+1 === currentPage]">
+                <a class="page-link" (click)="showPage(t + 1)"> {{t+1}} </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" (click)="showPage(-3)">&rsaquo;</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" (click)="showPage(-4)">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="text-center">
+        <button *ngIf="byCliente" (click)="goBack()" class="btn btn-outline-primary">Atrás</button>
+    </div>
+</div>

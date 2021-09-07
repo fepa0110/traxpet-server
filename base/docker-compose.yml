@@ -1,16 +1,36 @@
 version: '3.7'
-# 10.000km
 
 services:
+
+  client:
+    image: labprog/client
+    # container_name: labprog-client
+    command: ./start.sh
+    restart: always
+    ports:
+      - "4200:4200"
+    # stdin_open y tty mantienen el servidor funcionando sin commandos en ejecución
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./src/client/:/home/node/
+      # base
+      - ./base/client/install.sh:/home/node/install.sh:ro
+      - ./base/client/start.sh:/home/node/start.sh:ro
+    depends_on:
+      - server
+  
+  # 10.000km
+
   server:
     image: labprog/server
     # container_name: labprog-server
     command: ant start-docker
     restart: always
     ports:
-      - "28002:8080"
+      - "8080:8080"
       - "4848:4848"
-      - "28001:1527"
+      - "1527:1527"
     # stdin_open y tty mantienen el servidor funcionando sin commandos en ejecución
     stdin_open: true
     tty: true

@@ -10,7 +10,7 @@ fi
 
 case "$1" in
   install ) echo "Instalando..."
-            docker-compose -p $PROJECT -f base/docker-compose.yml --project-directory . run
+            docker-compose -p $PROJECT -f base/docker-compose.yml --project-directory . run client ./install.sh
             ;;
   up ) echo "Levantando servidores.."
        docker-compose -p $PROJECT -f base/docker-compose.yml --project-directory . up -d
