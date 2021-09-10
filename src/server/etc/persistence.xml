@@ -3,6 +3,9 @@
   <jta-data-source>jdbc/traxpet-db</jta-data-source>
 
     <class>model.Usuario</class>
+    <class>model.Mascota</class>
+    <class>model.Caracteristica</class>
+    <class>model.CaracteristicasMascotas</class>
 
     <properties>
       <property name="eclipselink.target-database" value="DERBY"/>
