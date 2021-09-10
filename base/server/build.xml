@@ -32,9 +32,9 @@
     <target name="stage" depends="init,run_sql" />
 
     <target name="init">
-      <property name="app_name" value="labprog-server" />
-      <property name="example_name" value="labprog-server" />
-      <property name="DB_NAME" value="labprog-db" />
+      <property name="app_name" value="traxpet-server" />
+      <property name="example_name" value="traxpet-server" />
+      <property name="DB_NAME" value="traxpet-db" />
     </target>
 
 </project>
