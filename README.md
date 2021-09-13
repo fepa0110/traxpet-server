@@ -4,104 +4,104 @@
 
 ## Perros
 ### Edad
-Cachorro
-Adulto
+Cachorro  
+Adulto  
 
 ### Tamaño
-Chico
-Mediano
-Grande
-Muy grande
+Chico  
+Mediano  
+Grande  
+Muy grande  
 
 ### Sexo
-Macho
-Hembra
-Indefinido
+Macho  
+Hembra  
+Indefinido  
 
 ### Patron de pelaje
-Liso
-Manchas
-Bicolor
-Tricolor
+Liso  
+Manchas  
+Bicolor  
+Tricolor  
 
 ### Color de pelaje 1, 2 y 3
-Blanco
-Negro
-Marron
-Gris
+Blanco  
+Negro  
+Marron  
+Gris  
 
 ### Largo de pelaje
-Corto
-Mediano
-Largo
+Corto  
+Mediano  
+Largo  
 
 ### Color de ojos (Evaluar ojos de dirente color)
-Marron oscuro
-Azul
-Verde
-Dorado
-Celeste
+Marron oscuro  
+Azul  
+Verde  
+Dorado  
+Celeste  
 
 ### Largo de hocico
-Corto
-Largo
+Corto  
+Largo  
 
 ### Largo de cola
-Cortada
-Corto
-Largo
+Cortada  
+Corto  
+Largo  
 
 ### Largo de orejas
-Cortadas
-Cortas
-Mediano
-Largas
+Cortadas  
+Cortas  
+Mediano  
+Largas  
 
 ### Tipo de orejas
-Caidas
-Paradas
+Caidas  
+Paradas  
 
 ## Gatos
 ### Edad
-Cachorro
-Adulto
+Cachorro  
+Adulto  
 
 ### Tamaño
-Chico
-Mediano
-Grande
+Chico  
+Mediano  
+Grande  
 
 ### Sexo
-Macho
-Hembra
-Indefinido
+Macho  
+Hembra  
+Indefinido  
 
 ### Largo de pelaje
-Pelado
-Corto
-Mediano
-Largo
+Pelado  
+Corto  
+Mediano  
+Largo  
 
 ### Patron de pelaje
-Liso
-Atigrado
-Bicolor
-Tricolor
+Liso  
+Atigrado  
+Bicolor  
+Tricolor  
 
 ### Color de pelaje 1, 2 y 3
-Blanco
-Negro
-Naranja
-Gris
-Marron
+Blanco  
+Negro  
+Naranja  
+Gris  
+Marron  
 
 ### Color de ojos
-Azul
-Dorado
-Naranja
-Verdes
-Amarillo
-Azul/verde
-Azul/amarillo
-Azul/naranja
-Azul/dorado
+Azul  
+Dorado  
+Naranja  
+Verdes  
+Amarillo  
+Azul/verde  
+Azul/amarillo  
+Azul/naranja  
+Azul/dorado  
