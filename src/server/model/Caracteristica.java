@@ -28,7 +28,7 @@ public class Caracteristica {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="mascota_id")
+    @Column(name="caracteristica_id")
     private int id;
 
     private String nombre;
