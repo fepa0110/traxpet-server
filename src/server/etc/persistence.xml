@@ -6,6 +6,7 @@
     <class>model.Mascota</class>
     <class>model.Caracteristica</class>
     <class>model.CaracteristicasMascotas</class>
+    <class>model.Publicacion</class>
 
     <properties>
       <property name="eclipselink.target-database" value="DERBY"/>

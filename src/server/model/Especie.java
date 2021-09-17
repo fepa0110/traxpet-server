@@ -13,27 +13,26 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 import java.util.Set;
 import java.util.Calendar;
 
-@NamedQueries({
-    @NamedQuery(name="Caracteristica.findByNombre",
-        query="SELECT caracteristica "+ 
-                "FROM Caracteristica caracteristica "+
-                "WHERE UPPER(caracteristica.nombre) = UPPER(:caracteristica_nombre)")
-})
+/* @NamedQueries({
+    @NamedQuery(name="Usuario.findAll",
+        query="SELECT usuario "+ 
+                "FROM Usuario usuario")
+}) */
 
 @Entity
-public class Caracteristica {
+public class Especie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="caracteristica_id")
+    @Column(name="especie_id")
     private int id;
 
     private String nombre;
-
 
     public int getId() {
         return this.id;
@@ -50,5 +49,4 @@ public class Caracteristica {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
 }

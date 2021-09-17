@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Iniciando docker"
 sudo systemctl start docker
-./votes up
+./traxpet up
 echo "Abriendo bash server..."
-./votes bash server
+./traxpet bash server

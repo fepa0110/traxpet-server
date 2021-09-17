@@ -34,7 +34,9 @@ public class Mascota {
 
     private String nombre;
 
-    private String especie;
+    @ManyToOne
+    @JoinColumn(name="ESPECIE_ID")
+    private Especie especie;
 
     public int getId() {
         return this.id;
@@ -52,11 +54,11 @@ public class Mascota {
         this.nombre = nombre;
     }
 
-    public String getEspecie() {
+    public Especie getEspecie() {
         return this.especie;
     }
 
-    public void setEspecie(String especie) {
+    public void setEspecie(Especie especie) {
         this.especie = especie;
     }
 }

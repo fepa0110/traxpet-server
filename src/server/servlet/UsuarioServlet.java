@@ -33,13 +33,13 @@ import servlet.ResponseMessage;
 
 
 @Path("/usuarios")
-public class UsuarioRestServlet {
+public class UsuarioServlet {
     @EJB
     UsuarioService usuarioService;
 
     private ObjectMapper mapper;
 
-    public UsuarioRestServlet(){
+    public UsuarioServlet(){
         mapper = new ObjectMapper();
         mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
 
