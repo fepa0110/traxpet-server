@@ -14,15 +14,16 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.OneToOne;
 import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 
 import java.util.Set;
 import java.util.Calendar;
 
-/* @NamedQueries({
-    @NamedQuery(name="Usuario.findAll",
-        query="SELECT usuario "+ 
-                "FROM Usuario usuario")
-}) */
+@NamedQueries({
+    @NamedQuery(name="Especie.findAll",
+        query="SELECT especie "+ 
+                "FROM Especie especie")
+})
 
 @Entity
 public class Especie {

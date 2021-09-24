@@ -1,4 +1,4 @@
-/* package stateless;
+package stateless;
 
 import java.util.Collection;
 import java.util.List;
@@ -12,6 +12,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.NoResultException;
 
 import model.Publicacion;
+import model.Estado;
+
 import stateless.PublicacionService;
 
 @Stateless
@@ -26,6 +28,8 @@ public class PublicacionServiceBean implements PublicacionService {
     @Override
     public Publicacion create(Publicacion publicacion) {
         publicacion.setUsuario("Hardcodeado2");
+        publicacion.setEstado(Estado.ACTIVA);
+
         em.persist(publicacion);
         return publicacion;
     }
@@ -42,4 +46,4 @@ public class PublicacionServiceBean implements PublicacionService {
         }
     }
 
-} */
+}

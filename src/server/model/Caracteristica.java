@@ -13,15 +13,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 
 import java.util.Set;
 import java.util.Calendar;
 
 @NamedQueries({
-    @NamedQuery(name="Caracteristica.findByNombre",
-        query="SELECT caracteristica "+ 
-                "FROM Caracteristica caracteristica "+
-                "WHERE UPPER(caracteristica.nombre) = UPPER(:caracteristica_nombre)")
+    @NamedQuery(name="Caracteristica.findByEspecie",
+        query="SELECT DISTINCT valor.caracteristica "+ 
+                "FROM Valor valor "+
+                "WHERE valor.especie.nombre = :especie_nombre")
 })
 
 @Entity

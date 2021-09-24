@@ -1,4 +1,4 @@
-package model;
+/* package model;
 
 import javax.persistence.Id;
 import javax.persistence.Entity;
@@ -22,8 +22,7 @@ import java.util.Calendar;
     @NamedQuery(name="Usuario.findAll",
         query="SELECT usuario "+ 
                 "FROM Usuario usuario")
-}) */
-
+}) 
 @Entity
 public class CaracteristicasMascotas {
 
@@ -74,3 +73,4 @@ public class CaracteristicasMascotas {
         this.caracteristica = caracteristica;
     }
 }
+ */

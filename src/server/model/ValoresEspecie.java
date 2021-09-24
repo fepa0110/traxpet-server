@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Enumerated;
+import javax.persistence.Convert;
+import javax.persistence.EnumType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,28 +23,21 @@ import java.util.Set;
 import java.util.Collection;
 import java.util.Calendar;
 
-/* @NamedQueries({
-    @NamedQuery(name="Usuario.findAll",
-        query="SELECT usuario "+ 
-                "FROM Usuario usuario")
-}) */
+public class ValoresEspecie {
 
-@Entity
-public class Mascota {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="mascota_id")
     private int id;
 
     private String nombre;
 
-    @ManyToMany
-    private Collection<Valor> valores;
+    private Caracteristica caracteristica;
 
-    @ManyToOne
-    @JoinColumn(name="ESPECIE_ID")
-    private Especie especie;
+    public ValoresEspecie() {}
+    
+    public ValoresEspecie(int id, String nombre, Caracteristica caracteristica) {
+        this.id = id;
+        this.nombre = nombre;
+        this.caracteristica = caracteristica;
+    }
 
     public int getId() {
         return this.id;
@@ -59,19 +55,11 @@ public class Mascota {
         this.nombre = nombre;
     }
 
-    public Collection<Valor> getValores() {
-        return this.valores;
+    public Caracteristica getCaracteristica() {
+        return this.caracteristica;
     }
 
-    public void setValores(Collection<Valor> valores) {
-        this.valores = valores;
-    }
-
-    public Especie getEspecie() {
-        return this.especie;
-    }
-
-    public void setEspecie(Especie especie) {
-        this.especie = especie;
+    public void setCaracteristica(Caracteristica caracteristica) {
+        this.caracteristica = caracteristica;
     }
 }

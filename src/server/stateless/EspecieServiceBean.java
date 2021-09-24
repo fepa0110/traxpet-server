@@ -1,4 +1,4 @@
-/* package stateless;
+package stateless;
 
 import java.util.Collection;
 import java.util.List;
@@ -11,11 +11,11 @@ import javax.persistence.Query;
 import javax.persistence.PersistenceContext;
 import javax.persistence.NoResultException;
 
-import model.CaracteristicasMascotas;
-import stateless.CaracteristicasMascotasService;
+import model.Especie;
+import stateless.EspecieService;
 
 @Stateless
-public class CaracteristicasMascotasServiceBean implements CaracteristicasMascotasService {
+public class EspecieServiceBean implements EspecieService {
     @PersistenceContext(unitName = "traxpet")
     protected EntityManager em;
 
@@ -24,8 +24,14 @@ public class CaracteristicasMascotasServiceBean implements CaracteristicasMascot
     }
 
     @Override
-    public CaracteristicasMascotas create(CaracteristicasMascotas caracteristicasMascotas) {
-        em.persist(caracteristicasMascotas);
-        return caracteristicasMascotas;
+    public List<Especie> findAll() {
+        try {
+            return getEntityManager()
+                .createNamedQuery("Especie.findAll", Especie.class)
+                .getResultList();
+        } 
+        catch (NoResultException e) {
+            return null;
+        }
     }
-} */
+}
