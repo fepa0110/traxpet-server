@@ -48,6 +48,9 @@ public class Publicacion {
     private Calendar fechaPublicacion;
 
     private String usuario;
+      
+    @OneToOne
+    private Ubicacion ubicacion;
 
     @OneToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name="MASCOTA_ID")
