@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Id;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -52,6 +53,7 @@ public class Valor {
     @JoinColumn(name="CARACTERISTICA_ID")
     private Caracteristica caracteristica;
 
+    @JsonIgnore
     @ManyToMany(mappedBy="valores")
     private Collection<Mascota> mascotas;
 

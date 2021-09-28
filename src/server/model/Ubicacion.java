@@ -1,46 +1,43 @@
 package model;
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
-
+import javax.persistence.*;
 
 @Entity
 public class Ubicacion {
 
-   private long id
-   @Id
-   @Column(name="id")
-   private float latitude;
-   private float longitude;
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
+  @Id
+  @Column(name = "id")
+  private long id;
 
+  private float latitude;
+  private float longitude;
 
-    public float getLatitude() {
-        return this.latitude;
-    }
+  @Temporal(TemporalType.DATE)
+  private Date fecha;
 
-    public void setLatitude(float latitude) {
-        this.latitude = latitude;
-    }
+  public float getLatitude() {
+    return this.latitude;
+  }
 
-    public float getLongitude() {
-        return this.longitude;
-    }
+  public void setLatitude(float latitude) {
+    this.latitude = latitude;
+  }
 
-    public void setLongitude(float longitude) {
-        this.longitude = longitude;
-    }
+  public float getLongitude() {
+    return this.longitude;
+  }
 
-    public Date getFecha() {
-        return this.fecha;
-    }
+  public void setLongitude(float longitude) {
+    this.longitude = longitude;
+  }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
-   
+  public Date getFecha() {
+    return this.fecha;
+  }
 
-
+  public void setFecha(Date fecha) {
+    this.fecha = fecha;
+  }
 }

@@ -1,108 +1,138 @@
 package servlet;
 
-import javax.ejb.EJB;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.Produces;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.core.MediaType;
-
-import java.util.List;
-import java.util.logging.Logger;
-import java.util.Collection;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.List;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import model.Caracteristica;
 import model.Especie;
 import model.Valor;
-
+import servlet.ResponseMessage;
 import stateless.CaracteristicaService;
 import stateless.EspecieService;
 import stateless.ValorService;
 
-import servlet.ResponseMessage;
-
-
 @Path("/valores")
 public class ValorServlet {
-    @EJB
-    CaracteristicaService caracteristicaService;
 
-    @EJB
-    EspecieService especieService;
+  @EJB
+  CaracteristicaService caracteristicaService;
 
-    @EJB
-    ValorService valorService;
+  @EJB
+  EspecieService especieService;
 
-    private ObjectMapper mapper;
+  @EJB
+  ValorService valorService;
 
-    public ValorServlet(){
-        mapper = new ObjectMapper();
-        mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
+  private ObjectMapper mapper;
 
-        // Le provee el formateador de fechas.
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        mapper.setDateFormat(df);
+  public ValorServlet() {
+    mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
+
+    // Le provee el formateador de fechas.
+    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    mapper.setDateFormat(df);
+  }
+
+  @GET
+  @Path("/byEspecie")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String findByEspecie(
+    @QueryParam("especieNombre") String especieNombre
+  )
+    throws IOException {
+    Especie especie = new Especie();
+    especie.setNombre(especieNombre);
+
+    // Se modifica este método para que utilice el servicio
+    List<Valor> valores = valorService.findByEspecie(especie);
+
+    // Se contruye el resultado en base a lo recuperado desde la capa de negocio.
+    String data;
+
+    try {
+      data = mapper.writeValueAsString(valores);
+    } catch (IOException e) {
+      return ResponseMessage.message(
+        501,
+        "Formato incorrecto en datos de entrada",
+        e.getMessage()
+      );
     }
 
-    @GET
-    @Path("/byEspecie")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String findByEspecie(@QueryParam("especieNombre") String especieNombre) throws IOException{
-        Especie especie = new Especie();
-        especie.setNombre(especieNombre);
+    return ResponseMessage.message(
+      200,
+      "Valores de la especie " + especieNombre + " recuperados con éxito",
+      data
+    );
+  }
 
-        // Se modifica este método para que utilice el servicio
-        List<Valor> valores = valorService.findByEspecie(especie);
+  @GET
+  @Path("/byCaracteristica")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String findByCaracteristica(
+    @QueryParam("caracteristicaNombre") String caracteristicaNombre
+  )
+    throws IOException {
+    Caracteristica caracteristica = new Caracteristica();
+    caracteristica.setNombre(caracteristicaNombre);
 
-        // Se contruye el resultado en base a lo recuperado desde la capa de negocio.
-        String data;
+    // Se modifica este método para que utilice el servicio
+    List<Valor> valores = valorService.findByCaracteristica(caracteristica);
 
-        try {  
-            data = mapper.writeValueAsString(valores);
-        } 
-        catch (IOException e) {
-            return ResponseMessage
-            .message(501, "Formato incorrecto en datos de entrada", e.getMessage());
-        }
+    // Se contruye el resultado en base a lo recuperado desde la capa de negocio.
+    String data;
 
-        return ResponseMessage.message(200,"Valores de la especie "+especieNombre+" recuperados con éxito",data);
+    try {
+      data = mapper.writeValueAsString(valores);
+    } catch (IOException e) {
+      return ResponseMessage.message(
+        501,
+        "Formato incorrecto en datos de entrada",
+        e.getMessage()
+      );
     }
 
-    @GET
-    @Path("/byCaracteristica")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String findByCaracteristica(@QueryParam("caracteristicaNombre") String caracteristicaNombre) throws IOException{
-        Caracteristica caracteristica = new Caracteristica();
-        caracteristica.setNombre(caracteristicaNombre);
+    return ResponseMessage.message(
+      200,
+      "Valores de la caracteristica " +
+      caracteristicaNombre +
+      " recuperados con éxito",
+      data
+    );
+  }
 
-        // Se modifica este método para que utilice el servicio
-        List<Valor> valores = valorService.findByCaracteristica(caracteristica);
+  @GET
+  @Path("/caracteristicasByEspecie")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String caracteristicasByEspecie(
+    @QueryParam("especieNombre") String especieNombre
+  )
+    throws IOException {
+    Especie especie = new Especie();
+    especie.setNombre(especieNombre);
 
-        // Se contruye el resultado en base a lo recuperado desde la capa de negocio.
-        String data;
+    // Se modifica este método para que utilice el servicio
 
-        try {  
-            data = mapper.writeValueAsString(valores);
-        } 
-        catch (IOException e) {
-            return ResponseMessage
-            .message(501, "Formato incorrecto en datos de entrada", e.getMessage());
-        }
+    // Se contruye el resultado en base a lo recuperado desde la capa de negocio.
+    return valorService.findCaracteristicasConValores(especie);
 
-        return ResponseMessage.message(200,"Valores de la caracteristica "+caracteristicaNombre+" recuperados con éxito",data);
-    }
+  }
 }
