@@ -82,7 +82,6 @@ public class ValorServiceBean implements ValorService {
       this.serviceCaracteristica.findByEspecie(especie);
     String data =
       (
-        "{\"caracteristica\":" +
         caracteristicas
           .stream()
           .map(
@@ -110,8 +109,7 @@ public class ValorServiceBean implements ValorService {
                 .collect(Collectors.joining(",", "[", "]")) +
               "}"
           )
-          .collect(Collectors.joining(",", "[", "]")) +
-        "}"
+          .collect(Collectors.joining(",", "[", "]"))
       );
     return ResponseMessage.message(
       200,
