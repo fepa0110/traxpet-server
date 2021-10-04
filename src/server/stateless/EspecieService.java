@@ -7,4 +7,5 @@ import model.Especie;
 
 public interface EspecieService{
     public List<Especie> findAll();
+    public Especie create(Especie especie);
 }

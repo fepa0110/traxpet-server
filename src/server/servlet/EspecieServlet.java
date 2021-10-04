@@ -67,4 +67,35 @@ public class EspecieServlet {
 
         return ResponseMessage.message(200,"Especies recuperadas con éxito",data);
     }
+
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String sendEspecie(String json) {
+
+    Especie especie;
+    String data;
+
+    try {
+      especie = mapper.readValue(json, Especie.class);
+
+      especie = especieService.create(especie);
+
+      data = mapper.writeValueAsString(especie);
+
+    } catch (JsonProcessingException e) {
+      return ResponseMessage
+        .message(502, "No se pudo dar formato a la salida", e.getMessage());
+    } catch (IOException e) {
+      return ResponseMessage
+        .message(501, "Formato incorrecto en datos de entrada", e.getMessage());
+    }
+
+    return ResponseMessage.message(
+      200,
+      "Se cargó  especie exitosamente",
+      data
+    );
+  
+}
 }

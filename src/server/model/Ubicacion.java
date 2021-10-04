@@ -7,10 +7,10 @@ import java.util.Objects;
 
 @Entity
 public class Ubicacion {
-
-   private long id
    @Id
-   @Column(name="id")
+   @Column(name="id") 
+   private long id;
+
    private float latitude;
    private float longitude;
     @Temporal(TemporalType.DATE)

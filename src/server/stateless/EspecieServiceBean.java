@@ -34,4 +34,10 @@ public class EspecieServiceBean implements EspecieService {
             return null;
         }
     }
+
+     @Override
+     public Especie create(Especie especie) {
+       em.persist(especie);
+       return especie;
+     }
 }
