@@ -24,6 +24,12 @@ public class CaracteristicaServiceBean implements CaracteristicaService {
   }
 
   @Override
+  public Caracteristica create(Caracteristica caracteristica) {
+    em.persist(caracteristica);
+    return caracteristica;
+  }
+
+  @Override
   public List<Caracteristica> findByEspecie(Especie especie) {
     try {
       return getEntityManager()
