@@ -46,6 +46,38 @@ public class CaracteristicaServlet {
     mapper.setDateFormat(df);
   }
 
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String create(String json) {
+    Caracteristica caracteristica;
+    String data;
+
+    try {
+      caracteristica = mapper.readValue(json, Caracteristica.class);
+      caracteristica = caracteristicaService.create(caracteristica);
+      data = mapper.writeValueAsString(caracteristica);
+    } catch (JsonProcessingException e) {
+      return ResponseMessage.message(
+        502,
+        "No se pudo dar formato a la salida",
+        e.getMessage()
+      );
+    } catch (IOException e) {
+      return ResponseMessage.message(
+        501,
+        "Formato incorrecto en datos de entrada",
+        e.getMessage()
+      );
+    }
+
+    return ResponseMessage.message(
+      200,
+      "Se modificó correctamente la caracteristica",
+      data
+    );
+  }
+
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public String findAll() throws IOException {
