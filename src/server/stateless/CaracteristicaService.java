@@ -8,4 +8,5 @@ import model.Especie;
 
 public interface CaracteristicaService{
     public List<Caracteristica> findByEspecie(Especie especie);
+    public List<Caracteristica> findAll();
 }

@@ -1,9 +1,8 @@
 package model;
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
-
+import javax.persistence.*;
 
 @Entity
 public class Ubicacion {
@@ -17,30 +16,33 @@ public class Ubicacion {
     private Date fecha;
 
 
-    public float getLatitude() {
-        return this.latitude;
-    }
+  private float latitude;
+  private float longitude;
 
-    public void setLatitude(float latitude) {
-        this.latitude = latitude;
-    }
+  @Temporal(TemporalType.DATE)
+  private Date fecha;
 
-    public float getLongitude() {
-        return this.longitude;
-    }
+  public float getLatitude() {
+    return this.latitude;
+  }
 
-    public void setLongitude(float longitude) {
-        this.longitude = longitude;
-    }
+  public void setLatitude(float latitude) {
+    this.latitude = latitude;
+  }
 
-    public Date getFecha() {
-        return this.fecha;
-    }
+  public float getLongitude() {
+    return this.longitude;
+  }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
-   
+  public void setLongitude(float longitude) {
+    this.longitude = longitude;
+  }
 
+  public Date getFecha() {
+    return this.fecha;
+  }
 
+  public void setFecha(Date fecha) {
+    this.fecha = fecha;
+  }
 }
