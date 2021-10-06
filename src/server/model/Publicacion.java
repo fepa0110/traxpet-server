@@ -49,7 +49,7 @@ public class Publicacion {
 
     private String usuario;
       
-    @OneToOne
+    @OneToMany(optional = true)
     private Ubicacion ubicacion;
 
     @OneToOne(cascade=CascadeType.PERSIST)
