@@ -37,15 +37,6 @@ public class EspecieServiceBean implements EspecieService {
     } catch (NoResultException e) {
       return null;
     }
-<<<<<<< HEAD
-
-     @Override
-     public Especie create(Especie especie) {
-       em.persist(especie);
-       return especie;
-     }
-}
-=======
   }
+
 }
->>>>>>> dd840206deb128feaafb5d53314493e551b6ee91

@@ -1,0 +1,11 @@
+package stateless;
+
+import java.util.Collection;
+import java.util.List;
+
+import model.ImagenMascota;
+
+public interface ImagenMascotaService{
+    // public List<ImagenMascota> findAll();
+    public ImagenMascota create(int mascotaId, String directorioImagen, String formatoImagen);
+}

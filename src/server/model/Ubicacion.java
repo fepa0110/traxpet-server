@@ -6,15 +6,9 @@ import javax.persistence.*;
 
 @Entity
 public class Ubicacion {
-   @Id
-   @Column(name="id") 
-   private long id;
-
-   private float latitude;
-   private float longitude;
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
-
+  @Id
+  @Column(name="id") 
+  private long id;
 
   private float latitude;
   private float longitude;

@@ -20,29 +20,27 @@ import java.util.Set;
 import java.util.Collection;
 import java.util.Calendar;
 
-@NamedQueries({
-    @NamedQuery(name="Mascota.findById",
-        query="SELECT mascota "+ 
-                "FROM Mascota mascota "+
-                "WHERE mascota.id = :mascota_id")
-})
+/* @NamedQueries({
+    @NamedQuery(name="Usuario.findAll",
+        query="SELECT usuario "+ 
+                "FROM Usuario usuario")
+}) */
 
 @Entity
-public class Mascota {
+public class ImagenMascota {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="mascota_id")
+    @Column(name="imagen_mascota_id")
     private int id;
 
-    private String nombre;
+    private String directory;
 
-    @ManyToMany
-    private Collection<Valor> valores;
+    private String format;
 
     @ManyToOne
-    @JoinColumn(name="ESPECIE_ID")
-    private Especie especie;
+    @JoinColumn(name="MASCOTA_ID")
+    private Mascota mascota;
 
     public int getId() {
         return this.id;
@@ -52,27 +50,27 @@ public class Mascota {
         this.id = id;
     }
 
-    public String getNombre() {
-        return this.nombre;
+    public String getDirectory() {
+        return this.directory;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setDirectory(String directory) {
+        this.directory = directory;
     }
 
-    public Collection<Valor> getValores() {
-        return this.valores;
+    public Mascota getMascota() {
+        return this.mascota;
     }
 
-    public void setValores(Collection<Valor> valores) {
-        this.valores = valores;
+    public void setMascota(Mascota mascota) {
+        this.mascota = mascota;
     }
 
-    public Especie getEspecie() {
-        return this.especie;
+    public String getFormat() {
+        return this.format;
     }
 
-    public void setEspecie(Especie especie) {
-        this.especie = especie;
+    public void setFormat(String format) {
+        this.format = format;
     }
 }

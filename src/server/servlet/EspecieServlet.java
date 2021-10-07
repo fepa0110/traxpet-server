@@ -41,7 +41,7 @@ public class EspecieServlet {
     mapper.setDateFormat(df);
   }
 
-  @POST
+  @PUT
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public String create(String json) {
@@ -52,13 +52,15 @@ public class EspecieServlet {
       especie = mapper.readValue(json, Especie.class);
       especie = especieService.create(especie);
       data = mapper.writeValueAsString(especie);
-    } catch (JsonProcessingException e) {
+    } 
+    catch (JsonProcessingException e) {
       return ResponseMessage.message(
         502,
         "No se pudo dar formato a la salida",
         e.getMessage()
       );
-    } catch (IOException e) {
+    } 
+    catch (IOException e) {
       return ResponseMessage.message(
         501,
         "Formato incorrecto en datos de entrada",
@@ -84,13 +86,17 @@ public class EspecieServlet {
 
     try {
       data = mapper.writeValueAsString(especies);
-    } catch (IOException e) {
+    }
+    catch(IOException e) {
       return ResponseMessage.message(
         501,
         "Formato incorrecto en datos de entrada",
         e.getMessage()
       );
     }
+
+    return ResponseMessage.message(200,"Especies obtenidas exitosamente",data);
+  }
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
@@ -120,6 +126,5 @@ public class EspecieServlet {
       "Se cargó  especie exitosamente",
       data
     );
-  
-}
+  }
 }

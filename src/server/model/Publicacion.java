@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.ManyToMany;
 
@@ -48,9 +49,6 @@ public class Publicacion {
     private Calendar fechaPublicacion;
 
     private String usuario;
-      
-    @OneToMany(optional = true)
-    private Ubicacion ubicacion;
 
     @OneToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name="MASCOTA_ID")

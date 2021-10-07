@@ -46,6 +46,7 @@ services:
       - ./src/server/servlet:/root/app/src/servlet
       - ./src/server/stateless:/root/app/src/stateless
       - ./src/server/etc/sql:/root/app/etc/sql
+      - ./src/server/etc/images:/root/app/etc/images
       # Etc
       - ./src/server/etc/persistence.xml:/root/app/etc/persistence/META-INF/persistence.xml:ro
       # Persistencia de glassfish y base de datos
