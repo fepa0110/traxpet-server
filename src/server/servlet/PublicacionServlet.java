@@ -1,4 +1,4 @@
-/* package servlet;
+package servlet;
 
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
@@ -26,10 +26,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import model.Publicacion;
-import model.CaracteristicasMascotas;
 
 import stateless.PublicacionService;
-
+import java.util.Collection;
 import servlet.ResponseMessage;
 
 
@@ -50,6 +49,33 @@ public class PublicacionServlet {
     }
 
     @GET
+    @Path("/usuario/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String findAllPublicacionUsuario(@PathParam("id") String id) throws IOException {
+        Collection <Publicacion>  publicaciones = publicacionService.findAllPublicacionUsuario(id);
+        String data;
+
+        if (publicaciones== null) {
+            return ResponseMessage.message(500, "publicacion no existen");
+        }
+        try {
+            data = mapper.writeValueAsString(publicaciones);
+            return ResponseMessage.message(
+                    200,
+                    "publicaciones del usuario id "+ id +" recuperada exitosamente",
+                    data
+            );
+        } catch (JsonProcessingException e) {
+
+            return ResponseMessage.message(500, "error al  formatear los domicilios", e.getMessage());
+        }
+
+    }
+
+
+
+
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String findAll() throws IOException{
         List<Publicacion> publicaciones = publicacionService.findAll();
@@ -67,7 +93,7 @@ public class PublicacionServlet {
 
         return ResponseMessage.message(200,"Publicaciones recuperadas con éxito",data);
     }
-
+/*
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -108,6 +134,6 @@ public class PublicacionServlet {
                 .message(501, "Formato incorrecto en datos de entrada", e.getMessage());
         }
         return ResponseMessage.message(200,"Publicacion GENERADO correctamente",dataPublicacion);
-    }
+    }*/
 
-} */
+} 

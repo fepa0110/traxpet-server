@@ -24,7 +24,7 @@ public class PublicacionServiceBean implements PublicacionService {
     public EntityManager getEntityManager(){
         return em;
     }
-
+/*
     @Override
     public Publicacion create(Publicacion publicacion) {
         publicacion.setUsuario("Hardcodeado2");
@@ -32,7 +32,7 @@ public class PublicacionServiceBean implements PublicacionService {
 
         em.persist(publicacion);
         return publicacion;
-    }
+    }*/
 
     @Override
     public List<Publicacion> findAll() {
@@ -45,5 +45,19 @@ public class PublicacionServiceBean implements PublicacionService {
             return null;
         }
     }
+
+    @Override
+    public Collection<Publicacion> findAllPublicacionUsuario(String id) {
+        try {
+            return getEntityManager()
+                .createNamedQuery("findAllPublicacionUsuario", Publicacion.class)
+                 .setParameter("id",id)
+                .getResultList();
+        } 
+        catch (NoResultException e) {
+            return null;
+        }
+    }
+
 
 }

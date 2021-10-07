@@ -26,7 +26,11 @@ import java.util.Calendar;
 @NamedQueries({
     @NamedQuery(name="Publicacion.findAll",
         query="SELECT publicacion "+ 
-                "FROM Publicacion publicacion")
+                "FROM Publicacion publicacion"),
+
+      @NamedQuery(name="findAllPublicacionUsuario",
+         query="SELECT p FROM Publicacion p WHERE p.usuario =:id order by p.fechaPublicacion desc" ),
+
 })
 
 @Entity
@@ -47,12 +51,14 @@ public class Publicacion {
 
     @Temporal(TemporalType.DATE)
     private Calendar fechaPublicacion;
-
+    
+ 
     private String usuario;
 
     @OneToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name="MASCOTA_ID")
     private Mascota mascota;
+    
 
     public int getId() {
         return this.id;
@@ -101,4 +107,8 @@ public class Publicacion {
     public void setMascota(Mascota mascota) {
         this.mascota = mascota;
     }
+
+
+
+   
 }
