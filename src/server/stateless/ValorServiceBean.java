@@ -31,6 +31,12 @@ public class ValorServiceBean implements ValorService {
   }
 
   @Override
+  public Valor create(Valor valor) {
+    em.persist(valor);
+    return valor;
+  }
+
+  @Override
   public List<Valor> findByEspecie(Especie especie) {
     try {
       return getEntityManager()
@@ -111,10 +117,6 @@ public class ValorServiceBean implements ValorService {
           )
           .collect(Collectors.joining(",", "[", "]"))
       );
-    return ResponseMessage.message(
-      200,
-      "Valores recuperados con exito",
-      data
-    );
+    return ResponseMessage.message(200, "Valores recuperados con exito", data);
   }
 }

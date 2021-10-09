@@ -29,6 +29,18 @@ public class EspecieServiceBean implements EspecieService {
   }
 
   @Override
+  public Especie findByName(String nombre) {
+    return em
+      .createQuery(
+        "select especie from Especie especie " +
+        "where especie.nombre = :nombre",
+        Especie.class
+      )
+      .setParameter("nombre", nombre)
+      .getSingleResult();
+  }
+
+  @Override
   public List<Especie> findAll() {
     try {
       return getEntityManager()
@@ -37,7 +49,5 @@ public class EspecieServiceBean implements EspecieService {
     } catch (NoResultException e) {
       return null;
     }
-    }
-
-     
+  }
 }
