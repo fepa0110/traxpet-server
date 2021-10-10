@@ -2,7 +2,9 @@ package stateless;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -10,10 +12,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 import model.Caracteristica;
 import model.Especie;
 import model.Valor;
+
 import servlet.ResponseMessage;
+
 import stateless.CaracteristicaService;
 import stateless.ValorService;
 
@@ -28,6 +33,12 @@ public class ValorServiceBean implements ValorService {
 
   public EntityManager getEntityManager() {
     return em;
+  }
+
+  @Override
+  public Valor create(Valor valor) {
+    em.persist(valor);
+    return valor;
   }
 
   @Override
@@ -111,10 +122,39 @@ public class ValorServiceBean implements ValorService {
           )
           .collect(Collectors.joining(",", "[", "]"))
       );
-    return ResponseMessage.message(
-      200,
-      "Valores recuperados con exito",
-      data
-    );
+    return ResponseMessage.message(200, "Valores recuperados con exito", data);
   }
+
+  public Valor findByCaracteristicaEspecieValor(
+          Caracteristica caracteristica, 
+          Especie especie, 
+          Valor valor){
+    try {
+      return getEntityManager()
+        .createNamedQuery("Valor.findByCaracteristicaEspecieValor", Valor.class)
+        .setParameter("caracteristica_nombre", caracteristica.getNombre())
+        .setParameter("especie_nombre", especie.getNombre())
+        .setParameter("valor_nombre", valor.getNombre())
+        .getSingleResult();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
+
+  public List<Valor> findValoresByListAndEspecie(List<Valor> valores, Especie especie){
+    List<Valor> listaNuevaValores = new ArrayList<Valor>();
+    Valor valorEncontrado;
+
+    for(Valor valor : valores){
+      valorEncontrado = this.findByCaracteristicaEspecieValor(
+        valor.getCaracteristica(),
+        especie,
+        valor
+      );
+      if(valorEncontrado != null) listaNuevaValores.add(valorEncontrado);
+    }
+
+    return listaNuevaValores;
+  }
+
 }

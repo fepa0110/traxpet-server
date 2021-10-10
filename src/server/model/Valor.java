@@ -1,6 +1,5 @@
 package model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Id;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,16 +22,21 @@ import javax.persistence.ManyToMany;
 import java.util.Set;
 import java.util.Collection;
 import java.util.Calendar;
+import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @NamedQueries({
     @NamedQuery(name="Valor.findByCaracteristica",
         query="SELECT valor "+ 
                 "FROM Valor valor "+
                 "WHERE valor.caracteristica.nombre = :caracteristica_nombre"),
-    @NamedQuery(name="Valor.findByEspecie",
-        query="SELECT NEW model.ValoresEspecie(valor.id, valor.nombre, valor.caracteristica) "+ 
+        @NamedQuery(name="Valor.findByCaracteristicaEspecieValor",
+        query="SELECT valor "+ 
                 "FROM Valor valor "+
-                "WHERE valor.especie.nombre = :especie_nombre ")
+                "WHERE valor.caracteristica.nombre = :caracteristica_nombre "+
+                "AND valor.especie.nombre = :especie_nombre "+
+                "AND valor.nombre = :valor_nombre"),
 })
 
 @Entity
@@ -49,14 +53,13 @@ public class Valor {
     @JoinColumn(name="ESPECIE_ID")
     private Especie especie;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name="CARACTERISTICA_ID")
     private Caracteristica caracteristica;
 
     @JsonIgnore
     @ManyToMany(mappedBy="valores")
     private Collection<Mascota> mascotas;
-
 
     public Valor() {}
 
@@ -104,5 +107,21 @@ public class Valor {
 
     public void setCaracteristica(Caracteristica caracteristica) {
         this.caracteristica = caracteristica;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Valor)) {
+            return false;
+        }
+        Valor valor = (Valor) o;
+        return id == valor.id && Objects.equals(nombre, valor.nombre) && Objects.equals(especie, valor.especie) && Objects.equals(caracteristica, valor.caracteristica) && Objects.equals(mascotas, valor.mascotas);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nombre, especie, caracteristica, mascotas);
     }
 }

@@ -30,6 +30,18 @@ public class CaracteristicaServiceBean implements CaracteristicaService {
   }
 
   @Override
+  public Caracteristica findByName(String nombre) {
+    return em
+      .createQuery(
+        "select caracteristica from Caracteristica caracteristica " +
+        "where caracteristica.nombre = :nombre",
+        Caracteristica.class
+      )
+      .setParameter("nombre", nombre)
+      .getSingleResult();
+  }
+
+  @Override
   public List<Caracteristica> findByEspecie(Especie especie) {
     try {
       return getEntityManager()

@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.ManyToMany;
 
 import java.util.Set;
+import java.util.Objects;
 import java.util.Calendar;
 
 @NamedQueries({
@@ -36,7 +37,6 @@ public class Caracteristica {
 
     private String nombre;
 
-
     public int getId() {
         return this.id;
     }
@@ -53,4 +53,19 @@ public class Caracteristica {
         this.nombre = nombre;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Caracteristica)) {
+            return false;
+        }
+        Caracteristica caracteristica = (Caracteristica) o;
+        return id == caracteristica.id && Objects.equals(nombre, caracteristica.nombre);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nombre);
+    }
 }
