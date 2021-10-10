@@ -22,14 +22,21 @@ import javax.persistence.ManyToMany;
 
 import java.util.Set;
 import java.util.Calendar;
+import java.util.Objects;
 
 @NamedQueries({
     @NamedQuery(name="Publicacion.findAll",
         query="SELECT publicacion "+ 
                 "FROM Publicacion publicacion"),
 
-      @NamedQuery(name="findAllPublicacionUsuario",
-         query="SELECT p FROM Publicacion p WHERE p.usuario =:id order by p.fechaPublicacion desc" ),
+    @NamedQuery(name="findAllPublicacionUsuario",
+        query="SELECT p "+
+                "FROM Publicacion p "+
+                "WHERE p.usuario =:id "+
+                "ORDER BY p.fechaPublicacion DESC" ),
+    @NamedQuery(name="Publicacion.getMaxId",
+        query="SELECT MAX(publicacion.id) "+ 
+                "FROM Publicacion publicacion ")
 
 })
 
@@ -37,9 +44,9 @@ import java.util.Calendar;
 public class Publicacion {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="publicacion_id")
-    private int id;
+    private long id;
 
     @Convert(converter = EstadoConverter.class)
     @Enumerated(EnumType.STRING)
@@ -52,19 +59,17 @@ public class Publicacion {
     @Temporal(TemporalType.DATE)
     private Calendar fechaPublicacion;
     
- 
     private String usuario;
 
     @OneToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name="MASCOTA_ID")
     private Mascota mascota;
-    
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -108,7 +113,19 @@ public class Publicacion {
         this.mascota = mascota;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Publicacion)) {
+            return false;
+        }
+        Publicacion publicacion = (Publicacion) o;
+        return id == publicacion.id && Objects.equals(estado, publicacion.estado) && Objects.equals(tipoPublicacion, publicacion.tipoPublicacion) && Objects.equals(fechaPublicacion, publicacion.fechaPublicacion) && Objects.equals(usuario, publicacion.usuario) && Objects.equals(mascota, publicacion.mascota);
+    }
 
-
-   
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, estado, tipoPublicacion, fechaPublicacion, usuario, mascota);
+    }
 }

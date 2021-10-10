@@ -18,11 +18,16 @@ import javax.persistence.ManyToMany;
 
 import java.util.Set;
 import java.util.Calendar;
+import java.util.Objects;
 
 @NamedQueries({
     @NamedQuery(name="Especie.findAll",
         query="SELECT especie "+ 
-                "FROM Especie especie")
+                "FROM Especie especie"),
+    @NamedQuery(name="Especie.findByNombre",
+        query="SELECT especie "+ 
+                "FROM Especie especie "+
+                "WHERE especie.nombre = :nombre_especie")
 })
 
 @Entity
@@ -49,5 +54,21 @@ public class Especie {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Especie)) {
+            return false;
+        }
+        Especie especie = (Especie) o;
+        return id == especie.id && Objects.equals(nombre, especie.nombre);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nombre);
     }
 }

@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 public class Ubicacion {
   @Id
-  @Column(name="id") 
+  @Column(name="ID") 
   private long id;
 
   private float latitude;

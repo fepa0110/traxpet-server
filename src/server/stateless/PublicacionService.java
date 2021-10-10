@@ -6,8 +6,8 @@ import java.util.List;
 import model.Publicacion;
 
 public interface PublicacionService{
-   // public Publicacion create(Publicacion publicacion);
+    public Publicacion create(Publicacion publicacion);
     public List<Publicacion> findAll();
     public Collection <Publicacion> findAllPublicacionUsuario(String id);
-
+    public long getMaxId();
 }

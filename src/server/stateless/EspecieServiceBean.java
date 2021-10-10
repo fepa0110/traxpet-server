@@ -37,7 +37,16 @@ public class EspecieServiceBean implements EspecieService {
     } catch (NoResultException e) {
       return null;
     }
+  }
+  
+  public Especie findByNombre(Especie especie){
+    try {
+      return getEntityManager()
+        .createNamedQuery("Especie.findByNombre", Especie.class)
+        .setParameter("nombre_especie", especie.getNombre())
+        .getSingleResult();
+    } catch (NoResultException e) {
+      return null;
     }
-
-     
+  }
 }

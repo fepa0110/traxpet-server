@@ -6,5 +6,6 @@ import model.Especie;
 
 public interface EspecieService{
     public List<Especie> findAll();
+    public Especie findByNombre(Especie especie);
     public Especie create(Especie especie);
 }

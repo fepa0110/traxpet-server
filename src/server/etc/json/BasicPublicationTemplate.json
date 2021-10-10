@@ -1,0 +1,35 @@
+{
+    "estado": "ACTIVA",
+    "tipoPublicacion": "MASCOTA_BUSCADA",
+    "fechaPublicacion": "HOY",
+    "ubicacion": {
+        "latitude": 42.451451,
+        "longitude": 36.32587
+    },
+    "mascota": {
+        "nombre": "Pirulo",
+        "especie": {
+            "nombre": "Gato"
+        },
+        "valores": [
+            {
+                "nombre": "Mediano",
+                "caracteristica": {
+                    "nombre": "Tamaño"
+                }
+            },
+            {
+                "nombre": "Largo",
+                "caracteristica": {
+                    "nombre": "Largo de pelaje"
+                }
+            },
+            {
+                "nombre": "Macho",
+                "caracteristica": {
+                    "nombre": "Sexo"
+                }
+            }
+        ]
+    }
+}

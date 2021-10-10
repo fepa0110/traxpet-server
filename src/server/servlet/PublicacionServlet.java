@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import model.Publicacion;
+import model.Mascota;
 
 import stateless.PublicacionService;
 import java.util.Collection;
@@ -72,9 +73,6 @@ public class PublicacionServlet {
 
     }
 
-
-
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String findAll() throws IOException{
@@ -93,7 +91,7 @@ public class PublicacionServlet {
 
         return ResponseMessage.message(200,"Publicaciones recuperadas con éxito",data);
     }
-/*
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -101,12 +99,15 @@ public class PublicacionServlet {
         Publicacion publicacion;
         String caracteristicasMascotasData;
         String dataPublicacion;
-        List<CaracteristicasMascotas> caracteristicasMascotas;
 
         try {
-            json = json.replaceAll("\\n\\s*", "");
+            publicacion = mapper.readValue(
+                json, Publicacion.class);
 
-            caracteristicasMascotasData = json.replaceAll("\\{.*\"caracteristicasMascotas\"\\s*:","");
+            publicacion = publicacionService.create(publicacion);
+            // json = json.replaceAll("\\n\\s*", "");
+            
+            /* caracteristicasMascotasData = json.replaceAll("\\{.*\"caracteristicasMascotas\"\\s*:","");
             caracteristicasMascotasData = caracteristicasMascotasData.replaceAll("\\}\\}","");
 
             dataPublicacion = json.replaceAll(",\"caracteristicasMascotas\":.*\\]","");
@@ -114,17 +115,18 @@ public class PublicacionServlet {
             publicacion = mapper.readValue(json, Publicacion.class);
 
             articulosPedido = mapper.readValue(
-                articulosPedidoData, new TypeReference<List<ArticulosPedido>>() {});
+                articulosPedidoData, new TypeReference<List<ArticulosPedido>>() {}); */
 
-            publicacion = publicacionService.create(publicacion, caracteristicasMascotas);
+            // publicacion = publicacionService.create(publicacion, caracteristicasMascotas);
             
-            if(publicacion == null){
+/*             if(publicacion == null){
                 return ResponseMessage
                     .message(502, "El publicacion ya existe");
-            }
+            } */
             
             dataPublicacion = mapper.writeValueAsString(publicacion);
-        } 
+            // dataPublicacion = json;
+        }
         catch (JsonProcessingException e) {
             return ResponseMessage
                 .message(502, "No se pudo dar formato a la salida", e.getMessage());
@@ -134,6 +136,6 @@ public class PublicacionServlet {
                 .message(501, "Formato incorrecto en datos de entrada", e.getMessage());
         }
         return ResponseMessage.message(200,"Publicacion GENERADO correctamente",dataPublicacion);
-    }*/
+    }
 
 } 
