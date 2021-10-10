@@ -7,6 +7,7 @@ import model.Especie;
 import model.Valor;
 
 public interface ValorService{
+    public Valor create(Valor valor);
     public List<Valor> findByEspecie(Especie especie);
     public List<Valor> findByCaracteristica(Caracteristica caracteristica);
     public List<Valor> findByEspecieYCaracteristica(Especie especie, Caracteristica caracteristica);
