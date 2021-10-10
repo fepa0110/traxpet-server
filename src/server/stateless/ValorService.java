@@ -2,7 +2,6 @@ package stateless;
 
 import java.util.Collection;
 import java.util.List;
-
 import model.Caracteristica;
 import model.Especie;
 import model.Valor;
