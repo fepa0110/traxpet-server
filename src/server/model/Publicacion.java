@@ -29,7 +29,7 @@ import java.util.Calendar;
                 "FROM Publicacion publicacion"),
 
       @NamedQuery(name="findAllPublicacionUsuario",
-         query="SELECT p FROM Publicacion p WHERE p.usuario =:id order by p.fechaPublicacion desc" ),
+         query="SELECT p FROM Publicacion p WHERE p.usuario =:username order by p.fechaPublicacion desc" ),
 
 })
 

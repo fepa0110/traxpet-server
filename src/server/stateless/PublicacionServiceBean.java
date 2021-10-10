@@ -47,11 +47,11 @@ public class PublicacionServiceBean implements PublicacionService {
     }
 
     @Override
-    public Collection<Publicacion> findAllPublicacionUsuario(String id) {
+    public Collection<Publicacion> findAllPublicacionUsuario(String username) {
         try {
             return getEntityManager()
                 .createNamedQuery("findAllPublicacionUsuario", Publicacion.class)
-                 .setParameter("id",id)
+                 .setParameter("username",username)
                 .getResultList();
         } 
         catch (NoResultException e) {
