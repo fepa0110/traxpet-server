@@ -13,6 +13,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.NoResultException;
 
 import model.Publicacion;
+import model.Ubicacion;
 import model.Mascota;
 import model.Valor;
 import model.TipoPublicacion;
@@ -21,6 +22,7 @@ import model.Estado;
 import stateless.PublicacionService;
 import stateless.ValorService;
 import stateless.MascotaService;
+import stateless.UbicacionService;
 
 @Stateless
 public class PublicacionServiceBean implements PublicacionService {
@@ -36,12 +38,15 @@ public class PublicacionServiceBean implements PublicacionService {
     @EJB
     MascotaService mascotaService;
 
+    @EJB
+    UbicacionService ubicacionService;
+
     public EntityManager getEntityManager(){
         return em;
     }
 
     @Override
-    public Publicacion create(Publicacion publicacion) {
+    public Publicacion create(Publicacion publicacion, Ubicacion ubicacion) {
         publicacion.setId(this.getMaxId()+1);
         // publicacion.setUsuario("Hardcodeado2");
         publicacion.setEstado(Estado.ACTIVA);
@@ -53,7 +58,13 @@ public class PublicacionServiceBean implements PublicacionService {
 
         publicacion.setFechaPublicacion(Calendar.getInstance());
 
+        ubicacion.setFecha(Calendar.getInstance());
+
         em.persist(publicacion);
+
+        ubicacion.setPublicacion(publicacion);
+        this.ubicacionService.create(ubicacion);
+
         return publicacion;
     }
 

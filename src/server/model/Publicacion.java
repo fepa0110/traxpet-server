@@ -44,7 +44,6 @@ import java.util.Objects;
 public class Publicacion {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="publicacion_id")
     private long id;
 

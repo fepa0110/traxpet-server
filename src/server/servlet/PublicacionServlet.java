@@ -27,6 +27,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import model.Publicacion;
 import model.Mascota;
+import model.Ubicacion;
 
 import stateless.PublicacionService;
 import java.util.Collection;
@@ -97,35 +98,27 @@ public class PublicacionServlet {
     @Produces(MediaType.APPLICATION_JSON)
     public String create(String json) {
         Publicacion publicacion;
+        Ubicacion ubicacion;
         String caracteristicasMascotasData;
         String dataPublicacion;
 
         try {
+            //Extraigo la publicacion del json
+            String publicacionJson = json.replaceAll("\"ubication\":\\{\"latitude\":.*,\"longitude\":.*\\d\\},", "");
+
+            //Extraigo la ubicacion del json
+            String ubicacionJson = json.replaceAll("(.*)(\\{\"latitude\":.*,\"longitude\":.*\\d\\})(.*)", "$2");
+
             publicacion = mapper.readValue(
-                json, Publicacion.class);
+                publicacionJson, Publicacion.class);
 
-            publicacion = publicacionService.create(publicacion);
-            // json = json.replaceAll("\\n\\s*", "");
-            
-            /* caracteristicasMascotasData = json.replaceAll("\\{.*\"caracteristicasMascotas\"\\s*:","");
-            caracteristicasMascotasData = caracteristicasMascotasData.replaceAll("\\}\\}","");
+            ubicacion = mapper.readValue(
+                ubicacionJson, Ubicacion.class);
 
-            dataPublicacion = json.replaceAll(",\"caracteristicasMascotas\":.*\\]","");
+            publicacion = publicacionService.create(publicacion, ubicacion);
 
-            publicacion = mapper.readValue(json, Publicacion.class);
-
-            articulosPedido = mapper.readValue(
-                articulosPedidoData, new TypeReference<List<ArticulosPedido>>() {}); */
-
-            // publicacion = publicacionService.create(publicacion, caracteristicasMascotas);
-            
-/*             if(publicacion == null){
-                return ResponseMessage
-                    .message(502, "El publicacion ya existe");
-            } */
-            
             dataPublicacion = mapper.writeValueAsString(publicacion);
-            // dataPublicacion = json;
+            // dataPublicacion = ubicacionJson;
         }
         catch (JsonProcessingException e) {
             return ResponseMessage

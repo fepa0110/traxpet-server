@@ -1,8 +1,16 @@
 package model;
 
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Objects;
 import javax.persistence.*;
+
+
+@NamedQueries({
+    @NamedQuery(name="Ubicacion.getMaxId",
+        query="SELECT MAX(ubicacion.id) "+ 
+                "FROM Ubicacion ubicacion ")
+
+})
 
 @Entity
 public class Ubicacion {
@@ -14,7 +22,11 @@ public class Ubicacion {
   private float longitude;
 
   @Temporal(TemporalType.DATE)
-  private Date fecha;
+  private Calendar fecha;
+
+  @ManyToOne(cascade=CascadeType.PERSIST)
+  @JoinColumn(name="PUBLICACION_ID")
+  private Publicacion publicacion;
 
   public float getLatitude() {
     return this.latitude;
@@ -32,11 +44,27 @@ public class Ubicacion {
     this.longitude = longitude;
   }
 
-  public Date getFecha() {
+  public Calendar getFecha() {
     return this.fecha;
   }
 
-  public void setFecha(Date fecha) {
+  public void setFecha(Calendar fecha) {
     this.fecha = fecha;
+  }
+
+  public long getId() {
+    return this.id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
+  }
+
+  public Publicacion getPublicacion() {
+    return this.publicacion;
+  }
+
+  public void setPublicacion(Publicacion publicacion) {
+    this.publicacion = publicacion;
   }
 }
