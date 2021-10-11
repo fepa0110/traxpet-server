@@ -149,7 +149,8 @@ public class ImagenMascotaServlet {
     }
     // Se modifica este método para que utilice el servicio
     ImagenMascota imagen = imagenMascotaService.findById(id);
-    String data=new String(Files.readAllBytes(Paths.get(imagen.getDirectory())), StandardCharsets.UTF_8);
+    byte[] bytes =Files.readAllBytes(Paths.get(imagen.getDirectory())), StandardCharsets.UTF_8);
+    String data=new String(bytes);
 
     return ResponseMessage.message(
       200,
