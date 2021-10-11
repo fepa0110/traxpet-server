@@ -27,8 +27,15 @@ import java.util.Calendar;
                 "FROM ImagenMascota i "+
                 "WHERE i.mascota.id = :id"
                  ),
-                
-                })
+    
+             
+            
+    @NamedQuery(name="findById",
+        query="SELECT i "+
+                "FROM ImagenMascota i "+
+                "WHERE i.id = :id"
+                 )              
+})
 
 @Entity
 public class ImagenMascota {

@@ -33,6 +33,7 @@ import model.ImagenMascota;
 import servlet.ResponseMessage;
 import stateless.ImagenMascotaService;
 import stateless.MascotaService;
+import java.nio.charset.StandardCharsets;
 
 @Path("/imagenesMascota")
 public class ImagenMascotaServlet {
@@ -120,8 +121,9 @@ public class ImagenMascotaServlet {
     // Se contruye el resultado en base a lo recuperado desde la capa de negocio.
     String data;
 
+
     try {
-      data = mapper.writeValueAsString(Imagenes);
+     data = mapper.writeValueAsString(Imagenes);
     } catch (IOException e) {
       return ResponseMessage.message(
         501,
@@ -134,7 +136,27 @@ public class ImagenMascotaServlet {
       200,
       "imagenes obtenidas correctamente",
       data
+    );}
+
+   @GET
+  @Path("/{id}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String findImagesById(@PathParam("id") int id) throws IOException {
+
+
+      if (imagenMascotaService.findById(id) == null) {
+      return ResponseMessage.message(501, "No existe la imagen " + id);
+    }
+    // Se modifica este método para que utilice el servicio
+    ImagenMascota imagen = imagenMascotaService.findById(id);
+    String data=new String(Files.readAllBytes(Paths.get(imagen.getDirectory())), StandardCharsets.UTF_8);
+
+    return ResponseMessage.message(
+      200,
+      "imagen obtenida correctamente",
+      data
     );
+
   }
 
 
