@@ -34,6 +34,8 @@ import servlet.ResponseMessage;
 import stateless.ImagenMascotaService;
 import stateless.MascotaService;
 import java.nio.charset.StandardCharsets;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Path("/imagenesMascota")
 public class ImagenMascotaServlet {
@@ -149,8 +151,8 @@ public class ImagenMascotaServlet {
     }
     // Se modifica este método para que utilice el servicio
 
-    byte[] bytes = Files.readAllBytes(Paths.get(imagen.getDirectory()));
-    String data=new String(bytes);
+      Stream<String> lines = Files.lines(Paths.get(imagen.getDirectory()));
+      String data = lines.collect(Collectors.joining(System.lineSeparator()));
 
     return ResponseMessage.message(
       200,
