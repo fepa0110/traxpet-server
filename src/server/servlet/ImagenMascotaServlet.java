@@ -143,13 +143,13 @@ public class ImagenMascotaServlet {
   @Produces(MediaType.APPLICATION_JSON)
   public String findImagesById(@PathParam("id") int id) throws IOException {
 
-
+    ImagenMascota imagen = imagenMascotaService.findById(id);
       if (imagenMascotaService.findById(id) == null) {
       return ResponseMessage.message(501, "No existe la imagen " + id);
     }
     // Se modifica este método para que utilice el servicio
-    ImagenMascota imagen = imagenMascotaService.findById(id);
-    byte[] bytes =Files.readAllBytes(Paths.get(imagen.getDirectory())), StandardCharsets.UTF_8);
+
+    byte[] bytes = Files.readAllBytes(Paths.get(imagen.getDirectory()));
     String data=new String(bytes);
 
     return ResponseMessage.message(
