@@ -41,4 +41,17 @@ public class ImagenMascotaServiceBean implements ImagenMascotaService {
         em.persist(imagenMascota);
         return imagenMascota;
     }
+          @Override
+          public Collection<ImagenMascota> findAllbyId(int id){
+
+       try {
+            return getEntityManager()
+                .createNamedQuery("findAllbyId", ImagenMascota.class)
+                 .setParameter("id",id)
+                .getResultList();
+        } 
+        catch (NoResultException e) {
+            return null;
+        }
+    }
 }

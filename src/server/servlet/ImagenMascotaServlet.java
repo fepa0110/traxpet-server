@@ -1,121 +1,164 @@
 package servlet;
 
-import javax.ejb.EJB;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.Produces;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.FormParam;
-
-import java.util.logging.Logger;
-
-import java.io.InputStream;
-import java.io.File;  
-import java.io.FileOutputStream;  
-
-import java.nio.file.Paths;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-
-import java.util.List;
-import java.util.logging.Logger;
-import java.util.Collection;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.List;
+import java.util.logging.Logger;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import model.ImagenMascota;
-
-import stateless.MascotaService;
-import stateless.ImagenMascotaService;
-
 import servlet.ResponseMessage;
+import stateless.ImagenMascotaService;
+import stateless.MascotaService;
 
 @Path("/imagenesMascota")
 public class ImagenMascotaServlet {
-    private static final int MAX_SIZE_IN_MB = 1;
 
-    private static final java.nio.file.Path BASE_DIR = Paths.get("/home/heavy/");
+  private static final int MAX_SIZE_IN_MB = 1;
 
-    public Logger logger = Logger.getLogger(getClass().getName());
+  private static final java.nio.file.Path BASE_DIR = Paths.get("/home/heavy/");
 
-    @EJB
-    ImagenMascotaService imagenMascotaService;
+  public Logger logger = Logger.getLogger(getClass().getName());
 
-    @EJB
-    MascotaService mascotaService;
+  @EJB
+  ImagenMascotaService imagenMascotaService;
 
-    private ObjectMapper mapper;
+  @EJB
+  MascotaService mascotaService;
 
-    public ImagenMascotaServlet(){
-        mapper = new ObjectMapper();
-        mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
+  private ObjectMapper mapper;
 
-        // Le provee el formateador de fechas.
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        mapper.setDateFormat(df);
+  public ImagenMascotaServlet() {
+    mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
+
+    // Le provee el formateador de fechas.
+    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    mapper.setDateFormat(df);
+  }
+
+  @POST
+  @Path("/upload")
+  @Consumes(MediaType.MULTIPART_FORM_DATA)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String uploadFile(
+    InputStream uploadedInputStream,
+    @QueryParam("mascotaId") int mascotaId,
+    @QueryParam("formatoImagen") String formatoImagen
+  ) {
+    if (mascotaService.findById(mascotaId) == null) {
+      return ResponseMessage.message(501, "No existe la mascota " + mascotaId);
     }
 
-    @POST  
-    @Path("/upload")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)  
-    @Produces(MediaType.APPLICATION_JSON) 
-    public String uploadFile(  
-        InputStream uploadedInputStream,
-        @QueryParam("mascotaId") int mascotaId,
-        @QueryParam("formatoImagen") String formatoImagen) {
+    if (mascotaId < 0 || formatoImagen == null || formatoImagen.isEmpty()) {
+      return ResponseMessage.message(501, "Parametros incorrectos");
+    }
 
-        if(mascotaService.findById(mascotaId) == null){
-            return ResponseMessage.message(501, "No existe la mascota "+mascotaId);
+    String fileLocation =
+      "/root/app/etc/images/m" + mascotaId + "_" + System.currentTimeMillis();
+
+    logger.info("Al menos entre!!");
+
+    try {
+      File file = new File(fileLocation);
+      file.createNewFile();
+
+      FileOutputStream out = new FileOutputStream(file);
+      int read = 0;
+      byte[] bytes = new byte[1024];
+
+      out = new FileOutputStream(new File(fileLocation));
+
+      while ((read = uploadedInputStream.read(bytes)) != -1) {
+        out.write(bytes, 0, read);
+      }
+      out.flush();
+      out.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    String output = "File successfully uploaded to : " + fileLocation;
+    imagenMascotaService.create(mascotaId, fileLocation, formatoImagen.trim());
+
+    return ResponseMessage.message(200, "Se cargó la imagen exitosamente");
+  }
+
+  @GET
+  @Path("/mascota/{id}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String findAllMascota(@PathParam("id") int id) throws IOException {
+    // Se modifica este método para que utilice el servicio
+    Collection<ImagenMascota> Imagenes = imagenMascotaService.findAllbyId(id);
+
+     if (Imagenes == null){
+            return ResponseMessage.message(500, " no hay imagenes");
         }
+    // Se contruye el resultado en base a lo recuperado desde la capa de negocio.
+    String data;
 
-        if(mascotaId < 0 || formatoImagen == null || formatoImagen.isEmpty()){
-            return ResponseMessage.message(501, "Parametros incorrectos");
-        }
+    try {
+      data = mapper.writeValueAsString(Imagenes);
+    } catch (IOException e) {
+      return ResponseMessage.message(
+        501,
+        "Formato incorrecto en datos de entrada",
+        e.getMessage()
+      );
+    }
 
-        String fileLocation = "/root/app/etc/images/m" +mascotaId +"_"+ System.currentTimeMillis();
+    return ResponseMessage.message(
+      200,
+      "imagenes obtenidas correctamente",
+      data
+    );
+  }
 
-        logger.info("Al menos entre!!");
 
-        try {  
-            File file = new File(fileLocation);
-            file.createNewFile();
 
-            FileOutputStream out = new FileOutputStream(file);  
-            int read = 0;  
-            byte[] bytes = new byte[1024];  
-            
-            out = new FileOutputStream(new File(fileLocation));
 
-            while ((read = uploadedInputStream.read(bytes)) != -1) {  
-                out.write(bytes, 0, read);  
-            }  
-            out.flush();  
-            out.close();
-        } 
-        catch (IOException e) {
-            e.printStackTrace();
-        }  
 
-        String output = "File successfully uploaded to : " + fileLocation;
-        imagenMascotaService.create(mascotaId, fileLocation, formatoImagen.trim());
 
-        return ResponseMessage.message(200, "Se cargó la imagen exitosamente");  
-    }  
 
-   /* @POST
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  /* @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/upload/")

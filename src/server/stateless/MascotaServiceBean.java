@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.PersistenceContext;
 import javax.persistence.NoResultException;
+import model.ImagenMascota;
 
 import model.Mascota;
 import stateless.MascotaService;
@@ -78,4 +79,7 @@ public class MascotaServiceBean implements MascotaService {
         }
     }
 
+      
+ 
+  
 }

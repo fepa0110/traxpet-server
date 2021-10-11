@@ -20,11 +20,15 @@ import java.util.Set;
 import java.util.Collection;
 import java.util.Calendar;
 
-/* @NamedQueries({
-    @NamedQuery(name="Usuario.findAll",
-        query="SELECT usuario "+ 
-                "FROM Usuario usuario")
-}) */
+@NamedQueries({
+
+    @NamedQuery(name="findAllbyId",
+        query="SELECT i "+
+                "FROM ImagenMascota i "+
+                "WHERE i.mascota.id = :id"
+                 ),
+                
+                })
 
 @Entity
 public class ImagenMascota {

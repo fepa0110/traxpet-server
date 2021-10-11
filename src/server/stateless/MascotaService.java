@@ -2,7 +2,7 @@ package stateless;
 
 import java.util.Collection;
 import java.util.List;
-
+import model.ImagenMascota;
 import model.Mascota;
 
 public interface MascotaService{
