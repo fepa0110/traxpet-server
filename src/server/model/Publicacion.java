@@ -32,7 +32,7 @@ import java.util.Objects;
     @NamedQuery(name="findAllPublicacionUsuario",
         query="SELECT p "+
                 "FROM Publicacion p "+
-                "WHERE p.usuario =:id "+
+                "WHERE p.usuario =:username "+
                 "ORDER BY p.fechaPublicacion DESC" ),
     @NamedQuery(name="Publicacion.getMaxId",
         query="SELECT MAX(publicacion.id) "+ 

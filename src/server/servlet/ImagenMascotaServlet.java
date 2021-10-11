@@ -138,7 +138,7 @@ public class ImagenMascotaServlet {
       data
     );}
 
-   @GET
+  @GET
   @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public String findImagesById(@PathParam("id") int id) throws IOException {
