@@ -63,7 +63,9 @@ public class PublicacionServiceBean implements PublicacionService {
         em.persist(publicacion);
 
         ubicacion.setPublicacion(publicacion);
-        this.ubicacionService.create(ubicacion);
+        if(ubicacion.getLatitude() != 0 && ubicacion.getLongitude() != 0){
+            this.ubicacionService.create(ubicacion);
+        }
 
         return publicacion;
     }
