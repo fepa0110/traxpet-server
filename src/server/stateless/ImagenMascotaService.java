@@ -9,7 +9,7 @@ public interface ImagenMascotaService{
     // public List<ImagenMascota> findAll();
     public ImagenMascota create(int mascotaId, String directorioImagen, String formatoImagen);
     public Collection<ImagenMascota> findAllbyId(int id);
-    public ImagenMascota findById(int id);
+    public Collection <ImagenMascota> findById(int id) ;
 
 
 

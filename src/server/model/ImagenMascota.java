@@ -33,7 +33,7 @@ import java.util.Calendar;
     @NamedQuery(name="findById",
         query="SELECT i "+
                 "FROM ImagenMascota i "+
-                "WHERE i.id = :id"
+                "WHERE i.mascota.id = :id"
                  )              
 })
 

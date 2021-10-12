@@ -144,19 +144,20 @@ public class ImagenMascotaServlet {
   @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public String findImagesById(@PathParam("id") int id) throws IOException {
-    ImagenMascota imagen = imagenMascotaService.findById(id);
+      Collection <ImagenMascota> imagenes= imagenMascotaService.findById(id);
+      Stream<String> lines;
     //String path="/home/aluingdesa/traxpet-server/src/server/";
-    
-      if (imagenMascotaService.findById(id) == null) {
+     String data="[ ";
+      if (imagenes.isEmpty()|| imagenes == null) {
       return ResponseMessage.message(501, "No existe la imagen " + id);
     }
-     //String directy= imagen.getDirectory();
-    // directy=directy.replace("/root/app/","");
-    // path=path+directy;
-    // Se modifica este método para que utilice el servicio
-      Stream<String> lines = Files.lines(Paths.get(imagen.getDirectory()));
-      String data = lines.collect(Collectors.joining(System.lineSeparator()));
-
+      for( ImagenMascota imagen : imagenes){
+        lines = Files.lines(Paths.get(imagen.getDirectory()));
+        data += "\""+lines.collect(Collectors.joining(System.lineSeparator()))+"\",";
+      }
+      data=data.substring(0,data.length()-1);
+      data+="]";
+   
     return ResponseMessage.message(
       200,
       "imagen obtenida correctamente",

@@ -130,5 +130,44 @@ public class PublicacionServlet {
         }
         return ResponseMessage.message(200,"Publicacion GENERADO correctamente",dataPublicacion);
     }
+/*
+    @PUT
+    @Path("/update")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String update(String json) {
+        Publicacion publicacion;
+        Ubicacion ubicacion;
+        String caracteristicasMascotasData;
+        String dataPublicacion;
+
+        try {
+            //Extraigo la publicacion del json
+            String publicacionJson = json.replaceAll("\"ubication\":\\{\"latitude\":.*,\"longitude\":.*\\d\\},", "");
+
+            //Extraigo la ubicacion del json
+            String ubicacionJson = json.replaceAll("(.*)(\\{\"latitude\":.*,\"longitude\":.*\\d\\})(.*)", "$2");
+
+            publicacion = mapper.readValue(
+                publicacionJson, Publicacion.class);
+
+            ubicacion = mapper.readValue(
+                ubicacionJson, Ubicacion.class);
+
+            publicacion = publicacionService.update(publicacion, ubicacion);
+
+            dataPublicacion = mapper.writeValueAsString(publicacion);
+            // dataPublicacion = ubicacionJson;
+        }
+        catch (JsonProcessingException e) {
+            return ResponseMessage
+                .message(502, "No se pudo dar formato a la salida", e.getMessage());
+        } 
+        catch (IOException e) {
+            return ResponseMessage
+                .message(501, "Formato incorrecto en datos de entrada", e.getMessage());
+        }
+        return ResponseMessage.message(200,"Publicacion GENERADO correctamente",dataPublicacion);
+    }*/
 
 } 
