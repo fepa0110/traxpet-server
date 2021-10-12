@@ -6,6 +6,7 @@ import model.Caracteristica;
 import model.Especie;
 
 public interface CaracteristicaService {
+  
   public Caracteristica findByName(String nombre);
 
   public List<Caracteristica> findByEspecie(Especie especie);

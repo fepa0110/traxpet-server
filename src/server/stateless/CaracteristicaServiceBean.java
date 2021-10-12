@@ -34,7 +34,7 @@ public class CaracteristicaServiceBean implements CaracteristicaService {
     return em
       .createQuery(
         "select caracteristica from Caracteristica caracteristica " +
-        "where caracteristica.nombre = :nombre",
+        "where caracteristica.nombre=:nombre",
         Caracteristica.class
       )
       .setParameter("nombre", nombre)

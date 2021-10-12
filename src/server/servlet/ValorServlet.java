@@ -51,6 +51,41 @@ public class ValorServlet {
     mapper.setDateFormat(df);
   }
 
+  @DELETE
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String delete(String json) {
+    Valor valor;
+    String data;
+
+    try {
+      valor = mapper.readValue(json, Valor.class);
+
+      valor = valorService.find(valor);
+
+      valorService.remove(valor);
+      data = mapper.writeValueAsString(valor);
+    } catch (JsonProcessingException e) {
+      return ResponseMessage.message(
+        502,
+        "No se pudo dar formato a la salida",
+        e.getMessage()
+      );
+    } catch (IOException e) {
+      return ResponseMessage.message(
+        501,
+        "Formato incorrecto en datos de entrada",
+        e.getMessage()
+      );
+    }
+
+    return ResponseMessage.message(
+      200,
+      "Se eliminó el valor correctamente",
+      data
+    );
+  }
+
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
@@ -60,16 +95,19 @@ public class ValorServlet {
     Especie especie;
     Caracteristica caracteristica;
 
+    String name;
+
     try {
       valor = mapper.readValue(json, Valor.class);
-
+      name = valor.getCaracteristica().getNombre();
       especie = especieService.findByName(valor.getEspecie().getNombre());
-      caracteristica = caracteristicaService.findByName(valor.getCaracteristica().getNombre());
-      
+      caracteristica = caracteristicaService.findByName(name);
+
       valor.setEspecie(especie);
       valor.setCaracteristica(caracteristica);
-      
+
       valor = valorService.create(valor);
+
       data = mapper.writeValueAsString(valor);
     } catch (JsonProcessingException e) {
       return ResponseMessage.message(

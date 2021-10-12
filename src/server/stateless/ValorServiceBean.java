@@ -1,10 +1,9 @@
 package stateless;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
-
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -12,13 +11,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 import model.Caracteristica;
 import model.Especie;
 import model.Valor;
-
 import servlet.ResponseMessage;
-
 import stateless.CaracteristicaService;
 import stateless.ValorService;
 
@@ -39,6 +35,32 @@ public class ValorServiceBean implements ValorService {
   public Valor create(Valor valor) {
     em.persist(valor);
     return valor;
+  }
+
+  @Override
+  public void remove(Valor valor) {
+    em.remove(valor);
+  }
+
+  @Override
+  public Valor find(Valor valor) {
+    try {
+      return em
+        .createQuery(
+          "select valor " +
+          "from Valor valor " +
+          "where valor.nombre = :valor " +
+          "and valor.especie.nombre = :especie " +
+          "and valor.caracteristica.nombre = :caracteristica",
+          Valor.class
+        )
+        .setParameter("valor", valor.getNombre())
+        .setParameter("especie", valor.getEspecie().getNombre())
+        .setParameter("caracteristica", valor.getCaracteristica().getNombre())
+        .getSingleResult();
+    } catch (NoResultException e) {
+      return null;
+    }
   }
 
   @Override
@@ -126,9 +148,10 @@ public class ValorServiceBean implements ValorService {
   }
 
   public Valor findByCaracteristicaEspecieValor(
-          Caracteristica caracteristica, 
-          Especie especie, 
-          Valor valor){
+    Caracteristica caracteristica,
+    Especie especie,
+    Valor valor
+  ) {
     try {
       return getEntityManager()
         .createNamedQuery("Valor.findByCaracteristicaEspecieValor", Valor.class)
@@ -141,20 +164,23 @@ public class ValorServiceBean implements ValorService {
     }
   }
 
-  public List<Valor> findValoresByListAndEspecie(List<Valor> valores, Especie especie){
+  public List<Valor> findValoresByListAndEspecie(
+    List<Valor> valores,
+    Especie especie
+  ) {
     List<Valor> listaNuevaValores = new ArrayList<Valor>();
     Valor valorEncontrado;
 
-    for(Valor valor : valores){
-      valorEncontrado = this.findByCaracteristicaEspecieValor(
-        valor.getCaracteristica(),
-        especie,
-        valor
-      );
-      if(valorEncontrado != null) listaNuevaValores.add(valorEncontrado);
+    for (Valor valor : valores) {
+      valorEncontrado =
+        this.findByCaracteristicaEspecieValor(
+            valor.getCaracteristica(),
+            especie,
+            valor
+          );
+      if (valorEncontrado != null) listaNuevaValores.add(valorEncontrado);
     }
 
     return listaNuevaValores;
   }
-
 }

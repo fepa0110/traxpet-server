@@ -140,4 +140,36 @@ public class CaracteristicaServlet {
       data
     );
   }
+
+  @GET
+  @Path("/byName")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String findByName(
+    @QueryParam("caracteristicaNombre") String caracteristicaNombre
+  )
+    throws IOException {
+    // Se modifica este método para que utilice el servicio
+    Caracteristica caracteristicas = caracteristicaService.findByName(
+      caracteristicaNombre
+    );
+
+    // Se contruye el resultado en base a lo recuperado desde la capa de negocio.
+    String data;
+
+    try {
+      data = mapper.writeValueAsString(caracteristicas);
+    } catch (IOException e) {
+      return ResponseMessage.message(
+        501,
+        "Formato incorrecto en datos de entrada",
+        e.getMessage()
+      );
+    }
+
+    return ResponseMessage.message(
+      200,
+      "Caracteristica " + caracteristicaNombre + " recuperadas con éxito",
+      data
+    );
+  }
 }

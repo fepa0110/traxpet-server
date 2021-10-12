@@ -53,7 +53,7 @@ public class Valor {
     @JoinColumn(name="ESPECIE_ID")
     private Especie especie;
 
-    @ManyToOne(cascade=CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name="CARACTERISTICA_ID")
     private Caracteristica caracteristica;
 

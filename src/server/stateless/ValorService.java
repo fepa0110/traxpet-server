@@ -8,6 +8,8 @@ import model.Valor;
 
 public interface ValorService{
     public Valor create(Valor valor);
+    public Valor find(Valor valor);
+    public void remove(Valor valor);
     public List<Valor> findByEspecie(Especie especie);
     public List<Valor> findByCaracteristica(Caracteristica caracteristica);
     public List<Valor> findByEspecieYCaracteristica(Especie especie, Caracteristica caracteristica);
