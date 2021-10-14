@@ -57,12 +57,12 @@ public class ImagenMascotaServiceBean implements ImagenMascotaService {
   }
 
   @Override
-  public ImagenMascota findById(int id) {
+  public Collection <ImagenMascota> findById(int id) {
        try {
       return getEntityManager()
         .createNamedQuery("findById", ImagenMascota.class)
         .setParameter("id", id)
-        .getSingleResult();
+        .getResultList();
     } catch (NoResultException e) {
       return null;
     }
