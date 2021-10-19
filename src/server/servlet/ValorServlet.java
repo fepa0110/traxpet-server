@@ -51,7 +51,7 @@ public class ValorServlet {
     mapper.setDateFormat(df);
   }
 
-  @DELETE
+  @PUT
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public String delete(String json) {
@@ -60,10 +60,9 @@ public class ValorServlet {
 
     try {
       valor = mapper.readValue(json, Valor.class);
-
       valor = valorService.find(valor);
-
-      valorService.remove(valor);
+      valor.setDeshabilitado(true);
+      valorService.darBaja(valor);
       data = mapper.writeValueAsString(valor);
     } catch (JsonProcessingException e) {
       return ResponseMessage.message(
@@ -81,7 +80,7 @@ public class ValorServlet {
 
     return ResponseMessage.message(
       200,
-      "Se eliminó el valor correctamente",
+      "Se modificó el valor correctamente",
       data
     );
   }
@@ -105,6 +104,7 @@ public class ValorServlet {
 
       valor.setEspecie(especie);
       valor.setCaracteristica(caracteristica);
+      valor.setDeshabilitado(false);
 
       valor = valorService.create(valor);
 
@@ -198,6 +198,50 @@ public class ValorServlet {
   @Path("/byEspecieYCaracteristica")
   @Produces(MediaType.APPLICATION_JSON)
   public String findByEspecieYCaracteristica(
+    @QueryParam("especieNombre") String especieNombre,
+    @QueryParam("caracteristicaNombre") String caracteristicaNombre
+  )
+    throws IOException {
+    Especie especie = new Especie();
+    especie.setNombre(especieNombre);
+
+    Caracteristica caracteristica = new Caracteristica();
+    caracteristica.setNombre(caracteristicaNombre);
+
+    // Se modifica este método para que utilice el servicio
+    List<Valor> valores = valorService.findEnabled(
+      especie,
+      caracteristica
+    );
+
+    // Se contruye el resultado en base a lo recuperado desde la capa de negocio.
+    String data;
+
+    try {
+      data = mapper.writeValueAsString(valores);
+    } catch (IOException e) {
+      return ResponseMessage.message(
+        501,
+        "Formato incorrecto en datos de entrada",
+        e.getMessage()
+      );
+    }
+
+    return ResponseMessage.message(
+      200,
+      "Valores de la especie " +
+      especieNombre +
+      " y la caracteristica " +
+      caracteristicaNombre +
+      " recuperados con éxito",
+      data
+    );
+  }
+
+  @GET
+  @Path("/allByEspecieYCaracteristica")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String findAllByEspecieYCaracteristica(
     @QueryParam("especieNombre") String especieNombre,
     @QueryParam("caracteristicaNombre") String caracteristicaNombre
   )

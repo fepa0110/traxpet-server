@@ -38,8 +38,8 @@ public class ValorServiceBean implements ValorService {
   }
 
   @Override
-  public void remove(Valor valor) {
-    em.remove(valor);
+  public void darBaja(Valor valor) {
+    em.merge(valor);
   }
 
   @Override
@@ -98,7 +98,32 @@ public class ValorServiceBean implements ValorService {
           "select valor " +
           "from Valor valor " +
           "where valor.especie.nombre = :especie " +
-          "and valor.caracteristica.nombre = :caracteristica",
+          "and valor.caracteristica.nombre = :caracteristica " +
+          "and valor.deshabilitado = FALSE",
+          Valor.class
+        )
+        .setParameter("especie", especie.getNombre())
+        .setParameter("caracteristica", caracteristica.getNombre())
+        .getResultList();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
+
+  @Override
+  public List<Valor> findEnabled(
+    Especie especie,
+    Caracteristica caracteristica
+  ) {
+    try {
+      return em
+        .createQuery(
+          "select valor " +
+          "from Valor valor " +
+          "where valor.especie.nombre = :especie " +
+          "and valor.caracteristica.nombre = :caracteristica " +
+          "and valor.deshabilitado = FALSE " +
+          "order by valor.deshabilitado",
           Valor.class
         )
         .setParameter("especie", especie.getNombre())

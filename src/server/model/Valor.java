@@ -40,7 +40,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 })
 
 @Entity
-public class Valor {
+public class    Valor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,6 +60,8 @@ public class Valor {
     @JsonIgnore
     @ManyToMany(mappedBy="valores")
     private Collection<Mascota> mascotas;
+
+    private Boolean deshabilitado;
 
     public Valor() {}
 
@@ -107,6 +109,14 @@ public class Valor {
 
     public void setCaracteristica(Caracteristica caracteristica) {
         this.caracteristica = caracteristica;
+    }
+
+    public Boolean getDeshabilitado() {
+        return deshabilitado;
+    }
+
+    public void setDeshabilitado(Boolean deshabilitado) {
+        this.deshabilitado = deshabilitado;
     }
 
     @Override
