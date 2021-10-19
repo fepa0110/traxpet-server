@@ -209,10 +209,7 @@ public class ValorServlet {
     caracteristica.setNombre(caracteristicaNombre);
 
     // Se modifica este método para que utilice el servicio
-    List<Valor> valores = valorService.findEnabled(
-      especie,
-      caracteristica
-    );
+    List<Valor> valores = valorService.findEnabled(especie, caracteristica);
 
     // Se contruye el resultado en base a lo recuperado desde la capa de negocio.
     String data;
@@ -287,14 +284,9 @@ public class ValorServlet {
   @Produces(MediaType.APPLICATION_JSON)
   public String caracteristicasByEspecie(
     @QueryParam("especieNombre") String especieNombre
-  )
-    throws IOException {
+  ) {
     Especie especie = new Especie();
     especie.setNombre(especieNombre);
-
-    // Se modifica este método para que utilice el servicio
-
-    // Se contruye el resultado en base a lo recuperado desde la capa de negocio.
     return valorService.findCaracteristicasConValores(especie);
   }
 }

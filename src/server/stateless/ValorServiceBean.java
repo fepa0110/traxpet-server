@@ -98,6 +98,28 @@ public class ValorServiceBean implements ValorService {
           "select valor " +
           "from Valor valor " +
           "where valor.especie.nombre = :especie " +
+          "and valor.caracteristica.nombre = :caracteristica",
+          Valor.class
+        )
+        .setParameter("especie", especie.getNombre())
+        .setParameter("caracteristica", caracteristica.getNombre())
+        .getResultList();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
+
+  @Override
+  public List<Valor> findByEspecieYCaracteristicaEnabled(
+    Especie especie,
+    Caracteristica caracteristica
+  ) {
+    try {
+      return em
+        .createQuery(
+          "select valor " +
+          "from Valor valor " +
+          "where valor.especie.nombre = :especie " +
           "and valor.caracteristica.nombre = :caracteristica " +
           "and valor.deshabilitado = FALSE",
           Valor.class
@@ -152,7 +174,7 @@ public class ValorServiceBean implements ValorService {
               caracteristica.getNombre() +
               "\"," +
               "\"valores\":" +
-              this.findByEspecieYCaracteristica(especie, caracteristica)
+              this.findByEspecieYCaracteristicaEnabled(especie, caracteristica)
                 .stream()
                 .map(
                   valor ->
