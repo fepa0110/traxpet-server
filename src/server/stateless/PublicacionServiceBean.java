@@ -105,4 +105,28 @@ public class PublicacionServiceBean implements PublicacionService {
             return 0;
         }
     }
+    @Override
+    public Publicacion update(Publicacion publicacion, Ubicacion ubicacion) {
+       
+        publicacion.getMascota().setNombre(publicacion.getMascota().getNombre());
+        
+        ubicacion.setFecha(Calendar.getInstance());
+
+        em.merge(publicacion);
+        
+        ubicacion.setPublicacion(publicacion);
+        //validar que no existe la ubicacion en la publicion
+        if(ubicacionService.findByPublicacion(publicacion.getId()) !=  null)  {
+              if(ubicacion.getLatitude() != 0 && ubicacion.getLongitude() != 0){
+                 this.ubicacionService.update(ubicacion);
+        }
+
+        }        
+        else
+        if(ubicacion.getLatitude() != 0 && ubicacion.getLongitude() != 0){
+            this.ubicacionService.create(ubicacion);
+        }
+
+        return publicacion;
+    }
 }

@@ -13,6 +13,13 @@ import model.ImagenMascota;
 import model.Mascota;
 import stateless.ImagenMascotaService;
 import stateless.MascotaService;
+import java.io.InputStream;
+import java.io.FileOutputStream;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.File;
 
 @Stateless
 public class ImagenMascotaServiceBean implements ImagenMascotaService {
@@ -28,21 +35,49 @@ public class ImagenMascotaServiceBean implements ImagenMascotaService {
   }
 
   @Override
-  public ImagenMascota create(
-    int mascotaId,
-    String directorioImagen,
-    String formatoImagen
-  ) {
+  public ImagenMascota create(int mascotaId,InputStream uploadedInputStream,String formatoImagen){ 
+    
+    String fileLocation = 
+    "/root/app/etc/images/m" + mascotaId + "_" + System.currentTimeMillis();
+
+    
+     try {
+      File file = new File(fileLocation);
+      file.createNewFile();
+
+      FileOutputStream out = new FileOutputStream(file);
+      int read = 0;
+      byte[] bytes = new byte[1024];
+
+      out = new FileOutputStream(new File(fileLocation));
+
+      while ((read = uploadedInputStream.read(bytes)) != -1) {
+        out.write(bytes, 0, read);
+      }
+      out.flush();
+      out.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
     Mascota mascota = mascotaService.findById(mascotaId);
 
     ImagenMascota imagenMascota = new ImagenMascota();
     imagenMascota.setMascota(mascota);
-    imagenMascota.setDirectory(directorioImagen);
+    imagenMascota.setDirectory(fileLocation);
     imagenMascota.setFormat(formatoImagen);
 
     em.persist(imagenMascota);
     return imagenMascota;
   }
+
+  @Override
+  public ImagenMascota update(int mascotaId,InputStream uploadedInputStream, String formatoImagen,int imagenId){
+      this.remove(imagenId);
+    ImagenMascota imagenMascota = this.create(mascotaId,uploadedInputStream,formatoImagen);
+    return imagenMascota;
+  }
+
 
   @Override
   public Collection<ImagenMascota> findAllbyId(int id) {
@@ -68,4 +103,20 @@ public class ImagenMascotaServiceBean implements ImagenMascotaService {
     }
 
   }
+    public ImagenMascota find(int id){
+    return getEntityManager().find(ImagenMascota.class, id);
+ }
+
+   @Override
+    public void remove(int id) {
+        ImagenMascota imagen=find(id);
+        //Files.delete(Paths.get(imagen.getDirectory());
+       try {
+          Files.delete(Paths.get(imagen.getDirectory()));
+        } catch (IOException e) {
+            return ;
+        }
+        //Files.deleteIfExists(Paths.get(imagen.getDirectory()));
+        em.remove(imagen);
+    }
 }
