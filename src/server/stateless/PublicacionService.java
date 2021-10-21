@@ -13,4 +13,7 @@ public interface PublicacionService{
     public List<Publicacion> findAll();
     public Collection <Publicacion> findAllPublicacionUsuario(String id);
     public long getMaxId();
+
+     public Publicacion find(long id);
+
 }

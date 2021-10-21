@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -107,7 +108,6 @@ public class PublicacionServlet {
     Ubicacion ubicacion;
     String caracteristicasMascotasData;
     String dataPublicacion;
-
     try {
       //Extraigo la publicacion del json
       String publicacionJson = json.replaceAll(
@@ -120,6 +120,7 @@ public class PublicacionServlet {
         "(.*)(\\{\"latitude\":.*,\"longitude\":.*\\d\\})(.*)",
         "$2"
       );
+    //logger.info("create publicacion"+publicacionJson+"asd123");
 
       publicacion = mapper.readValue(publicacionJson, Publicacion.class);
 
@@ -157,12 +158,15 @@ public class PublicacionServlet {
     Publicacion publicacion;
     Ubicacion ubicacion;
     String dataPublicacion;
-
-    
-     
+     logger.info(""+json);
+      try {
       //Extraigo la publicacion del json
-      String publicacionJson = json.replaceAll(
+     /* String publicacionJson = json.replaceAll(
         "\"ubication\":\\{\"latitude\":.*,\"longitude\":.*\\d\\},",
+        ""
+      );*/
+     String publicacionJson = json.replaceAll(
+        ",\"ubication\":\\{\"latitude\":.*,\"longitude\":.*\\d\\}",
         ""
       );
       //Extraigo la ubicacion del json
@@ -170,18 +174,31 @@ public class PublicacionServlet {
         "(.*)(\\{\"latitude\":.*,\"longitude\":.*\\d\\})(.*)",
         "$2"
       );
-      
-      
     
+     logger.info("edit publicacion :"+publicacionJson+"despues del replace");
 
       publicacion = mapper.readValue(publicacionJson, Publicacion.class);
 
       ubicacion = mapper.readValue(ubicacionJson, Ubicacion.class);
 
       publicacion = publicacionService.update(publicacion, ubicacion);
-      
+
       dataPublicacion = mapper.writeValueAsString(publicacion);
       // dataPublicacion = ubicacionJson;
+    } catch (JsonProcessingException e) {
+      return ResponseMessage.message(
+        502,
+        "No se pudo dar formato a la salida",
+        e.getMessage()
+      );
+    } catch (IOException e) {
+      return ResponseMessage.message(
+        501,
+        "Formato incorrecto en datos de entrada",
+        e.getMessage()
+      );
+    }
+    
    
     return ResponseMessage.message(
       200,

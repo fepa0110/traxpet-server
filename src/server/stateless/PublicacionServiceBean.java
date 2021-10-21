@@ -106,17 +106,29 @@ public class PublicacionServiceBean implements PublicacionService {
         }
     }
     @Override
+     public Publicacion find(long id){
+    return getEntityManager().find(Publicacion.class, id);
+    }
+    @Override
     public Publicacion update(Publicacion publicacion, Ubicacion ubicacion) {
+         Publicacion publicacionEdit = find(publicacion.getId());
+
+        //publicacion.setEstado(Estado.ACTIVA);
+        
+
+       // Mascota mascota = mascotaService.find(publicacion.getMascota().getId());
+        
+       // mascota.setNombre(publicacion.getMascota().getNombre());
        
-        publicacion.getMascota().setNombre(publicacion.getMascota().getNombre());
+        publicacionEdit.getMascota().setNombre(publicacion.getMascota().getNombre());
+       // mascotaService.update(mascota);
+
+        em.merge(publicacionEdit);
         
         ubicacion.setFecha(Calendar.getInstance());
-
-        em.merge(publicacion);
-        
-        ubicacion.setPublicacion(publicacion);
+        ubicacion.setPublicacion(publicacionEdit);
         //validar que no existe la ubicacion en la publicion
-        if(ubicacionService.findByPublicacion(publicacion.getId()) !=  null)  {
+        if(ubicacionService.findByPublicacion(publicacionEdit.getId()) !=  null)  {
               if(ubicacion.getLatitude() != 0 && ubicacion.getLongitude() != 0){
                  this.ubicacionService.update(ubicacion);
         }
@@ -127,6 +139,6 @@ public class PublicacionServiceBean implements PublicacionService {
             this.ubicacionService.create(ubicacion);
         }
 
-        return publicacion;
+        return publicacionEdit;
     }
 }
