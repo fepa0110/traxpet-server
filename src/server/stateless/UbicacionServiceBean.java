@@ -66,9 +66,12 @@ public class UbicacionServiceBean implements UbicacionService {
   }
 
  @Override
-     public Ubicacion update(Ubicacion ubicacion) {
-       em.merge(ubicacion);
-       return ubicacion;
+     public Ubicacion update(Ubicacion ubicacion,long id ) {
+      Ubicacion ubicacionEdit = this.findByPublicacion(id); 
+      ubicacionEdit.setLatitude(ubicacion.getLatitude());
+      ubicacionEdit.setLongitude(ubicacion.getLongitude());
+      em.merge(ubicacionEdit);
+      return ubicacionEdit;
      }
 
 

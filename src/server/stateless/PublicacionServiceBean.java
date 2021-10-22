@@ -120,9 +120,10 @@ public class PublicacionServiceBean implements PublicacionService {
     ubicacion.setFecha(Calendar.getInstance());
     ubicacion.setPublicacion(publicacionEdit);
     //validar que no existe la ubicacion en la publicion
+    
     if (ubicacionService.findByPublicacion(publicacionEdit.getId()) != null) {
       if (ubicacion.getLatitude() != 0 && ubicacion.getLongitude() != 0) {
-        this.ubicacionService.update(ubicacion);
+        this.ubicacionService.update(ubicacion,publicacionEdit.getId());
       }
     } else if (ubicacion.getLatitude() != 0 && ubicacion.getLongitude() != 0) {
       this.ubicacionService.create(ubicacion);
