@@ -49,11 +49,10 @@ public class PublicacionServlet {
   @GET
   @Path("/usuario/{id}")
   @Produces(MediaType.APPLICATION_JSON)
-  public String findAllPublicacionUsuario(@PathParam("id") String id)
-    throws IOException {
-    Collection<Publicacion> publicaciones = publicacionService.findAllPublicacionUsuario(
-      id
-    );
+  public String findAllPublicacionUsuario(@PathParam("id") String id) throws IOException {
+    Collection<Publicacion> publicaciones = publicacionService.findAllPublicacionUsuario(id);
+   //Collection<PublicacionPojo> publicaciones = publicacionService.findPublicacionesUbicacion(id);
+   
     String data;
 
     if (publicaciones == null) {

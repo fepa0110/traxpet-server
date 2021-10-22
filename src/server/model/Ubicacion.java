@@ -74,4 +74,23 @@ public class Ubicacion {
   public void setPublicacion(Publicacion publicacion) {
     this.publicacion = publicacion;
   }
+
+
+  @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Ubicacion)) {
+            return false;
+        }
+        Ubicacion ubicacion = (Ubicacion) o;
+        return id == ubicacion.id && latitude == ubicacion.latitude && longitude == ubicacion.longitude && Objects.equals(fecha, ubicacion.fecha) && Objects.equals(publicacion, ubicacion.publicacion);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, latitude, longitude, fecha, publicacion);
+  }
+
+
 }

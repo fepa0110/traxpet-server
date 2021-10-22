@@ -53,7 +53,7 @@ public class UbicacionServiceBean implements UbicacionService {
 
   @Override
   public Ubicacion findByPublicacion(long id) {
-       try {
+      try {
       return getEntityManager()
         .createNamedQuery("Ubicacion.findByPublicacion", Ubicacion.class)
         .setParameter("id", id)
@@ -62,7 +62,9 @@ public class UbicacionServiceBean implements UbicacionService {
       return null;
     }
 
+
   }
+
  @Override
      public Ubicacion update(Ubicacion ubicacion) {
        em.merge(ubicacion);
