@@ -51,7 +51,6 @@ public class PublicacionServlet {
   @Produces(MediaType.APPLICATION_JSON)
   public String findAllPublicacionUsuario(@PathParam("id") String id) throws IOException {
     Collection<Publicacion> publicaciones = publicacionService.findAllPublicacionUsuario(id);
-   //Collection<PublicacionPojo> publicaciones = publicacionService.findPublicacionesUbicacion(id);
    
     String data;
 
