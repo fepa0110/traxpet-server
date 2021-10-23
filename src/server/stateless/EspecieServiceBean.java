@@ -24,6 +24,7 @@ public class EspecieServiceBean implements EspecieService {
 
   @Override
   public Especie create(Especie especie) {
+    especie.setDeshabilitado(false);
     em.persist(especie);
     return especie;
   }
@@ -41,6 +42,17 @@ public class EspecieServiceBean implements EspecieService {
   }
 
   @Override
+  public List<Especie> findAllEnable() {
+    try {
+      return getEntityManager()
+        .createNamedQuery("Especie.findAllEnable", Especie.class)
+        .getResultList();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
+  
+   @Override
   public List<Especie> findAll() {
     try {
       return getEntityManager()
@@ -50,7 +62,6 @@ public class EspecieServiceBean implements EspecieService {
       return null;
     }
   }
-  
   public Especie findByNombre(Especie especie){
     try {
       return getEntityManager()
@@ -61,4 +72,11 @@ public class EspecieServiceBean implements EspecieService {
       return null;
     }
   }
+
+  
+  @Override
+  public void darBaja(Especie especie) {
+    em.merge(especie);
+  }
+
 }
