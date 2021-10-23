@@ -53,8 +53,8 @@ public class UbicacionServlet {
             return "{\"StatusCode\":200,\"StatusText\":\"ubicacion recuperado exitosamente\",\"data\":"
                     + "{\"ubicacion\": {"
                     + "\"id\": " + ubicacion.getId() + ","
-                    + "\"latitude\": " + ubicacion.getLongitude() + ","
-                    + "\"longitude\":" + ubicacion.getLatitude()
+                    + "\"latitude\": " + ubicacion.getLatitude() + ","
+                    + "\"longitude\":" + ubicacion.getLongitude() 
                     + "}}}";
         } else
             return ResponseMessage.message(500, "La ubicacion  NO existe");
