@@ -47,11 +47,11 @@ public class PublicacionServlet {
   }
 
   @GET
-  @Path("/usuario/{id}")
+  @Path("/usuario/{username}")
   @Produces(MediaType.APPLICATION_JSON)
-  public String findAllPublicacionUsuario(@PathParam("id") String id) throws IOException {
-    Collection<Publicacion> publicaciones = publicacionService.findAllPublicacionUsuario(id);
-   
+  public String findAllPublicacionUsuario(@PathParam("username") String username) throws IOException {
+    Collection<Publicacion> publicaciones = publicacionService.findAllPublicacionUsuario(username);
+
     String data;
 
     if (publicaciones == null) {
@@ -59,18 +59,20 @@ public class PublicacionServlet {
     }
     try {
       data = mapper.writeValueAsString(publicaciones);
-      return ResponseMessage.message(
-        200,
-        "publicaciones del usuario id " + id + " recuperada exitosamente",
-        data
-      );
-    } catch (JsonProcessingException e) {
+    } 
+    catch (JsonProcessingException e) {
       return ResponseMessage.message(
         500,
         "error al  formatear los domicilios",
         e.getMessage()
       );
     }
+
+    return ResponseMessage.message(
+      200,
+      "publicaciones del usuario " + username + " recuperada exitosamente",
+      data
+    );
   }
 
   @GET

@@ -51,20 +51,12 @@ public class UsuarioServiceBean implements UsuarioService {
         if(usuarioBuscado == null) return null;
 
         //Actualizo el usuario con los datos
-        if(usuario.getNombre() != null && usuario.getNombre() != usuarioBuscado.getNombre()) {
-            usuarioBuscado.setNombre(usuario.getNombre());
-        }
-
-        if(usuario.getApellido() != null && usuario.getApellido() != usuarioBuscado.getApellido() ) {
-            usuarioBuscado.setApellido(usuario.getApellido());
-        }
-
         if(usuario.getCorreoElectronico() != null && usuario.getCorreoElectronico() != usuarioBuscado.getCorreoElectronico() ) {
             usuarioBuscado.setCorreoElectronico(usuario.getCorreoElectronico());
         }
 
-        if(usuario.getContrasenia() != null && usuario.getContrasenia() != usuarioBuscado.getContrasenia()){
-            usuarioBuscado.setContrasenia(usuario.getContrasenia());
+        if(usuario.getPassword() != null && usuario.getPassword() != usuarioBuscado.getPassword()){
+            usuarioBuscado.setPassword(usuario.getPassword());
         } 
 
         //Actualizo el usuario en la base de datos
@@ -113,25 +105,12 @@ public class UsuarioServiceBean implements UsuarioService {
     }
 
     @Override
-    public Usuario findByDni(Usuario usuario){
-        try {
-            return getEntityManager()
-                .createNamedQuery("Usuario.findByDni", Usuario.class)
-                .setParameter("dni", usuario.getDni())
-                .getSingleResult();
-        } 
-        catch (NoResultException e) {
-            return null;
-        }
-    }
-
-    @Override
     public Usuario findByLogin(Usuario usuario){
         try {
             return getEntityManager()
                 .createNamedQuery("Usuario.findByLogin", Usuario.class)
                 .setParameter("username", usuario.getUsername())
-                .setParameter("password", usuario.getContrasenia())
+                .setParameter("password", usuario.getPassword())
                 .getSingleResult();
         } 
         catch (NoResultException e) {

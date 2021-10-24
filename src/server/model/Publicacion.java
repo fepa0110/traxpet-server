@@ -32,7 +32,7 @@ import java.util.Objects;
     @NamedQuery(name="findAllPublicacionUsuario",
         query="SELECT p "+
                 "FROM Publicacion p "+
-                "WHERE p.usuario =:username "+
+                "WHERE p.usuario.username =:username "+
                 "ORDER BY p.fechaPublicacion DESC" ),
     @NamedQuery(name="Publicacion.getMaxId",
         query="SELECT MAX(publicacion.id) "+ 
@@ -58,7 +58,9 @@ public class Publicacion {
     @Temporal(TemporalType.DATE)
     private Calendar fechaPublicacion;
     
-    private String usuario;
+    @ManyToOne
+    @JoinColumn(name="USUARIO_ID")
+    private Usuario usuario;
 
     @OneToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name="MASCOTA_ID")
@@ -96,11 +98,11 @@ public class Publicacion {
         this.fechaPublicacion = fechaPublicacion;
     }
 
-    public String getUsuario() {
+    public Usuario getUsuario() {
         return this.usuario;
     }
 
-    public void setUsuario(String usuario) {
+    public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 

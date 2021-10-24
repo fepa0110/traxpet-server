@@ -19,10 +19,21 @@ import javax.persistence.ManyToMany;
 import java.util.Set;
 import java.util.Calendar;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @NamedQueries({
     @NamedQuery(name="Usuario.findAll",
         query="SELECT usuario "+ 
-                "FROM Usuario usuario")
+                "FROM Usuario usuario"),
+    @NamedQuery(name="Usuario.findByUsername",
+        query="SELECT usuario "+ 
+            "FROM Usuario usuario "+
+            "WHERE UPPER(usuario.username) LIKE UPPER(:username)"),
+    @NamedQuery(name="Usuario.findByLogin",
+        query="SELECT usuario "+ 
+            "FROM Usuario usuario "+
+            "WHERE UPPER(usuario.username) LIKE UPPER(:username) "+
+            "AND usuario.password LIKE :password")
 })
 
 @Entity
@@ -36,19 +47,18 @@ public class Usuario {
     @Column(name="username",unique=true)
     private String username;
 
-    private String nombre;
-    private String apellido;
-
     @Column(name="correoElectronico",unique=true)
     private String correoElectronico;
     
-    private String contrasenia;
-
-    @Column(name="dni",unique=true)
-    private String dni;
+    // @JsonIgnore
+    private String password;
 
     @Temporal(TemporalType.DATE)
     private Calendar fechaNacimiento;
+
+    @ManyToOne
+    @JoinColumn(name="ROLUSUARIO_ID")
+    private RolUsuario rol;
 
     public int getId() {
         return this.id;
@@ -66,22 +76,6 @@ public class Usuario {
         this.username = username;
     }
 
-    public String getNombre() {
-        return this.nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return this.apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
     public String getCorreoElectronico() {
         return this.correoElectronico;
     }
@@ -90,20 +84,12 @@ public class Usuario {
         this.correoElectronico = correoElectronico;
     }
 
-    public String getContrasenia() {
-        return this.contrasenia;
+    public String getPassword() {
+        return this.password;
     }
 
-    public void setContrasenia(String contrasenia) {
-        this.contrasenia = contrasenia;
-    }
-
-    public String getDni() {
-        return this.dni;
-    }
-
-    public void setDni(String dni) {
-        this.dni = dni;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Calendar getFechaNacimiento() {
@@ -112,5 +98,13 @@ public class Usuario {
 
     public void setFechaNacimiento(Calendar fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public RolUsuario getRol() {
+        return this.rol;
+    }
+
+    public void setRol(RolUsuario rol) {
+        this.rol = rol;
     }
 }

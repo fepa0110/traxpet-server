@@ -39,6 +39,8 @@ public class UsuarioServlet {
 
     private ObjectMapper mapper;
 
+    Logger logger = Logger.getLogger(getClass().getName());
+
     public UsuarioServlet(){
         mapper = new ObjectMapper();
         mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
@@ -140,7 +142,9 @@ public class UsuarioServlet {
                 return ResponseMessage
                     .message(502, "Usuario o contraseña no validos.");
             }
-            
+
+            usuarioAutentificado.setPassword(null);
+
             data = mapper.writeValueAsString(usuarioAutentificado);
         } 
         catch (JsonProcessingException e) {

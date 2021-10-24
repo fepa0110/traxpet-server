@@ -11,7 +11,7 @@ public interface PublicacionService{
     public Publicacion update(Publicacion publicacion, Ubicacion ubicacion);
 
     public List<Publicacion> findAll();
-    public Collection <Publicacion> findAllPublicacionUsuario(String id);
+    public Collection <Publicacion> findAllPublicacionUsuario(String username);
     public long getMaxId();
     public Publicacion find(long id);
 

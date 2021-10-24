@@ -40,7 +40,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 })
 
 @Entity
-public class    Valor {
+public class Valor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

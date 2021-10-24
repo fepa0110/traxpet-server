@@ -3,24 +3,29 @@ package stateless;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import java.util.*;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 import model.Estado;
 import model.Mascota;
 import model.Publicacion;
 import model.TipoPublicacion;
 import model.Ubicacion;
 import model.Valor;
+
 import stateless.MascotaService;
 import stateless.PublicacionService;
 import stateless.UbicacionService;
 import stateless.ValorService;
-import java.util.*;
+import stateless.UsuarioService;
 
 @Stateless
 public class PublicacionServiceBean implements PublicacionService {
@@ -40,6 +45,9 @@ public class PublicacionServiceBean implements PublicacionService {
   @EJB
   UbicacionService ubicacionService;
 
+  @EJB
+  UsuarioService usuarioService;
+
   public EntityManager getEntityManager() {
     return em;
   }
@@ -52,6 +60,8 @@ public class PublicacionServiceBean implements PublicacionService {
 
     publicacion.setMascota(mascotaService.create(publicacion.getMascota()));
 
+    publicacion.setUsuario(this.usuarioService.findByUsername(publicacion.getUsuario()));
+    
     //Busca el enum corresponiente al ingresado
     publicacion.setTipoPublicacion(
       TipoPublicacion.from(publicacion.getTipoPublicacion().toDbValue())
