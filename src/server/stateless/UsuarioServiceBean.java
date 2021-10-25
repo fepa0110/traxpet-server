@@ -13,11 +13,15 @@ import javax.persistence.NoResultException;
 
 import model.Usuario;
 import stateless.UsuarioService;
+import stateless.RolUsuarioService;
 
 @Stateless
 public class UsuarioServiceBean implements UsuarioService {
     @PersistenceContext(unitName = "traxpet")
     protected EntityManager em;
+
+    @EJB
+    RolUsuarioService rolUsuarioService;
 
     public EntityManager getEntityManager(){
         return em;
@@ -25,7 +29,9 @@ public class UsuarioServiceBean implements UsuarioService {
 
     @Override
     public Usuario create(Usuario usuario) {
-        //usuario.setUsername(usuario.getUsername());
+        usuario.setId(this.getMaxId()+1);
+        usuario.setRol(this.rolUsuarioService.findByNombre("Usuario"));
+
         em.persist(usuario);
         return usuario;
     }
@@ -130,5 +136,15 @@ public class UsuarioServiceBean implements UsuarioService {
                                 "WHERE UPPER(usuario.username) "+ 
                                 "LIKE CONCAT('%',UPPER(:usuario_username),'%')", Usuario.class)
             .setParameter("usuario_username", name).getResultList();
+    }
+
+    public long getMaxId() {
+        try {
+        return getEntityManager()
+            .createNamedQuery("Usuario.getMaxId", Long.class)
+            .getSingleResult();
+        } catch (NoResultException e) {
+        return 0;
+        }
     }
 }
