@@ -28,21 +28,27 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
     @NamedQuery(name="Usuario.findByUsername",
         query="SELECT usuario "+ 
             "FROM Usuario usuario "+
-            "WHERE UPPER(usuario.username) LIKE UPPER(:username)"),
+            "WHERE UPPER(usuario.username) = UPPER(:username)"),
+    @NamedQuery(name="Usuario.findEmailExists",
+        query="SELECT usuario "+ 
+            "FROM Usuario usuario "+
+            "WHERE UPPER(usuario.correoElectronico) = UPPER(:email)"),
     @NamedQuery(name="Usuario.findByLogin",
         query="SELECT usuario "+ 
             "FROM Usuario usuario "+
-            "WHERE UPPER(usuario.username) LIKE UPPER(:username) "+
-            "AND usuario.password LIKE :password")
+            "WHERE UPPER(usuario.username) = UPPER(:username) "+
+            "AND usuario.password = :password"),
+    @NamedQuery(name="Usuario.getMaxId",
+        query="SELECT MAX(usuario.id) "+ 
+                "FROM Usuario usuario ")
 })
 
 @Entity
 public class Usuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="usuario_id")
-    private int id;
+    private long id;
 
     @Column(name="username",unique=true)
     private String username;
@@ -50,21 +56,17 @@ public class Usuario {
     @Column(name="correoElectronico",unique=true)
     private String correoElectronico;
     
-    // @JsonIgnore
     private String password;
-
-    @Temporal(TemporalType.DATE)
-    private Calendar fechaNacimiento;
 
     @ManyToOne
     @JoinColumn(name="ROLUSUARIO_ID")
     private RolUsuario rol;
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -90,14 +92,6 @@ public class Usuario {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Calendar getFechaNacimiento() {
-        return this.fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(Calendar fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
     }
 
     public RolUsuario getRol() {

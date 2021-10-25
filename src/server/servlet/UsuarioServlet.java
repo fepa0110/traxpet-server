@@ -52,10 +52,7 @@ public class UsuarioServlet {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String findAll(@PathParam("username") String username) throws IOException{
-        Usuario usuario = new Usuario();
-        usuario.setUsername(username);
-
+    public String findAll() throws IOException{
         // Se modifica este método para que utilice el servicio
         List<Usuario> usuarios = usuarioService.findAll();
 
@@ -64,6 +61,64 @@ public class UsuarioServlet {
 
         try {  
             data = mapper.writeValueAsString(usuarios);
+        } 
+        catch (IOException e) {
+            return ResponseMessage
+            .message(501, "Formato incorrecto en datos de entrada", e.getMessage());
+        }
+
+        return ResponseMessage.message(200,"Usuarios recuperados con éxito",data);
+    }
+
+    @GET
+    @Path("/username/{username}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String findByUsername(@PathParam("username") String username) throws IOException{
+        Usuario usuario = new Usuario();
+        usuario.setUsername(username);
+
+        // Se modifica este método para que utilice el servicio
+        Usuario usuarioEncontrado = usuarioService.findByUsername(usuario);
+
+        // Se contruye el resultado en base a lo recuperado desde la capa de negocio.
+        String data;
+
+        if(usuarioEncontrado == null){
+            return ResponseMessage.message(502,"Usuario no encontrado");
+        }
+
+        try {  
+            usuarioEncontrado.setPassword(null);
+            data = mapper.writeValueAsString(usuarioEncontrado);
+        } 
+        catch (IOException e) {
+            return ResponseMessage
+            .message(501, "Formato incorrecto en datos de entrada", e.getMessage());
+        }
+
+        return ResponseMessage.message(200,"Usuarios recuperados con éxito",data);
+    }
+
+    @GET
+    @Path("/email/{email}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String findByCorreoElectronico(@PathParam("email") String email) throws IOException{
+        Usuario usuario = new Usuario();
+        usuario.setCorreoElectronico(email);
+
+        // Se modifica este método para que utilice el servicio
+        Usuario usuarioEncontrado = usuarioService.findEmailExists(usuario);
+
+        // Se contruye el resultado en base a lo recuperado desde la capa de negocio.
+        String data;
+
+        if(usuarioEncontrado == null){
+            return ResponseMessage.message(502,"Usuario no encontrado");
+        }
+
+        try {  
+            usuarioEncontrado.setPassword(null);
+            data = mapper.writeValueAsString(usuarioEncontrado);
         } 
         catch (IOException e) {
             return ResponseMessage
@@ -149,7 +204,7 @@ public class UsuarioServlet {
         } 
         catch (JsonProcessingException e) {
             return ResponseMessage
-                .message(502, "No se pudo dar formato a la salida", e.getMessage());
+                .message(501, "No se pudo dar formato a la salida", e.getMessage());
         } 
         catch (IOException e) {
             return ResponseMessage
