@@ -24,24 +24,26 @@ import java.util.Calendar;
     @NamedQuery(name="Caracteristica.findByEspecie",
         query="SELECT DISTINCT valor.caracteristica "+ 
                 "FROM Valor valor "+
-                "WHERE valor.especie.nombre = :especie_nombre")
-})
+                "WHERE valor.especie.nombre = :especie_nombre"),
+    @NamedQuery(name="Caracteristica.getMaxId",
+        query="SELECT MAX(caracteristica.id) "+ 
+                "FROM Caracteristica caracteristica ")
+    })
 
 @Entity
 public class Caracteristica {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="caracteristica_id")
-    private int id;
+    private long id;
 
     private String nombre;
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

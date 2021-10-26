@@ -9,6 +9,8 @@ import model.Valor;
 public interface ValorService {
   public Valor create(Valor valor);
 
+  public long getMaxId();
+
   public Valor find(Valor valor);
 
   public void darBaja(Valor valor);

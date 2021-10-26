@@ -25,6 +25,7 @@ public class CaracteristicaServiceBean implements CaracteristicaService {
 
   @Override
   public Caracteristica create(Caracteristica caracteristica) {
+    caracteristica.setId(this.getMaxId()+1);
     em.persist(caracteristica);
     return caracteristica;
   }
@@ -64,6 +65,16 @@ public class CaracteristicaServiceBean implements CaracteristicaService {
         .getResultList();
     } catch (NoResultException e) {
       return null;
+    }
+  }
+
+  public long getMaxId() {
+    try {
+      return getEntityManager()
+        .createNamedQuery("Caracteristica.getMaxId", Long.class)
+        .getSingleResult();
+    } catch (NoResultException e) {
+      return 0;
     }
   }
 }
