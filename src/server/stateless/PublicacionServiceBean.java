@@ -135,7 +135,8 @@ public class PublicacionServiceBean implements PublicacionService {
       if (ubicacion.getLatitude() != 0 && ubicacion.getLongitude() != 0) {
         this.ubicacionService.update(ubicacion,publicacionEdit.getId());
       }
-    } else if (ubicacion.getLatitude() != 0 && ubicacion.getLongitude() != 0) {
+    } 
+    else if (ubicacion.getLatitude() != 0 && ubicacion.getLongitude() != 0) {
       this.ubicacionService.create(ubicacion);
     }
 
