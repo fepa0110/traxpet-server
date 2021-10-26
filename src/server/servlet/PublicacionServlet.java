@@ -166,12 +166,12 @@ public class PublicacionServlet {
         ""
       );*/
      String publicacionJson = json.replaceAll(
-        ",\"ubication\":\\{\"latitude\":.*,\"longitude\":.*\\d\\}",
+        ",\"ubication\":\\{\"id\":\\d+,\"latitude\":.*,\"longitude\":.*\\d\\}",
         ""
       );
       //Extraigo la ubicacion del json
       String ubicacionJson = json.replaceAll(
-        "(.*)(\\{\"latitude\":.*,\"longitude\":.*\\d\\})(.*)",
+        "(.*)(\\{\"id\":\\d+,\"latitude\":.*,\"longitude\":.*\\d\\})(.*)",
         "$2"
       );
     
