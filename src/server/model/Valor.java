@@ -37,15 +37,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
                 "WHERE valor.caracteristica.nombre = :caracteristica_nombre "+
                 "AND valor.especie.nombre = :especie_nombre "+
                 "AND valor.nombre = :valor_nombre"),
+        @NamedQuery(name="Valor.getMaxId",
+        query="SELECT MAX(valor.id) "+ 
+                "FROM Valor valor ")
 })
 
 @Entity
 public class Valor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="valor_id")
-    private int id;
+    private long id;
 
     private String nombre;
 
@@ -71,12 +73,16 @@ public class Valor {
         this.caracteristica = caracteristica;
     }
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public Boolean isDeshabilitado() {
+        return this.deshabilitado;
     }
 
     public String getNombre() {

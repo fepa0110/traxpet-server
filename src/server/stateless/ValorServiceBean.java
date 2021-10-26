@@ -33,6 +33,8 @@ public class ValorServiceBean implements ValorService {
 
   @Override
   public Valor create(Valor valor) {
+    valor.setId(this.getMaxId()+1);
+
     em.persist(valor);
     return valor;
   }
@@ -229,5 +231,15 @@ public class ValorServiceBean implements ValorService {
     }
 
     return listaNuevaValores;
+  }
+
+  public long getMaxId() {
+    try {
+      return getEntityManager()
+        .createNamedQuery("Valor.getMaxId", Long.class)
+        .getSingleResult();
+    } catch (NoResultException e) {
+      return 0;
+    }
   }
 }

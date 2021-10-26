@@ -34,7 +34,7 @@ import javax.persistence.TemporalType;
       query = "SELECT especie " +
       "FROM Especie especie " +
       "WHERE especie.nombre = :nombre_especie"
-    ),
+    )
   }
 )
 @Entity
