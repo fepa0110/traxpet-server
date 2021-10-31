@@ -42,7 +42,6 @@ import java.util.Objects;
 
 @Entity
 public class Publicacion {
-
     @Id
     @Column(name="publicacion_id")
     private long id;
