@@ -151,6 +151,31 @@ public class ImagenMascotaServlet {
     return ResponseMessage.message(200, "imagen obtenida correctamente", data);
   }
 
+  @GET
+  @Path("/first/mascota/{id}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String findFirstImageByMascotaId(@PathParam("id") int id) throws IOException {
+    Collection<ImagenMascota> imagenes = imagenMascotaService.findAllbyId(id);
+    Stream<String> lines;
+    String data = "";
+    if (imagenes.isEmpty() || imagenes == null) {
+      return ResponseMessage.message(501, "No existe la imagen " + id);
+    }
+
+    ImagenMascota imagen = (ImagenMascota)imagenes.toArray()[0];
+
+    data += "{\"id\": " + imagen.getId() + ",";
+    lines = Files.lines(Paths.get(imagen.getDirectory()));
+    data += "\"ImagenData\":";
+    data +=
+      "\"" +
+      lines.collect(Collectors.joining(System.lineSeparator())) +
+      "\"},";
+    data = data.substring(0, data.length() - 1);
+
+    return ResponseMessage.message(200, "imagen obtenida correctamente", data);
+  }
+
   @DELETE
   @Path("delete/{id}")
   public String remove(@PathParam("id") int id) {

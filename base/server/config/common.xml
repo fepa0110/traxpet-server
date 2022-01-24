@@ -44,12 +44,19 @@
         <pathelement path="${CLIENT_CLASSPATH}" />
         <pathelement path="${REST_CLASSPATH}" />
         <pathelement path="${JSON_CLASSPATH}" />
+        <pathelement path="/root/app/lib/catboost-common-1.0.3.jar"/>
         <pathelement path="/root/app/lib/catboost-prediction-1.0.3.jar"/>
+        <pathelement path="/root/app/lib/jython-standalone-2.7.2.jar"/>
         <pathelement path="build/model" />
       </classpath>
     </javac>
     <jar jarfile="dist/lib/${example_name}.jar" update="true">
       <fileset dir="build/model"/>
+        <manifest>
+            <attribute name="Main-Class" value="ant.Debug"/>
+            <!-- <attribute name="Class-Path" value="/root/app/lib/jython-standalone-2.7.2.jar"/> -->
+        </manifest>
+        <zipgroupfileset dir="/root/app/lib/" includes="**/*.jar"/>
     </jar>
   </target>
 
@@ -60,7 +67,9 @@
         <pathelement path="${REST_CLASSPATH}" />
         <pathelement path="${JSON_CLASSPATH}" />
         <pathelement location="dist/lib/${example_name}.jar" />
+        <pathelement path="/root/app/lib/catboost-common-1.0.3.jar"/>
         <pathelement path="/root/app/lib/catboost-prediction-1.0.3.jar"/>
+        <pathelement path="/root/app/lib/jython-standalone-2.7.2.jar"/>
       </classpath>
     </javac>
     <war destfile="dist/${example_name}.war" webxml="etc/web/WEB-INF/web.xml" update="true">
@@ -78,7 +87,9 @@
     <javac srcdir="src/model" destdir="build/model" debug="on">
       <classpath>
         <pathelement path="${CLIENT_CLASSPATH}" />
+        <pathelement path="/root/app/lib/catboost-common-1.0.3.jar"/>
         <pathelement path="/root/app/lib/catboost-prediction-1.0.3.jar"/>
+        <pathelement path="/root/app/lib/jython-standalone-2.7.2.jar"/>
       </classpath>
     </javac>
     <jar jarfile="dist/lib/${example_name}.jar" update="true">
@@ -95,7 +106,9 @@
       <classpath>
         <pathelement path="${CLIENT_CLASSPATH}" />
         <pathelement location="dist/lib/${example_name}.jar" />
+        <pathelement path="/root/app/lib/catboost-common-1.0.3.jar"/>
         <pathelement path="/root/app/lib/catboost-prediction-1.0.3.jar"/>
+        <pathelement path="/root/app/lib/jython-standalone-2.7.2.jar"/>
       </classpath>
     </javac>
     <copy todir="build/servlet" failonerror="false">
@@ -118,7 +131,9 @@
         <pathelement location="dist/lib/${example_name}.jar" />
         <pathelement location="../../lib/junit-4.12.jar"/>
         <pathelement location="../../lib/hamcrest-core-1.3.jar"/>
-        <pathelement location="../../lib/catboost-prediction-1.0.3.jar"/>
+        <pathelement path="/root/app/lib/catboost-common-1.0.3.jar"/>
+        <pathelement path="/root/app/lib/catboost-prediction-1.0.3.jar"/>
+        <pathelement path="/root/app/lib/jython-standalone-2.7.2.jar"/>
       </classpath>
     </javac>
   </target>
@@ -133,7 +148,9 @@
         <pathelement location="dist/lib/${example_name}.jar" />
         <pathelement location="../../lib/junit-4.12.jar"/>
         <pathelement location="../../lib/hamcrest-core-1.3.jar"/>
-        <pathelement location="../../lib/catboost-prediction-1.0.3.jar"/>
+        <pathelement path="/root/app/lib/catboost-common-1.0.3.jar"/>
+        <pathelement path="/root/app/lib/catboost-prediction-1.0.3.jar"/>
+        <pathelement path="/root/app/lib/jython-standalone-2.7.2.jar"/>
         <pathelement location="${DERBY_INSTALL}/lib/derby.jar"/>
         <pathelement location="build/test"/>
       </classpath>
