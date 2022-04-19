@@ -1,3 +1,4 @@
 src/client/app/
-src/server/etc/images
+src/server/etc/images/gatos
+src/server/etc/imagesPrueba
 .idea

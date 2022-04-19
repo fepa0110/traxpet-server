@@ -158,6 +158,7 @@ public class ImagenMascotaServlet {
     Collection<ImagenMascota> imagenes = imagenMascotaService.findAllbyId(id);
     Stream<String> lines;
     String data = "";
+    
     if (imagenes.isEmpty() || imagenes == null) {
       return ResponseMessage.message(501, "No existe la imagen " + id);
     }
