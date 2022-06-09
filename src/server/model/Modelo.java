@@ -33,6 +33,8 @@ public class Modelo {
     @JoinColumn(name="ESPECIE_ID")
     private Especie especie;
 
+    private boolean activo;
+
     public int getId() {
         return this.id;
     }
@@ -55,5 +57,17 @@ public class Modelo {
 
     public void setEspecie(Especie especie) {
         this.especie = especie;
+    }
+
+    public boolean isActivo() {
+        return this.activo;
+    }
+
+    public boolean getActivo() {
+        return this.activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 }
