@@ -23,10 +23,12 @@ import javax.ws.rs.core.MediaType;
 import model.Caracteristica;
 import model.Especie;
 import model.Valor;
+import model.Mascota;
 import servlet.ResponseMessage;
 import stateless.CaracteristicaService;
 import stateless.EspecieService;
 import stateless.ValorService;
+import stateless.MascotaService;
 
 @Path("/valores")
 public class ValorServlet {
@@ -39,6 +41,9 @@ public class ValorServlet {
 
   @EJB
   ValorService valorService;
+
+  @EJB
+  MascotaService mascotaService;
 
   private ObjectMapper mapper;
 
@@ -160,6 +165,37 @@ public class ValorServlet {
   }
 
   @GET
+  @Path("/byMascota")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String findByMascota(
+    @QueryParam("idMascota") long mascotaId
+  )
+    throws IOException {
+    Mascota mascota = mascotaService.findById(mascotaId);
+
+    if (mascota == null){
+      return ResponseMessage.message(500,mascotaId+" no encontrada.");
+    }
+    String data;
+
+    try {
+      data = mapper.writeValueAsString(mascota.getValores());
+    } catch (IOException e) {
+      return ResponseMessage.message(
+        501,
+        "Formato incorrecto en datos de entrada",
+        e.getMessage()
+      );
+    }
+
+    return ResponseMessage.message(
+      200,
+      "Valores de la mascota " + mascotaId + " recuperados con éxito",
+      data
+    );
+  }
+
+  @GET
   @Path("/byCaracteristica")
   @Produces(MediaType.APPLICATION_JSON)
   public String findByCaracteristica(
@@ -171,8 +207,8 @@ public class ValorServlet {
 
     // Se modifica este método para que utilice el servicio
     List<Valor> valores = valorService.findByCaracteristica(caracteristica);
-
     // Se contruye el resultado en base a lo recuperado desde la capa de negocio.
+
     String data;
 
     try {
