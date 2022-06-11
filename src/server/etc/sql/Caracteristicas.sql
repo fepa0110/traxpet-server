@@ -1,64 +1,16 @@
 INSERT INTO CARACTERISTICA
     (CARACTERISTICA_ID, NOMBRE)
 VALUES
-    (1, 'Edad');
-
-INSERT INTO CARACTERISTICA
-    (CARACTERISTICA_ID, NOMBRE)
-VALUES
-    (2, 'Tamaño');
-
-INSERT INTO CARACTERISTICA
-    (CARACTERISTICA_ID, NOMBRE)
-VALUES
-    (3, 'Sexo');
-
-INSERT INTO CARACTERISTICA
-    (CARACTERISTICA_ID, NOMBRE)
-VALUES
-    (4, 'Patron de pelaje');
-
-INSERT INTO CARACTERISTICA
-    (CARACTERISTICA_ID, NOMBRE)
-VALUES
-    (5, 'Color de pelaje 1');
-
-INSERT INTO CARACTERISTICA
-    (CARACTERISTICA_ID, NOMBRE)
-VALUES
-    (6, 'Color de pelaje 2');
-
-INSERT INTO CARACTERISTICA
-    (CARACTERISTICA_ID, NOMBRE)
-VALUES
-    (7, 'Color de pelaje 3');
-
-INSERT INTO CARACTERISTICA
-    (CARACTERISTICA_ID, NOMBRE)
-VALUES
-    (8, 'Largo de pelaje');
-
-INSERT INTO CARACTERISTICA
-    (CARACTERISTICA_ID, NOMBRE)
-VALUES
-    (9, 'Color de ojos');
-
-INSERT INTO CARACTERISTICA
-    (CARACTERISTICA_ID, NOMBRE)
-VALUES
-    (10, 'Largo de hocico');
-
-INSERT INTO CARACTERISTICA
-    (CARACTERISTICA_ID, NOMBRE)
-VALUES
-    (11, 'Largo de cola');
-
-INSERT INTO CARACTERISTICA
-    (CARACTERISTICA_ID, NOMBRE)
-VALUES
-    (12, 'Largo de orejas');
-
-INSERT INTO CARACTERISTICA
-    (CARACTERISTICA_ID, NOMBRE)
-VALUES
+    (1, 'Edad'),
+    (2, 'Tamaño'),
+    (3, 'Sexo'),
+    (4, 'Patron de pelaje'),
+    (5, 'Color de pelaje 1'),
+    (6, 'Color de pelaje 2'),
+    (7, 'Color de pelaje 3'),
+    (8, 'Largo de pelaje'),
+    (9, 'Color de ojos'),
+    (10, 'Largo de hocico'),
+    (11, 'Largo de cola'),
+    (12, 'Largo de orejas'),
     (13, 'Tipo de orejas');
