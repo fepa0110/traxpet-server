@@ -45,7 +45,7 @@ public class NotificacionServlet {
   }
 
   @GET
-  @Path("usuario/{id}")
+  @Path("/usuario/{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public String findByUser(@PathParam("id") long id) throws IOException {
     Usuario usuario = new Usuario();
