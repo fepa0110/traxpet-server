@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
       name = "Ubicacion.findByPublicacion",
       query = "SELECT ubicacion "+ 
                 "FROM Ubicacion ubicacion "+
-                "WHERE ubicacion.publicacion.id = :id"),
+                "WHERE ubicacion.publicacion.id = :id "+
+                "ORDER BY ubicacion.fecha ASC"),
     
   })
 
