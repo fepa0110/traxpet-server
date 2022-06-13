@@ -51,28 +51,27 @@ public class UbicacionServiceBean implements UbicacionService {
         }
     }
 
-  @Override
-  public Ubicacion findByPublicacion(long id) {
-      try {
-      return getEntityManager()
-        .createNamedQuery("Ubicacion.findByPublicacion", Ubicacion.class)
-        .setParameter("id", id)
-        .getSingleResult();
-    } catch (NoResultException e) {
-      return null;
+    @Override
+    public Collection<Ubicacion> findByPublicacion(long id) {
+        try {
+            return getEntityManager()
+            .createNamedQuery("Ubicacion.findByPublicacion", Ubicacion.class)
+            .setParameter("id", id)
+            .getResultList();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
-
-  }
-
- @Override
-     public Ubicacion update(Ubicacion ubicacion,long id ) {
-      Ubicacion ubicacionEdit = this.findByPublicacion(id); 
-      ubicacionEdit.setLatitude(ubicacion.getLatitude());
-      ubicacionEdit.setLongitude(ubicacion.getLongitude());
-      em.merge(ubicacionEdit);
-      return ubicacionEdit;
-     }
+    @Override
+    public Ubicacion update(Ubicacion ubicacion,long id ) {
+        /* Ubicacion ubicacionEdit = this.findByPublicacion(id); 
+        ubicacionEdit.setLatitude(ubicacion.getLatitude());
+        ubicacionEdit.setLongitude(ubicacion.getLongitude());
+        em.merge(ubicacionEdit);*/
+        return new Ubicacion(); 
+    }
 
 
 }

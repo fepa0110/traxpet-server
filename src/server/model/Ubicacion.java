@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Objects;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @NamedQueries(
   {
     @NamedQuery(
@@ -31,6 +33,7 @@ public class Ubicacion {
   @Temporal(TemporalType.DATE)
   private Calendar fecha;
 
+  @JsonIgnore
   @ManyToOne(cascade = CascadeType.PERSIST)
   @JoinColumn(name = "PUBLICACION_ID")
   private Publicacion publicacion;

@@ -63,7 +63,7 @@ public class PublicacionServlet {
     catch (JsonProcessingException e) {
       return ResponseMessage.message(
         500,
-        "error al  formatear los domicilios",
+        "error al formatear las publicaciones",
         e.getMessage()
       );
     }

@@ -43,22 +43,43 @@ public class UbicacionServlet {
   }
 
   @GET
-  @Path("publicacion/{id}")
+  @Path("/publicacion/{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public String findById(@PathParam("id") int id) throws IOException {
-  Ubicacion ubicacion = ubicacionService.findByPublicacion(id);
+    Collection<Ubicacion> ubicaciones = ubicacionService.findByPublicacion(id);
+
     String data;
 
-          if (ubicacion != null) {
-            return "{\"StatusCode\":200,\"StatusText\":\"ubicacion recuperado exitosamente\",\"data\":"
-                    + "{\"ubicacion\": {"
-                    + "\"id\": " + ubicacion.getId() + ","
-                    + "\"latitude\": " + ubicacion.getLatitude() + ","
-                    + "\"longitude\":" + ubicacion.getLongitude() 
-                    + "}}}";
-        } else
-            return ResponseMessage.message(500, "La ubicacion  NO existe");
+    try {
+
+      data = mapper.writeValueAsString(ubicaciones);
+
+    } 
+    catch (JsonProcessingException e) {
+      return ResponseMessage.message(
+        500,
+        "error al formatear las ubicaciones",
+        e.getMessage()
+      );
+    }
+
+
+    return ResponseMessage.message(
+      200,
+      "Ubicaciones de la publicacion " + id + " recuperadas exitosamente",
+      data
+    );
 
   }
+          /* if(ubicaciones != null) {
+
+          /* return "{\"StatusCode\":200,\"StatusText\":\"ubicacion recuperado exitosamente\",\"data\":"
+                  + "{\"ubicacion\": {"
+                  + "\"id\": " + ubicacion.getId() + ","
+                  + "\"latitude\": " + ubicacion.getLatitude() + ","
+                  + "\"longitude\":" + ubicacion.getLongitude() 
+                  + "}}}"; 
+        } else
+            return ResponseMessage.message(500, "La ubicacion  NO existe"); */
   
 }
