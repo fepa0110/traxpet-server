@@ -13,9 +13,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.ManyToMany;
 
+
+
+import java.util.Collection;
 import java.util.Set;
 import java.util.Calendar;
 
@@ -55,6 +59,9 @@ public class Usuario {
 
     @Column(name="correoElectronico",unique=true)
     private String correoElectronico;
+
+    @OneToMany(mappedBy="usuario")
+    private Collection<Notificacion> notificaciones;
     
     private String password;
 
