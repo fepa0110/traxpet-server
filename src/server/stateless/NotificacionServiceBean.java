@@ -30,7 +30,8 @@ public class NotificacionServiceBean implements NotificacionService {
         .createQuery(
           "select notificacion from Notificacion notificacion " +
           "where notificacion.usuario.id=:idUsuario "+
-          "and notificacion.vista=FALSE",
+          "and notificacion.vista=FALSE "+
+          "order by notificacion.fechaNotificacion desc",
           Notificacion.class
         )
         .setParameter("idUsuario", usuario.getId())
