@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
@@ -71,23 +72,20 @@ public class ValorServlet {
       data = mapper.writeValueAsString(valor);
     } catch (JsonProcessingException e) {
       return ResponseMessage.message(
-        502,
-        "No se pudo dar formato a la salida",
-        e.getMessage()
-      );
+          502,
+          "No se pudo dar formato a la salida",
+          e.getMessage());
     } catch (IOException e) {
       return ResponseMessage.message(
-        501,
-        "Formato incorrecto en datos de entrada",
-        e.getMessage()
-      );
+          501,
+          "Formato incorrecto en datos de entrada",
+          e.getMessage());
     }
 
     return ResponseMessage.message(
-      200,
-      "Se modificó el valor correctamente",
-      data
-    );
+        200,
+        "Se modificó el valor correctamente",
+        data);
   }
 
   @POST
@@ -116,16 +114,14 @@ public class ValorServlet {
       data = mapper.writeValueAsString(valor);
     } catch (JsonProcessingException e) {
       return ResponseMessage.message(
-        502,
-        "No se pudo dar formato a la salida",
-        e.getMessage()
-      );
+          502,
+          "No se pudo dar formato a la salida",
+          e.getMessage());
     } catch (IOException e) {
       return ResponseMessage.message(
-        501,
-        "Formato incorrecto en datos de entrada",
-        e.getMessage()
-      );
+          501,
+          "Formato incorrecto en datos de entrada",
+          e.getMessage());
     }
 
     return ResponseMessage.message(200, "Se creó el valor correctamente", data);
@@ -135,9 +131,8 @@ public class ValorServlet {
   @Path("/byEspecie")
   @Produces(MediaType.APPLICATION_JSON)
   public String findByEspecie(
-    @QueryParam("especieNombre") String especieNombre
-  )
-    throws IOException {
+      @QueryParam("especieNombre") String especieNombre)
+      throws IOException {
     Especie especie = new Especie();
     especie.setNombre(especieNombre);
 
@@ -151,57 +146,84 @@ public class ValorServlet {
       data = mapper.writeValueAsString(valores);
     } catch (IOException e) {
       return ResponseMessage.message(
-        501,
-        "Formato incorrecto en datos de entrada",
-        e.getMessage()
-      );
+          501,
+          "Formato incorrecto en datos de entrada",
+          e.getMessage());
     }
 
     return ResponseMessage.message(
-      200,
-      "Valores de la especie " + especieNombre + " recuperados con éxito",
-      data
-    );
+        200,
+        "Valores de la especie " + especieNombre + " recuperados con éxito",
+        data);
   }
+
+  // @GET
+  // @Path("/byMascota")
+  // @Produces(MediaType.APPLICATION_JSON)
+  // public String findByMascota(
+  // @QueryParam("idMascota") long mascotaId)
+  // throws IOException {
+  // Mascota mascota = mascotaService.findById(mascotaId);
+  // if (mascota == null) {
+  // return ResponseMessage.message(500, mascotaId + " no encontrada.");
+  // }
+  // String data;
+  // try {
+  // data = mapper.writeValueAsString(mascota.getValores());
+  // } catch (IOException e) {
+  // return ResponseMessage.message(
+  // 501,
+  // "Formato incorrecto en datos de entrada",
+  // e.getMessage());
+  // }
+  // return ResponseMessage.message(
+  // 200,
+  // "Valores de la mascota " + mascotaId + " recuperados con éxito",
+  // data);
+  // }
 
   @GET
   @Path("/byMascota")
   @Produces(MediaType.APPLICATION_JSON)
   public String findByMascota(
-    @QueryParam("idMascota") long mascotaId
-  )
-    throws IOException {
-    Mascota mascota = mascotaService.findById(mascotaId);
-
-    if (mascota == null){
-      return ResponseMessage.message(500,mascotaId+" no encontrada.");
-    }
+      @QueryParam("idMascota") String json)
+      throws IOException {
+    int[] ids;
     String data;
+    List<List<Valor>> valores = new ArrayList<List<Valor>>();
 
     try {
-      data = mapper.writeValueAsString(mascota.getValores());
+      ids = mapper.readValue(json, int[].class);
+
+      for (int i = 0; i < ids.length; i++) {
+        valores.add(mascotaService.findById(ids[i]).getValores());
+      }
+
+      data = mapper.writeValueAsString(valores);
+    } catch (JsonProcessingException e) {
+      return ResponseMessage.message(
+          502,
+          "No se pudo dar formato a la salida",
+          e.getMessage());
     } catch (IOException e) {
       return ResponseMessage.message(
-        501,
-        "Formato incorrecto en datos de entrada",
-        e.getMessage()
-      );
+          501,
+          "Formato incorrecto en datos de entrada",
+          e.getMessage());
     }
 
     return ResponseMessage.message(
-      200,
-      "Valores de la mascota " + mascotaId + " recuperados con éxito",
-      data
-    );
+        200,
+        "Valores recuperados con éxito",
+        data);
   }
 
   @GET
   @Path("/byCaracteristica")
   @Produces(MediaType.APPLICATION_JSON)
   public String findByCaracteristica(
-    @QueryParam("caracteristicaNombre") String caracteristicaNombre
-  )
-    throws IOException {
+      @QueryParam("caracteristicaNombre") String caracteristicaNombre)
+      throws IOException {
     Caracteristica caracteristica = new Caracteristica();
     caracteristica.setNombre(caracteristicaNombre);
 
@@ -215,29 +237,26 @@ public class ValorServlet {
       data = mapper.writeValueAsString(valores);
     } catch (IOException e) {
       return ResponseMessage.message(
-        501,
-        "Formato incorrecto en datos de entrada",
-        e.getMessage()
-      );
+          501,
+          "Formato incorrecto en datos de entrada",
+          e.getMessage());
     }
 
     return ResponseMessage.message(
-      200,
-      "Valores de la caracteristica " +
-      caracteristicaNombre +
-      " recuperados con éxito",
-      data
-    );
+        200,
+        "Valores de la caracteristica " +
+            caracteristicaNombre +
+            " recuperados con éxito",
+        data);
   }
 
   @GET
   @Path("/byEspecieYCaracteristica")
   @Produces(MediaType.APPLICATION_JSON)
   public String findByEspecieYCaracteristica(
-    @QueryParam("especieNombre") String especieNombre,
-    @QueryParam("caracteristicaNombre") String caracteristicaNombre
-  )
-    throws IOException {
+      @QueryParam("especieNombre") String especieNombre,
+      @QueryParam("caracteristicaNombre") String caracteristicaNombre)
+      throws IOException {
     Especie especie = new Especie();
     especie.setNombre(especieNombre);
 
@@ -254,31 +273,28 @@ public class ValorServlet {
       data = mapper.writeValueAsString(valores);
     } catch (IOException e) {
       return ResponseMessage.message(
-        501,
-        "Formato incorrecto en datos de entrada",
-        e.getMessage()
-      );
+          501,
+          "Formato incorrecto en datos de entrada",
+          e.getMessage());
     }
 
     return ResponseMessage.message(
-      200,
-      "Valores de la especie " +
-      especieNombre +
-      " y la caracteristica " +
-      caracteristicaNombre +
-      " recuperados con éxito",
-      data
-    );
+        200,
+        "Valores de la especie " +
+            especieNombre +
+            " y la caracteristica " +
+            caracteristicaNombre +
+            " recuperados con éxito",
+        data);
   }
 
   @GET
   @Path("/allByEspecieYCaracteristica")
   @Produces(MediaType.APPLICATION_JSON)
   public String findAllByEspecieYCaracteristica(
-    @QueryParam("especieNombre") String especieNombre,
-    @QueryParam("caracteristicaNombre") String caracteristicaNombre
-  )
-    throws IOException {
+      @QueryParam("especieNombre") String especieNombre,
+      @QueryParam("caracteristicaNombre") String caracteristicaNombre)
+      throws IOException {
     Especie especie = new Especie();
     especie.setNombre(especieNombre);
 
@@ -287,9 +303,8 @@ public class ValorServlet {
 
     // Se modifica este método para que utilice el servicio
     List<Valor> valores = valorService.findByEspecieYCaracteristica(
-      especie,
-      caracteristica
-    );
+        especie,
+        caracteristica);
 
     // Se contruye el resultado en base a lo recuperado desde la capa de negocio.
     String data;
@@ -298,31 +313,28 @@ public class ValorServlet {
       data = mapper.writeValueAsString(valores);
     } catch (IOException e) {
       return ResponseMessage.message(
-        501,
-        "Formato incorrecto en datos de entrada",
-        e.getMessage()
-      );
+          501,
+          "Formato incorrecto en datos de entrada",
+          e.getMessage());
     }
 
     return ResponseMessage.message(
-      200,
-      "Valores de la especie " +
-      especieNombre +
-      " y la caracteristica " +
-      caracteristicaNombre +
-      " recuperados con éxito",
-      data
-    );
+        200,
+        "Valores de la especie " +
+            especieNombre +
+            " y la caracteristica " +
+            caracteristicaNombre +
+            " recuperados con éxito",
+        data);
   }
 
   @GET
   @Path("/allByEspecieYCaracteristicaEnabled")
   @Produces(MediaType.APPLICATION_JSON)
   public String findAllByEspecieYCaracteristicaEnabled(
-    @QueryParam("especieNombre") String especieNombre,
-    @QueryParam("caracteristicaNombre") String caracteristicaNombre
-  )
-    throws IOException {
+      @QueryParam("especieNombre") String especieNombre,
+      @QueryParam("caracteristicaNombre") String caracteristicaNombre)
+      throws IOException {
     Especie especie = new Especie();
     especie.setNombre(especieNombre);
 
@@ -331,9 +343,8 @@ public class ValorServlet {
 
     // Se modifica este método para que utilice el servicio
     List<Valor> valores = valorService.findByEspecieYCaracteristicaEnabled(
-      especie,
-      caracteristica
-    );
+        especie,
+        caracteristica);
 
     // Se contruye el resultado en base a lo recuperado desde la capa de negocio.
     String data;
@@ -342,29 +353,26 @@ public class ValorServlet {
       data = mapper.writeValueAsString(valores);
     } catch (IOException e) {
       return ResponseMessage.message(
-        501,
-        "Formato incorrecto en datos de entrada",
-        e.getMessage()
-      );
+          501,
+          "Formato incorrecto en datos de entrada",
+          e.getMessage());
     }
 
     return ResponseMessage.message(
-      200,
-      "Valores de la especie " +
-      especieNombre +
-      " y la caracteristica " +
-      caracteristicaNombre +
-      " recuperados con éxito",
-      data
-    );
+        200,
+        "Valores de la especie " +
+            especieNombre +
+            " y la caracteristica " +
+            caracteristicaNombre +
+            " recuperados con éxito",
+        data);
   }
 
   @GET
   @Path("/caracteristicasByEspecie")
   @Produces(MediaType.APPLICATION_JSON)
   public String caracteristicasByEspecie(
-    @QueryParam("especieNombre") String especieNombre
-  ) {
+      @QueryParam("especieNombre") String especieNombre) {
     Especie especie = new Especie();
     especie.setNombre(especieNombre);
     return valorService.findCaracteristicasConValores(especie);
