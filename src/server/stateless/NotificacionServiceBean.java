@@ -12,12 +12,20 @@ import javax.persistence.Query;
 import model.Notificacion;
 import model.Usuario;
 import stateless.NotificacionService;
+import stateless.PublicacionService;
+import stateless.UsuarioService;
 
 @Stateless
 public class NotificacionServiceBean implements NotificacionService {
 
   @PersistenceContext(unitName = "traxpet")
   protected EntityManager em;
+
+  @EJB
+  UsuarioService usuarioService;
+
+  @EJB
+  PublicacionService publicacionService;
 
   public EntityManager getEntityManager() {
     return em;
@@ -44,6 +52,10 @@ public class NotificacionServiceBean implements NotificacionService {
   @Override
   public Notificacion create(Notificacion notificacion) {
     notificacion.setId(this.getMaxId() + 1);
+    notificacion.setNotificante(usuarioService.findByUsername(notificacion.getNotificante()));
+    notificacion.setPublicacion(publicacionService.findByMascotaId(notificacion.getPublicacion()));
+    notificacion.setUsuario(notificacion.getPublicacion().getUsuario());
+    notificacion.setVista(false);
     em.persist(notificacion);
     return notificacion;
   }

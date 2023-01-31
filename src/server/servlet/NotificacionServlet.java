@@ -117,7 +117,6 @@ public class NotificacionServlet {
 
     try {
       notificacion = mapper.readValue(json, Notificacion.class);
-      notificacion.setVista(false);
       notificacion = service.create(notificacion);
       data = mapper.writeValueAsString(notificacion);
     } catch (JsonProcessingException e) {
