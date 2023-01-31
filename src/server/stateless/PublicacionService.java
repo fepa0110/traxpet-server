@@ -15,4 +15,6 @@ public interface PublicacionService{
     public long getMaxId();
     public Publicacion find(long id);
 
+    public Publicacion findByMascotaId(Publicacion publicacion);
+
 }
