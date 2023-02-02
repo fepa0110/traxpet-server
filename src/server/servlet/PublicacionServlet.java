@@ -130,13 +130,15 @@ public class PublicacionServlet {
 
       dataPublicacion = mapper.writeValueAsString(publicacion);
       // dataPublicacion = ubicacionJson;
-    } catch (JsonProcessingException e) {
+    } 
+    catch (JsonProcessingException e) {
       return ResponseMessage.message(
         502,
         "No se pudo dar formato a la salida",
         e.getMessage()
       );
-    } catch (IOException e) {
+    } 
+    catch (IOException e) {
       return ResponseMessage.message(
         501,
         "Formato incorrecto en datos de entrada",
@@ -185,13 +187,15 @@ public class PublicacionServlet {
 
       dataPublicacion = mapper.writeValueAsString(publicacion);
       // dataPublicacion = ubicacionJson;
-    } catch (JsonProcessingException e) {
+    } 
+    catch (JsonProcessingException e) {
       return ResponseMessage.message(
         502,
         "No se pudo dar formato a la salida",
         e.getMessage()
       );
-    } catch (IOException e) {
+    } 
+    catch (IOException e) {
       return ResponseMessage.message(
         501,
         "Formato incorrecto en datos de entrada",
@@ -206,4 +210,60 @@ public class PublicacionServlet {
       dataPublicacion
     );
   }
+
+  @PUT
+  @Path("/addUbicacion")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String addUbicacionUsuario(String json) 
+      throws IOException {
+
+    Ubicacion ubicacion;
+    String dataUbicacion = "";
+    logger.info(""+json);
+
+    try {
+      /* String publicacionJson = json.replaceAll(
+        ",\"ubication\":\\{\"id\":\\d+,\"latitude\":.*,\"longitude\":.*\\d\\}",
+        ""
+      );
+ */
+      //Extraigo la ubicacion del json
+/*       String ubicacionJson = json.replaceAll(
+        "(.*)(\\{\"id\":\\d+,\"latitude\":.*,\"longitude\":.*\\d\\})(.*)",
+        "$2"
+      );
+ */    
+      // logger.info("edit publicacion :"+publicacionJson+"despues del replace");
+
+      // publicacion = mapper.readValue(publicacionJson, Publicacion.class);
+
+      ubicacion = mapper.readValue(json, Ubicacion.class);
+
+      ubicacion = publicacionService.addUbicacion(ubicacion);
+
+      dataUbicacion = mapper.writeValueAsString(ubicacion);
+    } 
+    catch (JsonProcessingException e) {
+      return ResponseMessage.message(
+        502,
+        "No se pudo dar formato a la salida",
+        e.getMessage()
+      );
+    } 
+    catch (IOException e) {
+      return ResponseMessage.message(
+        501,
+        "Formato incorrecto en datos de entrada",
+        e.getMessage()
+      );
+    }
+    
+    return ResponseMessage.message(
+      200,
+      "Ubicacion de la publicacion "+ubicacion.getPublicacion().getId()+" actualizada correctamente",
+      dataUbicacion
+    );
+  }
+
 }

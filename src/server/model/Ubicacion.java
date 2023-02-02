@@ -34,6 +34,10 @@ public class Ubicacion {
   @Temporal(TemporalType.DATE)
   private Calendar fecha;
 
+  @ManyToOne
+  @JoinColumn(name="USUARIO_ID")
+  private Usuario usuario;
+
   @JsonIgnore
   @ManyToOne(cascade = CascadeType.PERSIST)
   @JoinColumn(name = "PUBLICACION_ID")
@@ -79,22 +83,28 @@ public class Ubicacion {
     this.publicacion = publicacion;
   }
 
+  public Usuario getUsuario() {
+    return this.usuario;
+  }
+
+  public void setUsuario(Usuario usuario) {
+    this.usuario = usuario;
+  }
 
   @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Ubicacion)) {
-            return false;
-        }
-        Ubicacion ubicacion = (Ubicacion) o;
-        return id == ubicacion.id && latitude == ubicacion.latitude && longitude == ubicacion.longitude && Objects.equals(fecha, ubicacion.fecha) && Objects.equals(publicacion, ubicacion.publicacion);
+  public boolean equals(Object o) {
+    if (o == this)
+        return true;
+    if (!(o instanceof Ubicacion)) {
+        return false;
+    }
+    Ubicacion ubicacion = (Ubicacion) o;
+    return id == ubicacion.id && latitude == ubicacion.latitude && longitude == ubicacion.longitude && Objects.equals(fecha, ubicacion.fecha) 
+      && Objects.equals(publicacion, ubicacion.publicacion);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(id, latitude, longitude, fecha, publicacion);
   }
-
-
 }

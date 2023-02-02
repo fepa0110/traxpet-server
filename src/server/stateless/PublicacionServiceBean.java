@@ -143,5 +143,14 @@ public class PublicacionServiceBean implements PublicacionService {
     return publicacionEdit;
   }
 
+  @Override
+  public Ubicacion addUbicacion(Ubicacion ubicacion) {
+    ubicacion.setPublicacion(this.find(ubicacion.getPublicacion().getId()));
+    
+    ubicacion.setFecha(Calendar.getInstance());
+    
+    return this.ubicacionService.create(ubicacion);
+  }
+
 
 }
