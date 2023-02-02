@@ -16,4 +16,6 @@ public interface PublicacionService{
     public Publicacion find(long id);
     public Ubicacion addUbicacion(Ubicacion ubicacion);
 
+    public Publicacion findByMascotaId(Publicacion publicacion);
+
 }

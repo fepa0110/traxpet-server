@@ -61,11 +61,10 @@ public class PublicacionServiceBean implements PublicacionService {
     publicacion.setMascota(mascotaService.create(publicacion.getMascota()));
 
     publicacion.setUsuario(this.usuarioService.findByUsername(publicacion.getUsuario()));
-    
-    //Busca el enum corresponiente al ingresado
+
+    // Busca el enum corresponiente al ingresado
     publicacion.setTipoPublicacion(
-      TipoPublicacion.from(publicacion.getTipoPublicacion().toDbValue())
-    );
+        TipoPublicacion.from(publicacion.getTipoPublicacion().toDbValue()));
 
     publicacion.setFechaPublicacion(Calendar.getInstance());
 
@@ -85,8 +84,8 @@ public class PublicacionServiceBean implements PublicacionService {
   public List<Publicacion> findAll() {
     try {
       return getEntityManager()
-        .createNamedQuery("Publicacion.findAll", Publicacion.class)
-        .getResultList();
+          .createNamedQuery("Publicacion.findAll", Publicacion.class)
+          .getResultList();
     } catch (NoResultException e) {
       return null;
     }
@@ -96,9 +95,9 @@ public class PublicacionServiceBean implements PublicacionService {
   public Collection<Publicacion> findAllPublicacionUsuario(String username) {
     try {
       return getEntityManager()
-        .createNamedQuery("findAllPublicacionUsuario", Publicacion.class)
-        .setParameter("username", username)
-        .getResultList();
+          .createNamedQuery("findAllPublicacionUsuario", Publicacion.class)
+          .setParameter("username", username)
+          .getResultList();
     } catch (NoResultException e) {
       return null;
     }
@@ -107,8 +106,8 @@ public class PublicacionServiceBean implements PublicacionService {
   public long getMaxId() {
     try {
       return getEntityManager()
-        .createNamedQuery("Publicacion.getMaxId", Long.class)
-        .getSingleResult();
+          .createNamedQuery("Publicacion.getMaxId", Long.class)
+          .getSingleResult();
     } catch (NoResultException e) {
       return 0;
     }
@@ -123,20 +122,19 @@ public class PublicacionServiceBean implements PublicacionService {
   public Publicacion update(Publicacion publicacion, Ubicacion ubicacion) {
     Publicacion publicacionEdit = find(publicacion.getId());
     publicacionEdit
-      .getMascota()
-      .setNombre(publicacion.getMascota().getNombre());
+        .getMascota()
+        .setNombre(publicacion.getMascota().getNombre());
     em.merge(publicacionEdit);
 
     ubicacion.setFecha(Calendar.getInstance());
     ubicacion.setPublicacion(publicacionEdit);
-    //validar que no existe la ubicacion en la publicion
-    
+    // validar que no existe la ubicacion en la publicion
+
     if (ubicacionService.findByPublicacion(publicacionEdit.getId()) != null) {
       if (ubicacion.getLatitude() != 0 && ubicacion.getLongitude() != 0) {
-        this.ubicacionService.update(ubicacion,publicacionEdit.getId());
+        this.ubicacionService.update(ubicacion, publicacionEdit.getId());
       }
-    } 
-    else if (ubicacion.getLatitude() != 0 && ubicacion.getLongitude() != 0) {
+    } else if (ubicacion.getLatitude() != 0 && ubicacion.getLongitude() != 0) {
       this.ubicacionService.create(ubicacion);
     }
 
@@ -152,5 +150,18 @@ public class PublicacionServiceBean implements PublicacionService {
     return this.ubicacionService.create(ubicacion);
   }
 
+  public Publicacion findByMascotaId(Publicacion publicacion) {
+    try {
+      return em
+          .createQuery(
+              "select publicacion from Publicacion publicacion " +
+                  "where publicacion.mascota.id=:idMascota ",
+              Publicacion.class)
+          .setParameter("idMascota", publicacion.getMascota().getId())
+          .getSingleResult();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
 
 }
