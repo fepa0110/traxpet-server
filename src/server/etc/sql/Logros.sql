@@ -1,6 +1,5 @@
-Insert INTO LOGRO(ID,NIVEL,MAX,PREMIO)VALUES
-
-(1,1,100,'10% de descuento Tienda de Mascotas'),
-(2,2,200,'20% de descuento Tienda de Mascotas'),
-(3,3,300,'30% de descuento Tienda de Mascotas'),
-(4,4,400,'40% de descuento Tienda de Mascotas');
+INSERT INTO LOGRO(ID,NIVEL,PREMIO,MAX)VALUES
+(0,1,'10% de descuento Tienda de Mascotas',100),
+(1,2,'20% de descuento Tienda de Mascotas',200),
+(2,3,'30% de descuento Tienda de Mascotas',300),
+(3,4,'40% de descuento Tienda de Mascotas',400);
