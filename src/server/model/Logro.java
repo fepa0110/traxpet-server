@@ -22,9 +22,9 @@ import java.util.Calendar;
 
 @NamedQueries({
     @NamedQuery(name="Logro.findAll",
-        query="SELECT logro "+
-                "FROM Logro logro "
+        query="SELECT logro FROM Logro logro"
                 ),
+    
     @NamedQuery(name="Logro.findById",
         query="SELECT logro "+
                 "FROM Logro logro "+
