@@ -21,19 +21,15 @@ import java.util.Collection;
 import java.util.Calendar;
 
 @NamedQueries({
-
-    @NamedQuery(name="findAll",
-        query="SELECT * "+
-                "FROM logro i "
-                 ),
-    
-             
-            
-    @NamedQuery(name="findById",
-        query="SELECT i "+
-                "FROM Logro i "+
-                "WHERE i.id = :id"
-                 )              
+    @NamedQuery(name="Logro.findAll",
+        query="SELECT logro "+
+                "FROM Logro logro "
+                ),
+    @NamedQuery(name="Logro.findById",
+        query="SELECT logro "+
+                "FROM Logro logro "+
+                "WHERE logro.id = :id"
+                )              
 })
 
 @Entity
