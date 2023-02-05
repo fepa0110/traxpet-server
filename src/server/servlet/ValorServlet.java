@@ -157,36 +157,37 @@ public class ValorServlet {
         data);
   }
 
-  // @GET
-  // @Path("/byMascota")
-  // @Produces(MediaType.APPLICATION_JSON)
-  // public String findByMascota(
-  // @QueryParam("idMascota") long mascotaId)
-  // throws IOException {
-  // Mascota mascota = mascotaService.findById(mascotaId);
-  // if (mascota == null) {
-  // return ResponseMessage.message(500, mascotaId + " no encontrada.");
-  // }
-  // String data;
-  // try {
-  // data = mapper.writeValueAsString(mascota.getValores());
-  // } catch (IOException e) {
-  // return ResponseMessage.message(
-  // 501,
-  // "Formato incorrecto en datos de entrada",
-  // e.getMessage());
-  // }
-  // return ResponseMessage.message(
-  // 200,
-  // "Valores de la mascota " + mascotaId + " recuperados con éxito",
-  // data);
-  // }
-
   @GET
   @Path("/byMascota")
   @Produces(MediaType.APPLICATION_JSON)
   public String findByMascota(
-      @QueryParam("idMascota") String json)
+  @QueryParam("idMascota") long mascotaId)
+  throws IOException {
+    Mascota mascota = mascotaService.findById(mascotaId);
+    if (mascota == null) {
+      return ResponseMessage.message(500, mascotaId + " no encontrada.");
+    }
+    String data;
+    try {
+      data = mapper.writeValueAsString(mascota.getValores());
+    } 
+    catch (IOException e) {
+      return ResponseMessage.message(
+      501,
+      "Formato incorrecto en datos de entrada",
+      e.getMessage());
+    }
+    return ResponseMessage.message(
+    200,
+    "Valores de la mascota " + mascotaId + " recuperados con éxito",
+    data);
+  }
+
+  @POST
+  @Path("/byMascotas")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String findByMascotas(String json)
       throws IOException {
     int[] ids;
     String data;
