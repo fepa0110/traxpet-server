@@ -215,7 +215,7 @@ public class PublicacionServlet {
   @Path("/addUbicacion")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public String addUbicacionUsuario(String json) 
+  public String addUbicacionUsuario(String json, @QueryParam("mascotaId") int mascotaId) 
       throws IOException {
 
     Ubicacion ubicacion;
@@ -240,7 +240,7 @@ public class PublicacionServlet {
 
       ubicacion = mapper.readValue(json, Ubicacion.class);
 
-      ubicacion = publicacionService.addUbicacion(ubicacion);
+      ubicacion = publicacionService.addUbicacionMascota(ubicacion, mascotaId);
 
       dataUbicacion = mapper.writeValueAsString(ubicacion);
     } 

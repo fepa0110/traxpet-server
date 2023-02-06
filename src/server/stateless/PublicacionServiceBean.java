@@ -142,10 +142,17 @@ public class PublicacionServiceBean implements PublicacionService {
   }
 
   @Override
-  public Ubicacion addUbicacion(Ubicacion ubicacion) {
-    ubicacion.setPublicacion(this.find(ubicacion.getPublicacion().getId()));
+  public Ubicacion addUbicacionMascota(Ubicacion ubicacion, int mascotaId) {
+    Publicacion publicacionMascota = new Publicacion();
+
+    publicacionMascota.setMascota(new Mascota());
+    publicacionMascota.getMascota().setId(mascotaId);
+
+    ubicacion.setPublicacion(this.findByMascotaId(publicacionMascota));
     
     ubicacion.setFecha(Calendar.getInstance());
+
+    ubicacion.setUsuario(usuarioService.findByUsername(ubicacion.getUsuario()));
     
     return this.ubicacionService.create(ubicacion);
   }
