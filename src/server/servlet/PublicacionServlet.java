@@ -223,21 +223,6 @@ public class PublicacionServlet {
     logger.info(""+json);
 
     try {
-      /* String publicacionJson = json.replaceAll(
-        ",\"ubication\":\\{\"id\":\\d+,\"latitude\":.*,\"longitude\":.*\\d\\}",
-        ""
-      );
- */
-      //Extraigo la ubicacion del json
-/*       String ubicacionJson = json.replaceAll(
-        "(.*)(\\{\"id\":\\d+,\"latitude\":.*,\"longitude\":.*\\d\\})(.*)",
-        "$2"
-      );
- */    
-      // logger.info("edit publicacion :"+publicacionJson+"despues del replace");
-
-      // publicacion = mapper.readValue(publicacionJson, Publicacion.class);
-
       ubicacion = mapper.readValue(json, Ubicacion.class);
 
       ubicacion = publicacionService.addUbicacionMascota(ubicacion, mascotaId);
