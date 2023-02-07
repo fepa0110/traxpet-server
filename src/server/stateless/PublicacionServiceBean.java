@@ -149,14 +149,15 @@ public class PublicacionServiceBean implements PublicacionService {
     publicacionMascota.getMascota().setId(mascotaId);
 
     ubicacion.setPublicacion(this.findByMascotaId(publicacionMascota));
-    
+
     ubicacion.setFecha(Calendar.getInstance());
 
     ubicacion.setUsuario(usuarioService.findByUsername(ubicacion.getUsuario()));
-    
+
     return this.ubicacionService.create(ubicacion);
   }
 
+  @Override
   public Publicacion findByMascotaId(Publicacion publicacion) {
     try {
       return em
@@ -169,6 +170,13 @@ public class PublicacionServiceBean implements PublicacionService {
     } catch (NoResultException e) {
       return null;
     }
+  }
+
+  @Override
+  public Publicacion markAsFound(Publicacion publicacion) {
+    publicacion.setTipoPublicacion(TipoPublicacion.MASCOTA_ENCONTRADA);
+    em.merge(publicacion);
+    return publicacion;
   }
 
 }
