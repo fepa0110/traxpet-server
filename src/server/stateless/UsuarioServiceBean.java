@@ -14,6 +14,7 @@ import javax.persistence.NoResultException;
 import model.Usuario;
 import stateless.UsuarioService;
 import stateless.RolUsuarioService;
+import stateless.LogroService;
 
 @Stateless
 public class UsuarioServiceBean implements UsuarioService {
@@ -23,6 +24,10 @@ public class UsuarioServiceBean implements UsuarioService {
     @EJB
     RolUsuarioService rolUsuarioService;
 
+    @EJB
+    LogroService logroService;
+
+
     public EntityManager getEntityManager(){
         return em;
     }
@@ -31,7 +36,7 @@ public class UsuarioServiceBean implements UsuarioService {
     public Usuario create(Usuario usuario) {
         usuario.setId(this.getMaxId()+1);
         usuario.setRol(this.rolUsuarioService.findByNombre("Usuario"));
-
+        usuario.setLogro(this.logroService.findById(1));
         em.persist(usuario);
         return usuario;
     }
@@ -146,5 +151,30 @@ public class UsuarioServiceBean implements UsuarioService {
         } catch (NoResultException e) {
         return 0;
         }
+    }
+
+
+
+    @Override
+    public Usuario updateScore(Usuario usuario,int puntaje) {
+        //Traigo el usuario
+        Usuario usuarioBuscado = this.findByUsername(usuario);
+
+        //Si el usuario no existe 
+        if(usuarioBuscado == null) return null;
+
+        //Actualizo el usuario con los datos
+        usuarioBuscado.setPuntaje(usuarioBuscado.getPuntaje()+puntaje);
+        if(usuarioBuscado.getPuntaje()>usuarioBuscado.getLogro().getMax() && usuarioBuscado.getLogro().getNivel()<4)
+
+        
+        {
+            usuario.setLogro(this.logroService.findById(usuarioBuscado.getLogro().getId()+1));
+        }
+        ;
+
+        //Actualizo el usuario en la base de datos
+        em.merge(usuarioBuscado);
+        return usuarioBuscado;
     }
 }

@@ -30,5 +30,17 @@ public class LogroServiceBean implements LogroService {
             return null;
           }
     }
+
+    @Override
+    public Logro findById(long id){
+      try {
+        return getEntityManager()
+          .createNamedQuery("Logro.findById", Logro.class)
+          .setParameter("id", id)
+          .getSingleResult();
+      } catch (NoResultException e) {
+        return null;
+      }
+    }
     
 }

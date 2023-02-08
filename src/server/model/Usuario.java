@@ -69,6 +69,13 @@ public class Usuario {
     @JoinColumn(name="ROLUSUARIO_ID")
     private RolUsuario rol;
 
+    @ManyToOne
+    @JoinColumn(name="NIVEL")
+    private Logro logro;
+
+    private int puntaje;
+
+
     public long getId() {
         return this.id;
     }
@@ -93,6 +100,14 @@ public class Usuario {
         this.correoElectronico = correoElectronico;
     }
 
+    public Collection<Notificacion> getNotificaciones() {
+        return this.notificaciones;
+    }
+
+    public void setNotificaciones(Collection<Notificacion> notificaciones) {
+        this.notificaciones = notificaciones;
+    }
+
     public String getPassword() {
         return this.password;
     }
@@ -108,4 +123,21 @@ public class Usuario {
     public void setRol(RolUsuario rol) {
         this.rol = rol;
     }
+
+    public Logro getLogro() {
+        return this.logro;
+    }
+
+    public void setLogro(Logro logro) {
+        this.logro = logro;
+    }
+
+    public int getPuntaje() {
+        return this.puntaje;
+    }
+
+    public void setPuntaje(int puntaje) {
+        this.puntaje = puntaje;
+    }
+
 }

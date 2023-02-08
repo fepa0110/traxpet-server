@@ -7,18 +7,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.OneToOne;
-import javax.persistence.ManyToOne;
-import javax.persistence.ManyToMany;
 
-import java.util.Set;
-import java.util.Collection;
-import java.util.Calendar;
 
 @NamedQueries({
     @NamedQuery(name="Logro.findAll",
@@ -38,7 +31,7 @@ public class Logro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private int id;
+    private long id;
 
     
     private int nivel;
@@ -48,11 +41,12 @@ public class Logro {
     private String premio; 
 
 
-    public int getId() {
+
+    public long getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -79,7 +73,6 @@ public class Logro {
     public void setPremio(String premio) {
         this.premio = premio;
     }
-
 
  
 }

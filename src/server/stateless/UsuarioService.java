@@ -15,6 +15,7 @@ public interface UsuarioService{
     public Usuario autenticarUsuario(Usuario usuario);
     public Usuario update(Usuario usuario);
     public Collection<Usuario> search(String name);
+    public Usuario updateScore(Usuario usuario,int puntaje);
 
     public long getMaxId();
 }
