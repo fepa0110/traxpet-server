@@ -250,7 +250,7 @@ public class UsuarioServlet {
       try {
         usuario = mapper.readValue(json, Usuario.class);
   
-        usuario = usuarioService.updateScore(usuario, id);
+        usuario = usuarioService.updateScore(usuario,id);
   
         data = mapper.writeValueAsString(usuario);
       } catch (JsonProcessingException e) {

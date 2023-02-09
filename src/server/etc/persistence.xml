@@ -9,7 +9,6 @@
     <class>model.Publicacion</class>
     <class>model.Notificacion</class>
     <class>model.Logro</class>
-
     <properties>
       <property name="eclipselink.target-database" value="DERBY"/>
       <property name="eclipselink.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
