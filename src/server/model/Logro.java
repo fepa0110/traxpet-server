@@ -29,14 +29,16 @@ import javax.persistence.TemporalType;
 public class Logro {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private long id;
 
+
+    public Logro() {
+    }
     
     private int nivel;
 
-    private int max;
+    private int maximo;
 
     private String premio; 
 
@@ -58,12 +60,12 @@ public class Logro {
         this.nivel = nivel;
     }
 
-    public int getMax() {
-        return this.max;
+    public int getMaximo() {
+        return this.maximo;
     }
 
-    public void setMax(int max) {
-        this.max = max;
+    public void setMaximo(int maximo) {
+        this.maximo = maximo;
     }
 
     public String getPremio() {
@@ -74,5 +76,4 @@ public class Logro {
         this.premio = premio;
     }
 
- 
 }
