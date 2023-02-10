@@ -238,10 +238,10 @@ public class UsuarioServlet {
     }
 
     @PUT
-    @Path("/addScore")
+    @Path("/addScore/{puntaje}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String addUbicacionUsuario(String json, @QueryParam("id") int id)
+    public String addUbicacionUsuario(String json, @QueryParam("puntaje") int puntaje)
         throws IOException {
             Usuario usuario;
             String data;
@@ -250,7 +250,7 @@ public class UsuarioServlet {
       try {
         usuario = mapper.readValue(json, Usuario.class);
   
-        usuario = usuarioService.updateScore(usuario,id);
+        usuario = usuarioService.updateScore(usuario,puntaje);
   
         data = mapper.writeValueAsString(usuario);
       } catch (JsonProcessingException e) {

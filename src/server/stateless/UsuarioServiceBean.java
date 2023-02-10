@@ -36,7 +36,7 @@ public class UsuarioServiceBean implements UsuarioService {
     public Usuario create(Usuario usuario) {
         usuario.setId(this.getMaxId()+1);
         usuario.setRol(this.rolUsuarioService.findByNombre("Usuario"));
-        usuario.setLogro(this.logroService.findById(1));
+        usuario.setLogro(this.logroService.findById(0));
         em.persist(usuario);
         return usuario;
     }
