@@ -165,11 +165,11 @@ public class UsuarioServiceBean implements UsuarioService {
 
         //Actualizo el usuario con los datos
         usuarioBuscado.setPuntaje(usuarioBuscado.getPuntaje()+puntaje);
-        if(usuarioBuscado.getPuntaje()>usuarioBuscado.getLogro().getMaximo() && usuarioBuscado.getLogro().getNivel()<4)
+        if((usuarioBuscado.getPuntaje()>usuarioBuscado.getLogro().getMaximo() )&& (usuarioBuscado.getLogro().getNivel()<4))
 
         
         {
-            usuario.setLogro(this.logroService.findById(usuarioBuscado.getLogro().getId()+1));
+            usuarioBuscado.setLogro(this.logroService.findById(usuarioBuscado.getLogro().getId()+1));
         }
         ;
 
