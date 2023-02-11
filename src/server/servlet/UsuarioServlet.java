@@ -241,7 +241,7 @@ public class UsuarioServlet {
     @Path("/addScore/{puntaje}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String addUbicacionUsuario(String json, @QueryParam("puntaje") int puntaje)
+    public String addUbicacionUsuario(String json, @PathParam("puntaje") int puntaje)
         throws IOException {
             Usuario usuario;
             String data;
