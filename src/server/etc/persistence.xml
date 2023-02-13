@@ -8,7 +8,7 @@
     <class>model.CaracteristicasMascotas</class>
     <class>model.Publicacion</class>
     <class>model.Notificacion</class>
-    <class>model.Logro</class>
+    <class>model.Nivel</class>
     <properties>
       <property name="eclipselink.target-database" value="DERBY"/>
       <property name="eclipselink.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>

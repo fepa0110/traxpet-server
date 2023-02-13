@@ -20,12 +20,14 @@ import model.Publicacion;
 import model.TipoPublicacion;
 import model.Ubicacion;
 import model.Valor;
+import model.Notificacion;
 
 import stateless.MascotaService;
 import stateless.PublicacionService;
 import stateless.UbicacionService;
 import stateless.ValorService;
 import stateless.UsuarioService;
+import stateless.NotificacionService;
 
 @Stateless
 public class PublicacionServiceBean implements PublicacionService {
@@ -47,6 +49,9 @@ public class PublicacionServiceBean implements PublicacionService {
 
   @EJB
   UsuarioService usuarioService;
+
+  @EJB
+  NotificacionService notificacionService;
 
   public EntityManager getEntityManager() {
     return em;
@@ -148,11 +153,17 @@ public class PublicacionServiceBean implements PublicacionService {
     publicacionMascota.setMascota(new Mascota());
     publicacionMascota.getMascota().setId(mascotaId);
 
+    Notificacion notificacion = new Notificacion();
+    
     ubicacion.setPublicacion(this.findByMascotaId(publicacionMascota));
 
     ubicacion.setFecha(Calendar.getInstance());
 
     ubicacion.setUsuario(usuarioService.findByUsername(ubicacion.getUsuario()));
+    
+    notificacion.setNotificante(ubicacion.getUsuario());
+    notificacion.setPublicacion(publicacionMascota);
+    notificacionService.create(notificacion);
 
     return this.ubicacionService.create(ubicacion);
   }
@@ -174,7 +185,7 @@ public class PublicacionServiceBean implements PublicacionService {
 
   @Override
   public Publicacion markAsFound(Publicacion publicacion) {
-    publicacion.setTipoPublicacion(TipoPublicacion.MASCOTA_ENCONTRADA);
+    publicacion.setEstado(Estado.ENCONTRADA);
     em.merge(publicacion);
     return publicacion;
   }

@@ -69,12 +69,7 @@ public class Usuario {
     @JoinColumn(name="ROLUSUARIO_ID")
     private RolUsuario rol;
 
-    @ManyToOne
-    @JoinColumn(name="NIVEL")
-    private Logro logro;
-
     private int puntaje;
-
 
     public long getId() {
         return this.id;
@@ -122,14 +117,6 @@ public class Usuario {
 
     public void setRol(RolUsuario rol) {
         this.rol = rol;
-    }
-
-    public Logro getLogro() {
-        return this.logro;
-    }
-
-    public void setLogro(Logro logro) {
-        this.logro = logro;
     }
 
     public int getPuntaje() {

@@ -1,3 +1,4 @@
+DELETE FROM NIVEL;
 DELETE FROM MASCOTA_VALOR;
 DELETE FROM MASCOTASENTRENADAS;
 DELETE FROM MODELO;
@@ -10,6 +11,14 @@ DELETE FROM ROLUSUARIO;
 DELETE FROM VALOR;
 DELETE FROM CARACTERISTICA;
 DELETE FROM ESPECIE;
+
+INSERT INTO NIVEL
+(ID,NIVEL, PUNTAJEMINIMO,PUNTAJEMAXIMO, PREMIO)
+VALUES
+(0,1,0,150,'10% de descuento en Tienda de Mascotas Ficticia'),
+(1,2,151,300,'20% de descuento en Peluqueria Compañero Feliz'),
+(2,3,301,450,'15% de descuento en Veterinaria Pichicho saludables'),
+(3,4,451,1000,'40% de descuento en Un aprobado en desarrollo '); 
 
 --OK
 INSERT INTO CARACTERISTICA
@@ -3610,17 +3619,17 @@ VALUES
 --OK
 --Usuarios
 INSERT INTO USUARIO
-(USUARIO_ID, USERNAME, PASSWORD, CORREOELECTRONICO, ROLUSUARIO_ID)
+(USUARIO_ID, USERNAME, PASSWORD, CORREOELECTRONICO, ROLUSUARIO_ID, PUNTAJE)
 VALUES
     --Administardores
-    (1, 'SmartAdmin92', '8dcaf3192a685c064a8bd0eb7bc1f7a20dcf8d42a49824ae2cfd533d9b5fdae5def7c55d91c52c733da16f29cd82b9f455495f1e8749679bcfdc4bf31f09fb37','SmartAdm@traxpet.com' ,2),
-    (2, 'ElPepe', '92d2fc2cf80691f36f78ced883384908b9608ddfa9be8c6f9936a625a2914eab13a518b9d06585755564d56ed6435e34940845a0540bb05cb8f40290f33be81f','el_pepito@hotmail.com' ,2),
-    (3, 'fcotrena', '9998775334c594eaa32d4a1a8123558a4659f0475ad9cb72ace71955a1989a1f59424ad87f5e95ba9b4011b6f05d0a77cb107400b51daf67d58f71fab167d718','Modesta_Stracke96@yahoo.com' ,2),
-    (4, 'Teo', 'abbc98d3a716b9a25e8c6a0c2f3c5772c0719a2b6777305525f7c793bf8a3fd37a931079fc5516a27709c86d7e4117f6192a644a659b0282f1fcd3ee716fe323','Lillian6@gmail.com' ,2),
+    (1, 'Pafumi', '8892c0dbb1da852453d5ba28d30c1f0c3a38c960c409d6b7180cd08f5fb80d9d346fff8f50d2c94eea5e24c10e9c84ad70734e0255725e74ac04d84fe0b1c3a2','SmartAdm@traxpet.com' ,2,500),
+    (2, 'ElPepe', '92d2fc2cf80691f36f78ced883384908b9608ddfa9be8c6f9936a625a2914eab13a518b9d06585755564d56ed6435e34940845a0540bb05cb8f40290f33be81f','el_pepito@hotmail.com' ,2,0),
+    (3, 'fcotrena', '9998775334c594eaa32d4a1a8123558a4659f0475ad9cb72ace71955a1989a1f59424ad87f5e95ba9b4011b6f05d0a77cb107400b51daf67d58f71fab167d718','Modesta_Stracke96@yahoo.com' ,2,480),
+    (4, 'Teo', 'abbc98d3a716b9a25e8c6a0c2f3c5772c0719a2b6777305525f7c793bf8a3fd37a931079fc5516a27709c86d7e4117f6192a644a659b0282f1fcd3ee716fe323','Terrence@gmail.com' ,2,666),
     -- Usuarios estandar
-    (5, 'Zapallo06', '41655bd91441819a95cb392d233e14a7bf8dc039af2e01fd3258bd6dc8f667306f5245b9df557b102acef07fec70ac7b7c3ef40d8ab252ca1a28563585980122','Zapa_llo@gmail.com' ,1),
-    (6, 'Elnora33', '2ab44b9f200fa18c3800db1092c941b2d96ae2c1adcb59886e027f32d6bfbba1667a73811c209d20a2bc819a1e88b2fabd5faaaf602bcaca67cf4ceaa7b422ac','Elnora_33@gmail.com' ,1),
-    (7, 'Thad64', '80efaabbf6dc53b50ce896801823132b7f16dd560dc645f5c65ba6925d62fd05174429fb20d3deb3221d91198f29afa1ba6bdb010968de3eef8fac2086a60fd4','Presley97@hotmail.com' ,1);
+    (5, 'Zapallo06', '41655bd91441819a95cb392d233e14a7bf8dc039af2e01fd3258bd6dc8f667306f5245b9df557b102acef07fec70ac7b7c3ef40d8ab252ca1a28563585980122','Zapa_llo@gmail.com' ,1,0),
+    (6, 'Elnora33', '2ab44b9f200fa18c3800db1092c941b2d96ae2c1adcb59886e027f32d6bfbba1667a73811c209d20a2bc819a1e88b2fabd5faaaf602bcaca67cf4ceaa7b422ac','Elnora_33@gmail.com' ,1,0),
+    (7, 'Thad64', '80efaabbf6dc53b50ce896801823132b7f16dd560dc645f5c65ba6925d62fd05174429fb20d3deb3221d91198f29afa1ba6bdb010968de3eef8fac2086a60fd4','Presley97@hotmail.com' ,1,0);
 
 --OK
 INSERT INTO PUBLICACION 

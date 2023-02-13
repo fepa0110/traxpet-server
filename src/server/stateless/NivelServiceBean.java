@@ -10,9 +10,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.PersistenceContext;
 
-import model.Logro;
+import model.Nivel;
+
 @Stateless
-public class LogroServiceBean implements LogroService {
+public class NivelServiceBean implements NivelService {
   @PersistenceContext(unitName = "traxpet")
   protected EntityManager em;
 
@@ -21,10 +22,10 @@ public class LogroServiceBean implements LogroService {
       }
     
     @Override
-    public Collection<Logro> findAll() {
+    public Collection<Nivel> findAll() {
         try {
             return getEntityManager()
-                .createNamedQuery("Logro.findAll", Logro.class)
+                .createNamedQuery("Nivel.findAll", Nivel.class)
                 .getResultList();
           } catch (NoResultException e) {
             return null;
@@ -32,15 +33,26 @@ public class LogroServiceBean implements LogroService {
     }
 
     @Override
-    public Logro findById(long id){
+    public Nivel findById(long id){
       try {
         return getEntityManager()
-          .createNamedQuery("Logro.findById", Logro.class)
+          .createNamedQuery("Nivel.findById", Nivel.class)
           .setParameter("id", id)
           .getSingleResult();
       } catch (NoResultException e) {
         return null;
       }
     }
-    
+
+    @Override
+    public Nivel calcularNivel(int puntaje){
+      try {
+        return getEntityManager()
+          .createNamedQuery("Nivel.getNivelByPuntaje", Nivel.class)
+          .setParameter("puntaje", puntaje)
+          .getSingleResult();
+      } catch (NoResultException e) {
+        return null;
+      }
+    }
 }

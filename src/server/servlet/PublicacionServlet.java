@@ -73,6 +73,32 @@ public class PublicacionServlet {
   }
 
   @GET
+  @Path("/{id}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String findById(@PathParam("id") long id) throws IOException {
+    Publicacion publicacion = publicacionService.find(id);
+
+    String data;
+
+    if (publicacion == null) {
+      return ResponseMessage.message(500, "la publicacion no existe");
+    }
+    try {
+      data = mapper.writeValueAsString(publicacion);
+    } catch (JsonProcessingException e) {
+      return ResponseMessage.message(
+          500,
+          "error al formatear la publicacion",
+          e.getMessage());
+    }
+
+    return ResponseMessage.message(
+        200,
+        "la publicacion "+id+" recuperada exitosamente",
+        data);
+  }
+
+  @GET
   @Produces(MediaType.APPLICATION_JSON)
   public String findAll() throws IOException {
     List<Publicacion> publicaciones = publicacionService.findAll();
