@@ -243,30 +243,29 @@ public class UsuarioServlet {
     @Produces(MediaType.APPLICATION_JSON)
     public String addUbicacionUsuario(String json, @PathParam("puntaje") int puntaje)
         throws IOException {
-            Usuario usuario;
-            String data;
-     
-  
-      try {
-        usuario = mapper.readValue(json, Usuario.class);
-  
-        usuario = usuarioService.updateScore(usuario,puntaje);
-  
-        data = mapper.writeValueAsString(usuario);
-      } catch (JsonProcessingException e) {
+        Usuario usuario;
+        String data;
+    
+        try {
+            usuario = mapper.readValue(json, Usuario.class);
+    
+            usuario = usuarioService.updateScore(usuario,puntaje);
+    
+            data = mapper.writeValueAsString(usuario);
+        } catch (JsonProcessingException e) {
+            return ResponseMessage.message(
+                502,
+                "No se pudo dar formato a la salida",
+                e.getMessage());
+        } catch (IOException e) {
+            return ResponseMessage.message(
+                501,
+                "Formato incorrecto en datos de entrada",
+                e.getMessage());
+        }
+    
         return ResponseMessage.message(
-            502,
-            "No se pudo dar formato a la salida",
-            e.getMessage());
-      } catch (IOException e) {
-        return ResponseMessage.message(
-            501,
-            "Formato incorrecto en datos de entrada",
-            e.getMessage());
-      }
-  
-      return ResponseMessage.message(
-          200,
-          "Usuario " + data);
+            200,
+            "Usuario " + data);
     }
 }

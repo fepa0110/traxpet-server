@@ -1,8 +1,5 @@
 package stateless;
 
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.List;
 import java.util.*;
 
 import javax.ejb.EJB;
@@ -157,12 +154,13 @@ public class PublicacionServiceBean implements PublicacionService {
     
     ubicacion.setPublicacion(this.findByMascotaId(publicacionMascota));
 
-    ubicacion.setFecha(Calendar.getInstance());
+    ubicacion.setFecha(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
 
     ubicacion.setUsuario(usuarioService.findByUsername(ubicacion.getUsuario()));
     
     notificacion.setNotificante(ubicacion.getUsuario());
     notificacion.setPublicacion(publicacionMascota);
+    notificacion.setFechaNotificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
     notificacionService.create(notificacion);
 
     return this.ubicacionService.create(ubicacion);
