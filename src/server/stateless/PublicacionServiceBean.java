@@ -105,6 +105,21 @@ public class PublicacionServiceBean implements PublicacionService {
     }
   }
 
+  @Override
+  public Publicacion findById(long id) {
+    try {
+      return em
+          .createQuery(
+              "select publicacion from Publicacion publicacion " +
+                  "where publicacion.id=:id ",
+              Publicacion.class)
+          .setParameter("id", id)
+          .getSingleResult();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
+
   public long getMaxId() {
     try {
       return getEntityManager()
@@ -151,13 +166,13 @@ public class PublicacionServiceBean implements PublicacionService {
     publicacionMascota.getMascota().setId(mascotaId);
 
     Notificacion notificacion = new Notificacion();
-    
+
     ubicacion.setPublicacion(this.findByMascotaId(publicacionMascota));
 
     ubicacion.setFecha(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
 
     ubicacion.setUsuario(usuarioService.findByUsername(ubicacion.getUsuario()));
-    
+
     notificacion.setNotificante(ubicacion.getUsuario());
     notificacion.setPublicacion(publicacionMascota);
     notificacion.setFechaNotificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));

@@ -76,7 +76,7 @@ public class PublicacionServlet {
   @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public String findById(@PathParam("id") long id) throws IOException {
-    Publicacion publicacion = publicacionService.find(id);
+    Publicacion publicacion = publicacionService.findById(id);
 
     String data;
 
