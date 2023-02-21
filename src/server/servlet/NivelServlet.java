@@ -19,12 +19,17 @@ import java.util.logging.Logger;
 import java.util.Collection;
 
 import model.Nivel;
+import model.Usuario;
 import stateless.NivelService;
+import stateless.UsuarioService;
 
 @Path("/niveles")
 public class NivelServlet {
     @EJB
     NivelService nivelService;
+
+    @EJB
+    UsuarioService usuarioService;
 
     private ObjectMapper mapper;
 
@@ -61,11 +66,16 @@ public class NivelServlet {
                 data);
     }
 
+    
     @GET
     @Path("/calcularNivel")
     @Produces(MediaType.APPLICATION_JSON)
-    public String calcularNivel(@QueryParam("puntaje") int puntaje) throws IOException {
-        Nivel nivel = nivelService.calcularNivel(puntaje);
+    public String calcularNivel(@QueryParam("username") String username) throws IOException {
+        Usuario usuario = new Usuario();
+        usuario.setUsername(username);
+        usuario = usuarioService.findByUsername(usuario);
+
+        Nivel nivel = nivelService.calcularNivel(usuario.getPuntaje());
 
         String data;
         try {
@@ -85,6 +95,36 @@ public class NivelServlet {
         return ResponseMessage.message(
                 200,
                 "Nivel recuperado con éxito",
+                data);
+    }
+
+    @GET
+    @Path("/nivelesObtenidos")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String nivelesObtenidos(@QueryParam("username") String username) throws IOException {
+        Usuario usuario = new Usuario();
+        usuario.setUsername(username);
+        usuario = usuarioService.findByUsername(usuario);
+
+        List<Nivel> niveles = nivelService.getNivelesObtenidos(usuario.getPuntaje());
+
+        String data;
+        try {
+            data = mapper.writeValueAsString(niveles);
+        } catch (JsonProcessingException e) {
+            return ResponseMessage.message(
+                    502,
+                    "No se pudo dar formato a la salida",
+                    e.getMessage());
+        }
+        if (niveles == null)
+            return ResponseMessage.message(
+                    503,
+                    "No se encontraron niveles");
+
+        return ResponseMessage.message(
+                200,
+                "Niveles recuperados con éxito",
                 data);
     }
 }

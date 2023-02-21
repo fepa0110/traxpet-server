@@ -29,6 +29,13 @@ import javax.persistence.TemporalType;
                 "WHERE :puntaje >= nivel.puntajeMinimo "+
                 "AND :puntaje <= nivel.puntajeMaximo"
                 ),             
+    @NamedQuery(name="Nivel.getNivelesObtenidosByPuntaje",
+        query="SELECT niveles "+
+                "FROM Nivel niveles "+
+                "WHERE (SELECT nivel.puntajeMinimo "+
+                    "FROM Nivel nivel "+
+                    "WHERE :puntaje >= nivel.puntajeMinimo "+
+                    "AND :puntaje <= nivel.puntajeMaximo) >= niveles.puntajeMinimo"),             
 })
 
 @Entity

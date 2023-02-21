@@ -55,4 +55,17 @@ public class NivelServiceBean implements NivelService {
         return null;
       }
     }
+
+    @Override
+    public List<Nivel> getNivelesObtenidos(int puntaje){
+      try {
+        return getEntityManager()
+          .createNamedQuery("Nivel.getNivelesObtenidosByPuntaje", Nivel.class)
+          .setParameter("puntaje", puntaje)
+          .getResultList();
+      } catch (NoResultException e) {
+        return null;
+      }
+    }
+
 }
