@@ -289,4 +289,30 @@ public class PublicacionServlet {
         dataPublicacion);
   }
 
+  @GET
+  @Path("/cleanUp")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String cleanUp() throws IOException {
+    Collection <Publicacion> publicaciones;
+    String dataPublicacion;
+    try {
+
+      publicaciones = publicacionService.cleanUp();
+
+      dataPublicacion = mapper.writeValueAsString(publicaciones);
+    }
+
+    catch (IOException e) {
+      return ResponseMessage.message(
+          501,
+          "Formato incorrecto en datos de entrada",
+          e.getMessage());
+    }
+
+    return ResponseMessage.message(
+        200,
+        "Limpieza de publicaciones inactivas",
+        dataPublicacion);
+  }
+
 }

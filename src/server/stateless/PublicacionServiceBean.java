@@ -203,4 +203,19 @@ public class PublicacionServiceBean implements PublicacionService {
     return publicacion;
   }
 
+  @Override
+
+  public Collection<Publicacion> cleanUp() {
+    try {
+      return em
+          .createQuery(
+              "select publicacion from Publicacion publicacion " +
+                  "where MONTH_BETWEEEN(CURRENT_DATE, publicacion.fechaPublicacion) > 6",
+              Publicacion.class)
+          .getResultList();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
+
 }
