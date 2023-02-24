@@ -60,6 +60,7 @@ public class Usuario {
     @Column(name="correoElectronico",unique=true)
     private String correoElectronico;
 
+    @JsonIgnore
     @OneToMany(mappedBy="usuario")
     private Collection<Notificacion> notificaciones;
     
