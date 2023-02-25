@@ -25,24 +25,21 @@ import java.util.Calendar;
 import java.util.Objects;
 
 @NamedQueries({
-    @NamedQuery(name="Publicacion.findAll",
-        query="SELECT publicacion "+ 
+        @NamedQuery(name = "Publicacion.findAll", query = "SELECT publicacion " +
                 "FROM Publicacion publicacion"),
 
-    @NamedQuery(name="findAllPublicacionUsuario",
-        query="SELECT p "+
-                "FROM Publicacion p "+
-                "WHERE p.usuario.username =:username "+
-                "ORDER BY p.fechaPublicacion DESC" ),
-    @NamedQuery(name="Publicacion.getMaxId",
-        query="SELECT MAX(publicacion.id) "+ 
+        @NamedQuery(name = "findAllPublicacionUsuario", query = "SELECT p " +
+                "FROM Publicacion p " +
+                "WHERE p.usuario.username =:username " +
+                "ORDER BY p.fechaPublicacion DESC"),
+        @NamedQuery(name = "Publicacion.getMaxId", query = "SELECT MAX(publicacion.id) " +
                 "FROM Publicacion publicacion ")
 })
 
 @Entity
 public class Publicacion {
     @Id
-    @Column(name="publicacion_id")
+    @Column(name = "publicacion_id")
     private long id;
 
     @Convert(converter = EstadoConverter.class)
@@ -55,13 +52,16 @@ public class Publicacion {
 
     @Temporal(TemporalType.DATE)
     private Calendar fechaPublicacion;
-    
+
+    @Temporal(TemporalType.DATE)
+    private Calendar fechaModificacion;
+
     @ManyToOne
-    @JoinColumn(name="USUARIO_ID")
+    @JoinColumn(name = "USUARIO_ID")
     private Usuario usuario;
 
-    @OneToOne(cascade=CascadeType.PERSIST)
-    @JoinColumn(name="MASCOTA_ID")
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "MASCOTA_ID")
     private Mascota mascota;
 
     public long getId() {
@@ -96,6 +96,14 @@ public class Publicacion {
         this.fechaPublicacion = fechaPublicacion;
     }
 
+    public Calendar getFechaModificacion() {
+        return this.fechaModificacion;
+    }
+
+    public void setFechaModificacion(Calendar fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
+    }
+
     public Usuario getUsuario() {
         return this.usuario;
     }
@@ -120,7 +128,10 @@ public class Publicacion {
             return false;
         }
         Publicacion publicacion = (Publicacion) o;
-        return id == publicacion.id && Objects.equals(estado, publicacion.estado) && Objects.equals(tipoPublicacion, publicacion.tipoPublicacion) && Objects.equals(fechaPublicacion, publicacion.fechaPublicacion) && Objects.equals(usuario, publicacion.usuario) && Objects.equals(mascota, publicacion.mascota);
+        return id == publicacion.id && Objects.equals(estado, publicacion.estado)
+                && Objects.equals(tipoPublicacion, publicacion.tipoPublicacion)
+                && Objects.equals(fechaPublicacion, publicacion.fechaPublicacion)
+                && Objects.equals(usuario, publicacion.usuario) && Objects.equals(mascota, publicacion.mascota);
     }
 
     @Override
