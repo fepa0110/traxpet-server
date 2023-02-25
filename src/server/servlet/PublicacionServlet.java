@@ -289,4 +289,31 @@ public class PublicacionServlet {
         dataPublicacion);
   }
 
+  @GET
+  @Path("/mascota/{mascotaId}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String findByMascotaId(@PathParam("mascotaId") int mascotaId) throws IOException {
+    Publicacion publicacion = new Publicacion();
+    publicacion.setMascota(new Mascota());
+    publicacion.getMascota().setId(mascotaId);
+
+    publicacion = publicacionService.findByMascotaId(publicacion);
+
+    String data;
+
+    try {
+      data = mapper.writeValueAsString(publicacion);
+    } 
+    catch (IOException e) {
+      return ResponseMessage.message(
+          501,
+          "Formato incorrecto en datos de entrada",
+          e.getMessage());
+    }
+
+    return ResponseMessage.message(
+        200,
+        "Publicacion recuperada con éxito",
+        data);
+  }
 }

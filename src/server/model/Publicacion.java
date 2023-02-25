@@ -37,7 +37,6 @@ import java.util.Objects;
     @NamedQuery(name="Publicacion.getMaxId",
         query="SELECT MAX(publicacion.id) "+ 
                 "FROM Publicacion publicacion ")
-
 })
 
 @Entity
