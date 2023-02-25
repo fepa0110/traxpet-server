@@ -218,4 +218,20 @@ public class PublicacionServiceBean implements PublicacionService {
     }
   }
 
+
+  @Override
+  public Publicacion findByMascota(long idMascota) {
+    try {
+      return em
+          .createQuery(
+              "select publicacion from Publicacion publicacion " +
+                  "where publicacion.mascota.id=:idMascota ",
+              Publicacion.class)
+          .setParameter("idMascota", idMascota)
+          .getSingleResult();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
+
 }
