@@ -202,36 +202,4 @@ public class PublicacionServiceBean implements PublicacionService {
     em.merge(publicacion);
     return publicacion;
   }
-
-  @Override
-
-  public Collection<Publicacion> cleanUp() {
-    try {
-      return em
-          .createQuery(
-              "select publicacion from Publicacion publicacion " +
-                  "where MONTH_BETWEEEN(CURRENT_DATE, publicacion.fechaPublicacion) > 6",
-              Publicacion.class)
-          .getResultList();
-    } catch (NoResultException e) {
-      return null;
-    }
-  }
-
-
-  @Override
-  public Publicacion findByMascota(long idMascota) {
-    try {
-      return em
-          .createQuery(
-              "select publicacion from Publicacion publicacion " +
-                  "where publicacion.mascota.id=:idMascota ",
-              Publicacion.class)
-          .setParameter("idMascota", idMascota)
-          .getSingleResult();
-    } catch (NoResultException e) {
-      return null;
-    }
-  }
-
 }

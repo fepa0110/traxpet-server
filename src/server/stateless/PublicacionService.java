@@ -26,8 +26,4 @@ public interface PublicacionService {
     public Publicacion findByMascotaId(Publicacion publicacion);
 
     public Publicacion markAsFound(Publicacion publicacion);
-
-    public Collection<Publicacion> cleanUp();
-    public Publicacion findByMascota(long idMascota);
-
 }

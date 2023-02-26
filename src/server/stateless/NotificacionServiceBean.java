@@ -52,8 +52,11 @@ public class NotificacionServiceBean implements NotificacionService {
   @Override
   public Notificacion create(Notificacion notificacion) {
     notificacion.setId(this.getMaxId() + 1);
+    
+    // Busca el usuario notificante
     notificacion.setNotificante(usuarioService.findByUsername(notificacion.getNotificante()));
     notificacion.setPublicacion(publicacionService.findByMascotaId(notificacion.getPublicacion()));
+
     notificacion.setUsuario(notificacion.getPublicacion().getUsuario());
     notificacion.setVista(false);
     em.persist(notificacion);

@@ -144,38 +144,4 @@ public class NotificacionServlet {
       data
     );
   }
-
-
-
-  @POST
-  @Path("/{idPublicacionSeleccionada}/{idPublicacionCreada}")
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public String createPublicacionSimilar(@PathParam("idPublicacionSeleccionada") long idPublicacionSeleccionada,@PathParam("idPublicacionCreada") long idPublicacionCreada) throws IOException {
-    Notificacion notificacion=new Notificacion();
-    Publicacion publicacionCreada=publicacionService.findById(idPublicacionCreada);
-    Publicacion publicacionSeleccionada=publicacionService.findByMascota(idPublicacionSeleccionada);
-    
-    notificacion.setPublicacion(publicacionCreada);
-    notificacion.setNotificante(publicacionCreada.getUsuario());
-    notificacion.setUsuario(publicacionSeleccionada.getUsuario());
-
-    String data;
-
-    try {
-      notificacion = service.create(notificacion);
-      data = mapper.writeValueAsString(notificacion);
-    } catch (JsonProcessingException e) {
-      return ResponseMessage.message(
-        502,
-        "No se pudo dar formato a la salida",
-        e.getMessage()
-      );
-    } 
-    return ResponseMessage.message(
-      200,
-      "Se creo la notificacion correctamente",
-      data
-    );
-  }
 }

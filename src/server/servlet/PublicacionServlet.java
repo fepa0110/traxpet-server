@@ -8,8 +8,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Collection;
 import java.util.List;
+import java.util.Calendar;
+import java.util.TimeZone;
+
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -23,9 +25,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+
 import model.Mascota;
 import model.Publicacion;
 import model.Ubicacion;
+import model.Notificacion;
+
 import servlet.ResponseMessage;
 import stateless.PublicacionService;
 
@@ -124,7 +129,10 @@ public class PublicacionServlet {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public String create(String json) {
+  public String create(String json, 
+      @QueryParam("notificateSimilar") Boolean notificateSimilar,
+      @QueryParam("idMascotaSimilar") int idMascotaSimilar) {
+
     Publicacion publicacion;
     Ubicacion ubicacion;
     String caracteristicasMascotasData;
@@ -148,7 +156,22 @@ public class PublicacionServlet {
       publicacion = publicacionService.create(publicacion, ubicacion);
 
       dataPublicacion = mapper.writeValueAsString(publicacion);
-      // dataPublicacion = ubicacionJson;
+
+      if(notificateSimilar && publicacion != null){
+        Notificacion notificacion=new Notificacion();
+
+        notificacion.setPublicacion(publicacion);
+        notificacion.setNotificante(publicacion.getUsuario());
+
+        Publicacion publicacionSimilar = new Publicacion();
+        publicacionSimilar.setMascota(new Mascota());
+        publicacionSimilar.getMascota().setId(idMascotaSimilar);
+
+        notificacion.setFechaNotificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
+        
+        notificacion.setUsuario(publicacionService.findByMascotaId(publicacionSimilar).getUsuario());
+      }
+
     } catch (JsonProcessingException e) {
       return ResponseMessage.message(
           502,
