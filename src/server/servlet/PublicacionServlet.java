@@ -31,14 +31,20 @@ import model.Publicacion;
 import model.Ubicacion;
 import model.Notificacion;
 
+import servlet.PublicacionNueva;
+
 import servlet.ResponseMessage;
 import stateless.PublicacionService;
+import stateless.NotificacionService;
 
 @Path("/publicaciones")
 public class PublicacionServlet {
 
   @EJB
   PublicacionService publicacionService;
+
+  @EJB
+  NotificacionService notificacionService;
 
   Logger logger = Logger.getLogger(getClass().getName());
   private ObjectMapper mapper;
@@ -133,27 +139,18 @@ public class PublicacionServlet {
       @QueryParam("notificateSimilar") Boolean notificateSimilar,
       @QueryParam("idMascotaSimilar") int idMascotaSimilar) {
 
+    PublicacionNueva publicacionRecibida;
     Publicacion publicacion;
     Ubicacion ubicacion;
     String caracteristicasMascotasData;
     String dataPublicacion;
     try {
-      // Extraigo la publicacion del json
-      String publicacionJson = json.replaceAll(
-          "\"ubication\":\\{\"latitude\":.*,\"longitude\":.*\\d\\},",
-          "");
+      publicacionRecibida = mapper.readValue(json, PublicacionNueva.class);
 
-      // Extraigo la ubicacion del json
-      String ubicacionJson = json.replaceAll(
-          "(.*)(\\{\"latitude\":.*,\"longitude\":.*\\d\\})(.*)",
-          "$2");
-      // logger.info("create publicacion"+publicacionJson+"asd123");
-
-      publicacion = mapper.readValue(publicacionJson, Publicacion.class);
-
-      ubicacion = mapper.readValue(ubicacionJson, Ubicacion.class);
-
-      publicacion = publicacionService.create(publicacion, ubicacion);
+      publicacion = publicacionService.create(
+        publicacionRecibida.getPublicacion(),
+        publicacionRecibida.getUbicacion()
+      );
 
       dataPublicacion = mapper.writeValueAsString(publicacion);
 
@@ -161,15 +158,18 @@ public class PublicacionServlet {
         Notificacion notificacion=new Notificacion();
 
         notificacion.setPublicacion(publicacion);
-        notificacion.setNotificante(publicacion.getUsuario());
+        notificacion.setNotificante(publicacionRecibida.getPublicacion().getUsuario());
 
         Publicacion publicacionSimilar = new Publicacion();
-        publicacionSimilar.setMascota(new Mascota());
-        publicacionSimilar.getMascota().setId(idMascotaSimilar);
-
+        Mascota mascotaSimilar = new Mascota();
+        mascotaSimilar.setId(idMascotaSimilar);
+        publicacionSimilar.setMascota(mascotaSimilar);
+        publicacionSimilar = publicacionService.findByMascotaId(publicacionSimilar);
+        
         notificacion.setFechaNotificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
         
-        notificacion.setUsuario(publicacionService.findByMascotaId(publicacionSimilar).getUsuario());
+        notificacion.setUsuario(publicacionSimilar.getUsuario());
+        notificacionService.create(notificacion);
       }
 
     } catch (JsonProcessingException e) {
