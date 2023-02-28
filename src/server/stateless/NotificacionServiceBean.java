@@ -56,8 +56,6 @@ public class NotificacionServiceBean implements NotificacionService {
     // Busca el usuario notificante
     notificacion.setNotificante(usuarioService.findByUsername(notificacion.getNotificante()));
     notificacion.setPublicacion(publicacionService.findByMascotaId(notificacion.getPublicacion()));
-
-    notificacion.setUsuario(notificacion.getPublicacion().getUsuario());
     notificacion.setVista(false);
     em.persist(notificacion);
     return notificacion;
