@@ -5,7 +5,7 @@ public enum TipoPublicacion{
     MASCOTA_ENCONTRADA;
 
     public String toDbValue() {
-        return this.name().toLowerCase();
+        return this.name().toUpperCase();
     }
 
     public static TipoPublicacion from(String tipoPublicacion) {

@@ -211,6 +211,7 @@ public class PublicacionServiceBean implements PublicacionService {
 
     nuevoDueño = usuarioService.findByUsername(nuevoDueño);
     publicacion.setUsuario(nuevoDueño);
+    publicacion.setTipoPublicacion(TipoPublicacion.MASCOTA_BUSCADA);
 
     em.merge(publicacion);
     return publicacion;
