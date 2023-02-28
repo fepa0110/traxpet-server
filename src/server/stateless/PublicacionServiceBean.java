@@ -18,6 +18,7 @@ import model.TipoPublicacion;
 import model.Ubicacion;
 import model.Valor;
 import model.Notificacion;
+import model.Usuario;
 
 import stateless.MascotaService;
 import stateless.PublicacionService;
@@ -203,4 +204,16 @@ public class PublicacionServiceBean implements PublicacionService {
     em.merge(publicacion);
     return publicacion;
   }
+
+  @Override
+  public Publicacion migrarDueño(Publicacion publicacion, Usuario nuevoDueño){
+    publicacion = find(publicacion.getId());
+
+    nuevoDueño = usuarioService.findByUsername(nuevoDueño);
+    publicacion.setUsuario(nuevoDueño);
+
+    em.merge(publicacion);
+    return publicacion;
+  }
+
 }

@@ -29,6 +29,7 @@ import javax.ws.rs.core.MediaType;
 import model.Mascota;
 import model.Publicacion;
 import model.Ubicacion;
+import model.Usuario;
 import model.Notificacion;
 
 import servlet.PublicacionNueva;
@@ -105,7 +106,7 @@ public class PublicacionServlet {
 
     return ResponseMessage.message(
         200,
-        "la publicacion "+id+" recuperada exitosamente",
+        "la publicacion " + id + " recuperada exitosamente",
         data);
   }
 
@@ -135,7 +136,7 @@ public class PublicacionServlet {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public String create(String json, 
+  public String create(String json,
       @QueryParam("notificateSimilar") Boolean notificateSimilar,
       @QueryParam("idMascotaSimilar") int idMascotaSimilar) {
 
@@ -148,14 +149,13 @@ public class PublicacionServlet {
       publicacionRecibida = mapper.readValue(json, PublicacionNueva.class);
 
       publicacion = publicacionService.create(
-        publicacionRecibida.getPublicacion(),
-        publicacionRecibida.getUbicacion()
-      );
+          publicacionRecibida.getPublicacion(),
+          publicacionRecibida.getUbicacion());
 
       dataPublicacion = mapper.writeValueAsString(publicacion);
 
-      if(notificateSimilar && publicacion != null){
-        Notificacion notificacion=new Notificacion();
+      if (notificateSimilar && publicacion != null) {
+        Notificacion notificacion = new Notificacion();
 
         notificacion.setPublicacion(publicacion);
         notificacion.setNotificante(publicacionRecibida.getPublicacion().getUsuario());
@@ -165,9 +165,9 @@ public class PublicacionServlet {
         mascotaSimilar.setId(idMascotaSimilar);
         publicacionSimilar.setMascota(mascotaSimilar);
         publicacionSimilar = publicacionService.findByMascotaId(publicacionSimilar);
-        
+
         notificacion.setFechaNotificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
-        
+
         notificacion.setUsuario(publicacionSimilar.getUsuario());
         notificacionService.create(notificacion);
       }
@@ -259,14 +259,12 @@ public class PublicacionServlet {
       ubicacion = publicacionService.addUbicacionMascota(ubicacion, mascotaId);
 
       dataUbicacion = mapper.writeValueAsString(ubicacion);
-    }
-    catch (JsonProcessingException e) {
+    } catch (JsonProcessingException e) {
       return ResponseMessage.message(
           502,
           "No se pudo dar formato a la salida",
           e.getMessage());
-    }
-    catch (IOException e) {
+    } catch (IOException e) {
       return ResponseMessage.message(
           501,
           "Formato incorrecto en datos de entrada",
@@ -326,8 +324,7 @@ public class PublicacionServlet {
 
     try {
       data = mapper.writeValueAsString(publicacion);
-    } 
-    catch (IOException e) {
+    } catch (IOException e) {
       return ResponseMessage.message(
           501,
           "Formato incorrecto en datos de entrada",
@@ -338,5 +335,42 @@ public class PublicacionServlet {
         200,
         "Publicacion recuperada con éxito",
         data);
+  }
+
+  @PUT
+  @Path("/migrarDueño")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String migrarDueño(@QueryParam("publicacionId") int publicacionId,
+      @QueryParam("username") String username) throws IOException {
+    Publicacion publicacion = new Publicacion();
+    publicacion.setId(publicacionId);
+
+    Usuario nuevoDueño = new Usuario();
+    nuevoDueño.setUsername(username);
+
+    String dataPublicacion;
+    try {
+
+      Publicacion publicacionMigrada = this.publicacionService.migrarDueño(publicacion, nuevoDueño);
+
+      dataPublicacion = mapper.writeValueAsString(publicacionMigrada);
+
+      // TODO: Agregar notificacion de publicacion migrada
+    } catch (JsonProcessingException e) {
+      return ResponseMessage.message(
+          502,
+          "No se pudo dar formato a la salida",
+          e.getMessage());
+    } catch (NullPointerException e) {
+      return ResponseMessage.message(
+          500,
+          "No se encontro alguno de los datos de entrada.",
+          e.getMessage());
+    }
+
+    return ResponseMessage.message(
+        200,
+        "Publicacion migrada correctamente a "+username);
   }
 }

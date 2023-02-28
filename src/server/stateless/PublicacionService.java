@@ -4,12 +4,15 @@ import java.util.Collection;
 import java.util.List;
 
 import model.Publicacion;
+import model.Usuario;
 import model.Ubicacion;
 
 public interface PublicacionService {
     public Publicacion create(Publicacion publicacion, Ubicacion ubicacion);
 
     public Publicacion update(Publicacion publicacion, Ubicacion ubicacion);
+
+    public Publicacion migrarDueño(Publicacion publicacion, Usuario nuevoDueño);
 
     public List<Publicacion> findAll();
 
