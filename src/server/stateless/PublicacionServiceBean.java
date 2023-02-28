@@ -176,6 +176,7 @@ public class PublicacionServiceBean implements PublicacionService {
     notificacion.setNotificante(ubicacion.getUsuario());
     notificacion.setPublicacion(publicacionMascota);
     notificacion.setFechaNotificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
+    notificacion.setUsuario(publicacionMascota.getUsuario());
     notificacionService.create(notificacion);
 
     return this.ubicacionService.create(ubicacion);
