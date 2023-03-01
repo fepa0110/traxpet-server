@@ -37,15 +37,23 @@ import servlet.PublicacionNueva;
 import servlet.ResponseMessage;
 import stateless.PublicacionService;
 import stateless.NotificacionService;
+import stateless.UsuarioService;
 
 @Path("/publicaciones")
 public class PublicacionServlet {
+
+  private static final int PUNTAJE_NUEVA_PUBLICACION = 25;
+  private static final int PUNTAJE_ACTUALIZAR_UBICACION = 30;
+  private static final int PUNTAJE_MIGRAR_PUBLICACION = 10;
 
   @EJB
   PublicacionService publicacionService;
 
   @EJB
   NotificacionService notificacionService;
+
+  @EJB
+  UsuarioService usuarioService;
 
   Logger logger = Logger.getLogger(getClass().getName());
   private ObjectMapper mapper;
@@ -165,11 +173,17 @@ public class PublicacionServlet {
         mascotaSimilar.setId(idMascotaSimilar);
         publicacionSimilar.setMascota(mascotaSimilar);
         publicacionSimilar = publicacionService.findByMascotaId(publicacionSimilar);
+        Usuario usuarioSimilar = publicacionSimilar.getUsuario();
 
         notificacion.setFechaNotificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
-
-        notificacion.setUsuario(publicacionSimilar.getUsuario());
+        
+        notificacion.setUsuario(usuarioSimilar);
         notificacionService.create(notificacion);
+        this.usuarioService.updateScore(usuarioSimilar, PUNTAJE_NUEVA_PUBLICACION);
+      }
+      
+      if(publicacion != null){
+        this.usuarioService.updateScore(publicacionRecibida.getPublicacion().getUsuario(), PUNTAJE_NUEVA_PUBLICACION);
       }
 
     } catch (JsonProcessingException e) {
@@ -259,6 +273,11 @@ public class PublicacionServlet {
       ubicacion = publicacionService.addUbicacionMascota(ubicacion, mascotaId);
 
       dataUbicacion = mapper.writeValueAsString(ubicacion);
+
+      if(ubicacion != null){
+        this.usuarioService.updateScore(ubicacion.getUsuario(), PUNTAJE_ACTUALIZAR_UBICACION);
+      }
+
     } catch (JsonProcessingException e) {
       return ResponseMessage.message(
           502,
@@ -343,9 +362,8 @@ public class PublicacionServlet {
   @Produces(MediaType.APPLICATION_JSON)
   public String migrarDueño(@QueryParam("publicacionId") int publicacionId,
       @QueryParam("username") String username) throws IOException {
-    Publicacion publicacion = new Publicacion();
-    publicacion.setId(publicacionId);
-
+    Publicacion publicacion = publicacionService.findById(publicacionId);
+  
     Usuario nuevoDueño = new Usuario();
     nuevoDueño.setUsername(username);
 
@@ -356,7 +374,18 @@ public class PublicacionServlet {
 
       dataPublicacion = mapper.writeValueAsString(publicacionMigrada);
 
-      // TODO: Agregar notificacion de publicacion migrada
+      this.usuarioService.updateScore(publicacion.getUsuario(), PUNTAJE_MIGRAR_PUBLICACION);
+      this.usuarioService.updateScore(publicacionMigrada.getUsuario(), PUNTAJE_MIGRAR_PUBLICACION);
+
+      // Notificar al antiguo dueño de la publicacion
+        Notificacion notificacion = new Notificacion();
+
+        notificacion.setPublicacion(publicacionMigrada);
+        notificacion.setNotificante(publicacionMigrada.getUsuario());
+        notificacion.setUsuario(publicacion.getUsuario());
+        notificacion.setFechaNotificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
+        
+        notificacionService.create(notificacion);
     } catch (JsonProcessingException e) {
       return ResponseMessage.message(
           502,
