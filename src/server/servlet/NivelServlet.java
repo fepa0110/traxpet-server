@@ -87,7 +87,6 @@ public class NivelServlet {
                     e.getMessage());
         }
         if (nivel == null)
-            // TODO: Buscar nivel mas alto
             return ResponseMessage.message(
                     503,
                     "No se encontro nivel");
