@@ -63,6 +63,7 @@ public class ImagenMascotaServiceBean implements ImagenMascotaService {
     Mascota mascota = mascotaService.findById(mascotaId);
 
     ImagenMascota imagenMascota = new ImagenMascota();
+    imagenMascota.setId(this.getMaxId()+1);
     imagenMascota.setMascota(mascota);
     imagenMascota.setDirectory(fileLocation);
     imagenMascota.setFormat(formatoImagen);
@@ -118,5 +119,15 @@ public class ImagenMascotaServiceBean implements ImagenMascotaService {
         }
         //Files.deleteIfExists(Paths.get(imagen.getDirectory()));
         em.remove(imagen);
+    }
+
+    public long getMaxId() {
+      try {
+        return getEntityManager()
+            .createNamedQuery("Imagen.getMaxId", Long.class)
+            .getSingleResult();
+      } catch (NoResultException e) {
+        return 0;
+      }
     }
 }

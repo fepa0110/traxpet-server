@@ -142,6 +142,7 @@ public class PublicacionServlet {
   }
 
   @POST
+  @Path("/publicar")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public String create(String json,

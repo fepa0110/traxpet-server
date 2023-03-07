@@ -14,5 +14,6 @@ public interface ImagenMascotaService{
     public Collection <ImagenMascota> findById(int id) ;
     public void remove(int id);
 
+    public long getMaxId();
 
 }

@@ -22,42 +22,36 @@ import java.util.Calendar;
 
 @NamedQueries({
 
-    @NamedQuery(name="findAllbyId",
-        query="SELECT i "+
-                "FROM ImagenMascota i "+
-                "WHERE i.mascota.id = :id"
-                 ),
-    
-             
-            
-    @NamedQuery(name="findById",
-        query="SELECT i "+
-                "FROM ImagenMascota i "+
-                "WHERE i.mascota.id = :id"
-                 )              
+        @NamedQuery(name = "findAllbyId", query = "SELECT i " +
+                "FROM ImagenMascota i " +
+                "WHERE i.mascota.id = :id"),
+        @NamedQuery(name = "findById", query = "SELECT i " +
+                "FROM ImagenMascota i " +
+                "WHERE i.mascota.id = :id"),
+        @NamedQuery(name = "Imagen.getMaxId", query = "SELECT MAX(imagen.id) " +
+                "FROM ImagenMascota imagen ")
 })
 
 @Entity
 public class ImagenMascota {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="imagen_mascota_id")
-    private int id;
+    @Column(name = "imagen_mascota_id")
+    private long id;
 
     private String directory;
 
     private String format;
 
     @ManyToOne
-    @JoinColumn(name="MASCOTA_ID")
+    @JoinColumn(name = "MASCOTA_ID")
     private Mascota mascota;
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
