@@ -145,9 +145,7 @@ public class PublicacionServlet {
   @Path("/publicar")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public String create(String json,
-      @QueryParam("notificateSimilar") Boolean notificateSimilar,
-      @QueryParam("idMascotaSimilar") int idMascotaSimilar) {
+  public String create(String json) {
 
     PublicacionNueva publicacionRecibida;
     Publicacion publicacion;
@@ -157,7 +155,7 @@ public class PublicacionServlet {
     try {
       publicacionRecibida = mapper.readValue(json, PublicacionNueva.class);
 
-      logger.info("valores: "+publicacionRecibida.getPublicacion().getMascota().getValores().toString());
+      logger.info("valores: " + publicacionRecibida.getPublicacion().getMascota().getValores().toString());
 
       publicacion = publicacionService.create(
           publicacionRecibida.getPublicacion(),
@@ -165,27 +163,30 @@ public class PublicacionServlet {
 
       dataPublicacion = mapper.writeValueAsString(publicacion);
 
-      if (notificateSimilar && publicacion != null) {
+      if (publicacionRecibida.getNotificateSimilar() 
+        && publicacion != null 
+        && publicacionRecibida.getIdMascotaSimilar() != 0) {
         Notificacion notificacion = new Notificacion();
 
         notificacion.setPublicacion(publicacion);
         notificacion.setNotificante(publicacionRecibida.getPublicacion().getUsuario());
 
         Publicacion publicacionSimilar = new Publicacion();
-        Mascota mascotaSimilar = new Mascota();
-        mascotaSimilar.setId(idMascotaSimilar);
-        publicacionSimilar.setMascota(mascotaSimilar);
-        publicacionSimilar = publicacionService.findByMascotaId(publicacionSimilar);
-        Usuario usuarioSimilar = publicacionSimilar.getUsuario();
-
-        notificacion.setFechaNotificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
         
-        notificacion.setUsuario(usuarioSimilar);
-        notificacionService.create(notificacion);
-        this.usuarioService.updateScore(usuarioSimilar, PUNTAJE_NUEVA_PUBLICACION);
+          Mascota mascotaSimilar = new Mascota();
+          mascotaSimilar.setId(publicacionRecibida.getIdMascotaSimilar());
+          publicacionSimilar.setMascota(mascotaSimilar);
+          publicacionSimilar = publicacionService.findByMascotaId(publicacionSimilar);
+          Usuario usuarioSimilar = publicacionSimilar.getUsuario();
+  
+          notificacion.setFechaNotificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
+  
+          notificacion.setUsuario(usuarioSimilar);
+          notificacionService.create(notificacion);
+          this.usuarioService.updateScore(usuarioSimilar, PUNTAJE_NUEVA_PUBLICACION);
       }
-      
-      if(publicacion != null){
+
+      if (publicacion != null) {
         this.usuarioService.updateScore(publicacionRecibida.getPublicacion().getUsuario(), PUNTAJE_NUEVA_PUBLICACION);
       }
 
@@ -277,7 +278,7 @@ public class PublicacionServlet {
 
       dataUbicacion = mapper.writeValueAsString(ubicacion);
 
-      if(ubicacion != null){
+      if (ubicacion != null) {
         this.usuarioService.updateScore(ubicacion.getUsuario(), PUNTAJE_ACTUALIZAR_UBICACION);
       }
 
@@ -366,7 +367,7 @@ public class PublicacionServlet {
   public String migrarDueño(@QueryParam("publicacionId") int publicacionId,
       @QueryParam("username") String username) throws IOException {
     Publicacion publicacion = publicacionService.findById(publicacionId);
-  
+
     Usuario nuevoDueño = new Usuario();
     nuevoDueño.setUsername(username);
 
@@ -381,14 +382,14 @@ public class PublicacionServlet {
       this.usuarioService.updateScore(publicacionMigrada.getUsuario(), PUNTAJE_MIGRAR_PUBLICACION);
 
       // Notificar al antiguo dueño de la publicacion
-        Notificacion notificacion = new Notificacion();
+      Notificacion notificacion = new Notificacion();
 
-        notificacion.setPublicacion(publicacionMigrada);
-        notificacion.setNotificante(publicacionMigrada.getUsuario());
-        notificacion.setUsuario(publicacion.getUsuario());
-        notificacion.setFechaNotificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
-        
-        notificacionService.create(notificacion);
+      notificacion.setPublicacion(publicacionMigrada);
+      notificacion.setNotificante(publicacionMigrada.getUsuario());
+      notificacion.setUsuario(publicacion.getUsuario());
+      notificacion.setFechaNotificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
+
+      notificacionService.create(notificacion);
     } catch (JsonProcessingException e) {
       return ResponseMessage.message(
           502,
@@ -403,6 +404,6 @@ public class PublicacionServlet {
 
     return ResponseMessage.message(
         200,
-        "Publicacion migrada correctamente a "+username);
+        "Publicacion migrada correctamente a " + username);
   }
 }

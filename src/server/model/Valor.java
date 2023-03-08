@@ -34,9 +34,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
         @NamedQuery(name="Valor.findByCaracteristicaEspecieValor",
         query="SELECT valor "+ 
                 "FROM Valor valor "+
-                "WHERE LOWER(valor.caracteristica.nombre) = :caracteristica_nombre "+
-                "AND LOWER(valor.especie.nombre) = :especie_nombre "+
-                "AND LOWER(valor.nombre) = :valor_nombre"),
+                "WHERE LOWER(valor.caracteristica.nombre) = LOWER(:caracteristica_nombre) "+
+                "AND LOWER(valor.especie.nombre) = LOWER(:especie_nombre) "+
+                "AND LOWER(valor.nombre) = LOWER(:valor_nombre)"),
         @NamedQuery(name="Valor.getMaxId",
         query="SELECT MAX(valor.id) "+ 
                 "FROM Valor valor ")
@@ -59,7 +59,7 @@ public class Valor {
     @JoinColumn(name="CARACTERISTICA_ID")
     private Caracteristica caracteristica;
 
-    // @JsonIgnore
+    @JsonIgnore
     @ManyToMany(mappedBy="valores")
     private Collection<Mascota> mascotas;
 

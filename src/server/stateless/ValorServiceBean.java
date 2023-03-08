@@ -196,9 +196,9 @@ public class ValorServiceBean implements ValorService {
     try {
       return getEntityManager()
           .createNamedQuery("Valor.findByCaracteristicaEspecieValor", Valor.class)
-          .setParameter("caracteristica_nombre", caracteristica.getNombre().toLowerCase())
-          .setParameter("especie_nombre", especie.getNombre().toLowerCase())
-          .setParameter("valor_nombre", valor.getNombre().toLowerCase())
+          .setParameter("caracteristica_nombre", caracteristica.getNombre())
+          .setParameter("especie_nombre", especie.getNombre())
+          .setParameter("valor_nombre", valor.getNombre())
           .getSingleResult();
     } catch (NoResultException e) {
       return null;

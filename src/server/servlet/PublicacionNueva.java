@@ -6,6 +6,8 @@ import model.Ubicacion;
 public class PublicacionNueva{
     Publicacion publicacion;
     Ubicacion ubicacion;
+    Boolean notificateSimilar;
+    int idMascotaSimilar;
 
     public Publicacion getPublicacion() {
         return this.publicacion;
@@ -21,6 +23,27 @@ public class PublicacionNueva{
 
     public void setUbicacion(Ubicacion ubicacion) {
         this.ubicacion = ubicacion;
+    }
+
+
+    public Boolean isNotificateSimilar() {
+        return this.notificateSimilar;
+    }
+
+    public Boolean getNotificateSimilar() {
+        return this.notificateSimilar;
+    }
+
+    public void setNotificateSimilar(Boolean notificateSimilar) {
+        this.notificateSimilar = notificateSimilar;
+    }
+
+    public int getIdMascotaSimilar() {
+        return this.idMascotaSimilar;
+    }
+
+    public void setIdMascotaSimilar(int idMascotaSimilar) {
+        this.idMascotaSimilar = idMascotaSimilar;
     }
 
 }
