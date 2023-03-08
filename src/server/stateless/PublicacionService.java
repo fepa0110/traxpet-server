@@ -10,7 +10,7 @@ import model.Ubicacion;
 public interface PublicacionService {
     public Publicacion create(Publicacion publicacion, Ubicacion ubicacion);
 
-    public Publicacion update(Publicacion publicacion, Ubicacion ubicacion);
+    public Publicacion update(Publicacion publicacion);
 
     public Publicacion migrarDueño(Publicacion publicacion, Usuario nuevoDueño);
 

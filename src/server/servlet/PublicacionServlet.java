@@ -217,28 +217,23 @@ public class PublicacionServlet {
     String dataPublicacion;
     logger.info("" + json);
     try {
-      // Extraigo la publicacion del json
+      /* // Extraigo la publicacion del json
       /*
        * String publicacionJson = json.replaceAll(
        * "\"ubication\":\\{\"latitude\":.*,\"longitude\":.*\\d\\},",
        * ""
        * );
-       */
       String publicacionJson = json.replaceAll(
           ",\"ubication\":\\{\"id\":\\d+,\"latitude\":.*,\"longitude\":.*\\d\\}",
           "");
       // Extraigo la ubicacion del json
       String ubicacionJson = json.replaceAll(
           "(.*)(\\{\"id\":\\d+,\"latitude\":.*,\"longitude\":.*\\d\\})(.*)",
-          "$2");
+          "$2"); */
 
-      logger.info("edit publicacion :" + publicacionJson + "despues del replace");
+      publicacion = mapper.readValue(json, Publicacion.class);
 
-      publicacion = mapper.readValue(publicacionJson, Publicacion.class);
-
-      ubicacion = mapper.readValue(ubicacionJson, Ubicacion.class);
-
-      publicacion = publicacionService.update(publicacion, ubicacion);
+      publicacion = publicacionService.update(publicacion);
 
       dataPublicacion = mapper.writeValueAsString(publicacion);
       // dataPublicacion = ubicacionJson;

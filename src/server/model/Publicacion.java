@@ -31,7 +31,7 @@ import java.util.Objects;
         @NamedQuery(name = "findAllPublicacionUsuario", query = "SELECT p " +
                 "FROM Publicacion p " +
                 "WHERE p.usuario.username =:username " +
-                "ORDER BY p.fechaPublicacion DESC"),
+                "ORDER BY p.fechaModificacion DESC"),
         @NamedQuery(name = "Publicacion.getMaxId", query = "SELECT MAX(publicacion.id) " +
                 "FROM Publicacion publicacion ")
 })

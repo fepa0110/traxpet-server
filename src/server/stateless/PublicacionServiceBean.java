@@ -71,6 +71,8 @@ public class PublicacionServiceBean implements PublicacionService {
 
     publicacion.setFechaPublicacion(Calendar.getInstance());
 
+    publicacion.setFechaModificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
+
     ubicacion.setFecha(Calendar.getInstance());
 
     em.persist(publicacion);
@@ -137,24 +139,15 @@ public class PublicacionServiceBean implements PublicacionService {
   }
 
   @Override
-  public Publicacion update(Publicacion publicacion, Ubicacion ubicacion) {
+  public Publicacion update(Publicacion publicacion) {
     Publicacion publicacionEdit = find(publicacion.getId());
     publicacionEdit
         .getMascota()
         .setNombre(publicacion.getMascota().getNombre());
+
+    publicacionEdit.setFechaModificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
+    
     em.merge(publicacionEdit);
-
-    ubicacion.setFecha(Calendar.getInstance());
-    ubicacion.setPublicacion(publicacionEdit);
-    // validar que no existe la ubicacion en la publicion
-
-    if (ubicacionService.findByPublicacion(publicacionEdit.getId()) != null) {
-      if (ubicacion.getLatitude() != 0 && ubicacion.getLongitude() != 0) {
-        this.ubicacionService.update(ubicacion, publicacionEdit.getId());
-      }
-    } else if (ubicacion.getLatitude() != 0 && ubicacion.getLongitude() != 0) {
-      this.ubicacionService.create(ubicacion);
-    }
 
     return publicacionEdit;
   }
@@ -168,7 +161,12 @@ public class PublicacionServiceBean implements PublicacionService {
 
     Notificacion notificacion = new Notificacion();
 
-    ubicacion.setPublicacion(this.findByMascotaId(publicacionMascota));
+    publicacionMascota = this.findByMascotaId(publicacionMascota);
+    
+    publicacionMascota.setFechaModificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
+    publicacionMascota = em.merge(publicacionMascota);
+    
+    ubicacion.setPublicacion(publicacionMascota);
 
     ubicacion.setFecha(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
 
@@ -212,6 +210,7 @@ public class PublicacionServiceBean implements PublicacionService {
     nuevoDueño = usuarioService.findByUsername(nuevoDueño);
     publicacion.setUsuario(nuevoDueño);
     publicacion.setTipoPublicacion(TipoPublicacion.MASCOTA_BUSCADA);
+    publicacion.setFechaModificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
 
     em.merge(publicacion);
     return publicacion;
