@@ -70,4 +70,14 @@ public class Caracteristica {
     public int hashCode() {
         return Objects.hash(id, nombre);
     }
+
+
+    @Override
+    public String toString() {
+        return "{" +
+            " id='" + getId() + "'" +
+            ", nombre='" + getNombre() + "'" +
+            "}";
+    }
+
 }

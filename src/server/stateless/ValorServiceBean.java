@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import java.util.logging.Logger;
 import javax.persistence.Query;
 import model.Caracteristica;
 import model.Especie;
@@ -27,13 +28,15 @@ public class ValorServiceBean implements ValorService {
   @EJB
   CaracteristicaService serviceCaracteristica;
 
+  Logger logger = Logger.getLogger(getClass().getName());
+
   public EntityManager getEntityManager() {
     return em;
   }
 
   @Override
   public Valor create(Valor valor) {
-    valor.setId(this.getMaxId()+1);
+    valor.setId(this.getMaxId() + 1);
 
     em.persist(valor);
     return valor;
@@ -48,18 +51,17 @@ public class ValorServiceBean implements ValorService {
   public Valor find(Valor valor) {
     try {
       return em
-        .createQuery(
-          "select valor " +
-          "from Valor valor " +
-          "where valor.nombre = :valor " +
-          "and valor.especie.nombre = :especie " +
-          "and valor.caracteristica.nombre = :caracteristica",
-          Valor.class
-        )
-        .setParameter("valor", valor.getNombre())
-        .setParameter("especie", valor.getEspecie().getNombre())
-        .setParameter("caracteristica", valor.getCaracteristica().getNombre())
-        .getSingleResult();
+          .createQuery(
+              "select valor " +
+                  "from Valor valor " +
+                  "where valor.nombre = :valor " +
+                  "and valor.especie.nombre = :especie " +
+                  "and valor.caracteristica.nombre = :caracteristica",
+              Valor.class)
+          .setParameter("valor", valor.getNombre())
+          .setParameter("especie", valor.getEspecie().getNombre())
+          .setParameter("caracteristica", valor.getCaracteristica().getNombre())
+          .getSingleResult();
     } catch (NoResultException e) {
       return null;
     }
@@ -69,9 +71,9 @@ public class ValorServiceBean implements ValorService {
   public List<Valor> findByEspecie(Especie especie) {
     try {
       return getEntityManager()
-        .createNamedQuery("Valor.findByEspecie", Valor.class)
-        .setParameter("especie_nombre", especie.getNombre())
-        .getResultList();
+          .createNamedQuery("Valor.findByEspecie", Valor.class)
+          .setParameter("especie_nombre", especie.getNombre())
+          .getResultList();
     } catch (NoResultException e) {
       return null;
     }
@@ -81,9 +83,9 @@ public class ValorServiceBean implements ValorService {
   public List<Valor> findByCaracteristica(Caracteristica caracteristica) {
     try {
       return getEntityManager()
-        .createNamedQuery("Valor.findByCaracteristica", Valor.class)
-        .setParameter("caracteristica_nombre", caracteristica.getNombre())
-        .getResultList();
+          .createNamedQuery("Valor.findByCaracteristica", Valor.class)
+          .setParameter("caracteristica_nombre", caracteristica.getNombre())
+          .getResultList();
     } catch (NoResultException e) {
       return null;
     }
@@ -91,21 +93,19 @@ public class ValorServiceBean implements ValorService {
 
   @Override
   public List<Valor> findByEspecieYCaracteristica(
-    Especie especie,
-    Caracteristica caracteristica
-  ) {
+      Especie especie,
+      Caracteristica caracteristica) {
     try {
       return em
-        .createQuery(
-          "select valor " +
-          "from Valor valor " +
-          "where valor.especie.nombre = :especie " +
-          "and valor.caracteristica.nombre = :caracteristica",
-          Valor.class
-        )
-        .setParameter("especie", especie.getNombre())
-        .setParameter("caracteristica", caracteristica.getNombre())
-        .getResultList();
+          .createQuery(
+              "select valor " +
+                  "from Valor valor " +
+                  "where valor.especie.nombre = :especie " +
+                  "and valor.caracteristica.nombre = :caracteristica",
+              Valor.class)
+          .setParameter("especie", especie.getNombre())
+          .setParameter("caracteristica", caracteristica.getNombre())
+          .getResultList();
     } catch (NoResultException e) {
       return null;
     }
@@ -113,22 +113,20 @@ public class ValorServiceBean implements ValorService {
 
   @Override
   public List<Valor> findByEspecieYCaracteristicaEnabled(
-    Especie especie,
-    Caracteristica caracteristica
-  ) {
+      Especie especie,
+      Caracteristica caracteristica) {
     try {
       return em
-        .createQuery(
-          "select valor " +
-          "from Valor valor " +
-          "where valor.especie.nombre = :especie " +
-          "and valor.caracteristica.nombre = :caracteristica " +
-          "and valor.deshabilitado = FALSE",
-          Valor.class
-        )
-        .setParameter("especie", especie.getNombre())
-        .setParameter("caracteristica", caracteristica.getNombre())
-        .getResultList();
+          .createQuery(
+              "select valor " +
+                  "from Valor valor " +
+                  "where valor.especie.nombre = :especie " +
+                  "and valor.caracteristica.nombre = :caracteristica " +
+                  "and valor.deshabilitado = FALSE",
+              Valor.class)
+          .setParameter("especie", especie.getNombre())
+          .setParameter("caracteristica", caracteristica.getNombre())
+          .getResultList();
     } catch (NoResultException e) {
       return null;
     }
@@ -136,23 +134,21 @@ public class ValorServiceBean implements ValorService {
 
   @Override
   public List<Valor> findEnabled(
-    Especie especie,
-    Caracteristica caracteristica
-  ) {
+      Especie especie,
+      Caracteristica caracteristica) {
     try {
       return em
-        .createQuery(
-          "select valor " +
-          "from Valor valor " +
-          "where valor.especie.nombre = :especie " +
-          "and valor.caracteristica.nombre = :caracteristica " +
-          "and valor.deshabilitado = FALSE " +
-          "order by valor.deshabilitado",
-          Valor.class
-        )
-        .setParameter("especie", especie.getNombre())
-        .setParameter("caracteristica", caracteristica.getNombre())
-        .getResultList();
+          .createQuery(
+              "select valor " +
+                  "from Valor valor " +
+                  "where valor.especie.nombre = :especie " +
+                  "and valor.caracteristica.nombre = :caracteristica " +
+                  "and valor.deshabilitado = FALSE " +
+                  "order by valor.deshabilitado",
+              Valor.class)
+          .setParameter("especie", especie.getNombre())
+          .setParameter("caracteristica", caracteristica.getNombre())
+          .getResultList();
     } catch (NoResultException e) {
       return null;
     }
@@ -160,74 +156,71 @@ public class ValorServiceBean implements ValorService {
 
   @Override
   public String findCaracteristicasConValores(Especie especie) {
-    Collection<Caracteristica> caracteristicas =
-      this.serviceCaracteristica.findByEspecie(especie);
-    String data =
-      (
-        caracteristicas
-          .stream()
-          .map(
-            caracteristica ->
-              "{" +
-              "\"id\": " +
-              caracteristica.getId() +
-              "," +
-              "\"nombre\": \"" +
-              caracteristica.getNombre() +
-              "\"," +
-              "\"valores\":" +
-              this.findByEspecieYCaracteristicaEnabled(especie, caracteristica)
-                .stream()
-                .map(
-                  valor ->
-                    "{" +
-                    "\"id\": " +
-                    valor.getId() +
-                    "," +
-                    "\"nombre\": \"" +
-                    valor.getNombre() +
-                    "\"}"
-                )
-                .collect(Collectors.joining(",", "[", "]")) +
-              "}"
-          )
-          .collect(Collectors.joining(",", "[", "]"))
-      );
+    Collection<Caracteristica> caracteristicas = this.serviceCaracteristica.findByEspecie(especie);
+    String data = (caracteristicas
+        .stream()
+        .map(
+            caracteristica -> "{" +
+                "\"id\": " +
+                caracteristica.getId() +
+                "," +
+                "\"nombre\": \"" +
+                caracteristica.getNombre() +
+                "\"," +
+                "\"valores\":" +
+                this.findByEspecieYCaracteristicaEnabled(especie, caracteristica)
+                    .stream()
+                    .map(
+                        valor -> "{" +
+                            "\"id\": " +
+                            valor.getId() +
+                            "," +
+                            "\"nombre\": \"" +
+                            valor.getNombre() +
+                            "\"}")
+                    .collect(Collectors.joining(",", "[", "]"))
+                +
+                "}")
+        .collect(Collectors.joining(",", "[", "]")));
     return ResponseMessage.message(200, "Valores recuperados con exito", data);
   }
 
   public Valor findByCaracteristicaEspecieValor(
-    Caracteristica caracteristica,
-    Especie especie,
-    Valor valor
-  ) {
+      Caracteristica caracteristica,
+      Especie especie,
+      Valor valor) {
+    logger.info("especie: " + especie.getNombre().toLowerCase());
+    logger.info("caracteristica: " + caracteristica.getNombre().toLowerCase());
+    logger.info("valor: " + valor.getNombre().toLowerCase());
+
     try {
       return getEntityManager()
-        .createNamedQuery("Valor.findByCaracteristicaEspecieValor", Valor.class)
-        .setParameter("caracteristica_nombre", caracteristica.getNombre())
-        .setParameter("especie_nombre", especie.getNombre())
-        .setParameter("valor_nombre", valor.getNombre())
-        .getSingleResult();
+          .createNamedQuery("Valor.findByCaracteristicaEspecieValor", Valor.class)
+          .setParameter("caracteristica_nombre", caracteristica.getNombre().toLowerCase())
+          .setParameter("especie_nombre", especie.getNombre().toLowerCase())
+          .setParameter("valor_nombre", valor.getNombre().toLowerCase())
+          .getSingleResult();
     } catch (NoResultException e) {
       return null;
     }
   }
 
   public List<Valor> findValoresByListAndEspecie(
-    List<Valor> valores,
-    Especie especie
-  ) {
+      List<Valor> valores,
+      Especie especie) {
     List<Valor> listaNuevaValores = new ArrayList<Valor>();
     Valor valorEncontrado;
-
     for (Valor valor : valores) {
-      valorEncontrado =
-        this.findByCaracteristicaEspecieValor(
-            valor.getCaracteristica(),
-            especie,
-            valor
-          );
-      if (valorEncontrado != null) listaNuevaValores.add(valorEncontrado);
+      logger.info("caracteristica: "+valor.getCaracteristica());
+      valorEncontrado = this.findByCaracteristicaEspecieValor(
+          valor.getCaracteristica(),
+          especie,
+          valor);
+      logger.info("Valor encontrado: " + valorEncontrado);
+      if (valorEncontrado != null) {
+        valorEncontrado.getMascotas().clear();
+        listaNuevaValores.add(valorEncontrado);
+      }
     }
 
     return listaNuevaValores;
@@ -236,8 +229,8 @@ public class ValorServiceBean implements ValorService {
   public long getMaxId() {
     try {
       return getEntityManager()
-        .createNamedQuery("Valor.getMaxId", Long.class)
-        .getSingleResult();
+          .createNamedQuery("Valor.getMaxId", Long.class)
+          .getSingleResult();
     } catch (NoResultException e) {
       return 0;
     }

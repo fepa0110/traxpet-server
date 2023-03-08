@@ -41,7 +41,7 @@ public class MascotaServiceBean implements MascotaService {
     mascotaNueva.setValores(
       valorService.findValoresByListAndEspecie(
         mascota.getValores(),
-        mascota.getEspecie()
+        mascotaNueva.getEspecie()
       )
     );
 
@@ -49,7 +49,7 @@ public class MascotaServiceBean implements MascotaService {
     return mascotaNueva;
   }
 
-  @Override
+  @Override  
   public Mascota findById(long mascotaId) {
     try {
       return getEntityManager()

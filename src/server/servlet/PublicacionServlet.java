@@ -157,6 +157,8 @@ public class PublicacionServlet {
     try {
       publicacionRecibida = mapper.readValue(json, PublicacionNueva.class);
 
+      logger.info("valores: "+publicacionRecibida.getPublicacion().getMascota().getValores().toString());
+
       publicacion = publicacionService.create(
           publicacionRecibida.getPublicacion(),
           publicacionRecibida.getUbicacion());
