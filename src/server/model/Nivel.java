@@ -29,6 +29,12 @@ import javax.persistence.TemporalType;
                 "WHERE :puntaje >= nivel.puntajeMinimo "+
                 "AND :puntaje <= nivel.puntajeMaximo"
                 ),             
+    @NamedQuery(name="Nivel.getMaxNivel",
+        query="SELECT nivel "+
+                "FROM Nivel nivel "+
+                "WHERE nivel.puntajeMaximo = "+
+                "(SELECT MAX(nivelMaximo.puntajeMaximo) FROM Nivel nivelMaximo)"
+                ),             
     @NamedQuery(name="Nivel.getNivelesObtenidosByPuntaje",
         query="SELECT niveles "+
                 "FROM Nivel niveles "+

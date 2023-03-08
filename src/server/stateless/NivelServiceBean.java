@@ -55,6 +55,17 @@ public class NivelServiceBean implements NivelService {
         return null;
       }
     }
+    
+    @Override
+    public Nivel getMaxNivel(){
+      try {
+        return getEntityManager()
+          .createNamedQuery("Nivel.getMaxNivel", Nivel.class)
+          .getSingleResult();
+      } catch (NoResultException e) {
+        return null;
+      }
+    }
 
     @Override
     public List<Nivel> getNivelesObtenidos(int puntaje){

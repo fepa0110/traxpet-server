@@ -75,7 +75,16 @@ public class NivelServlet {
         usuario.setUsername(username);
         usuario = usuarioService.findByUsername(usuario);
 
+        if(usuario.getPuntaje() < 0){ 
+            return ResponseMessage.message(
+                503,
+                "El puntaje es menor a cero");
+        }
+
         Nivel nivel = nivelService.calcularNivel(usuario.getPuntaje());
+        if(nivel == null){
+            nivel = nivelService.getMaxNivel();
+        }
 
         String data;
         try {
@@ -105,7 +114,14 @@ public class NivelServlet {
         usuario.setUsername(username);
         usuario = usuarioService.findByUsername(usuario);
 
-        List<Nivel> niveles = nivelService.getNivelesObtenidos(usuario.getPuntaje());
+        Nivel nivelMaximo = nivelService.getMaxNivel();
+
+        List<Nivel> niveles;
+
+        if(usuario.getPuntaje() > nivelMaximo.getPuntajeMaximo()){
+            niveles = nivelService.getNivelesObtenidos(nivelMaximo.getPuntajeMaximo());
+        }
+        else niveles = nivelService.getNivelesObtenidos(usuario.getPuntaje());
 
         String data;
         try {
