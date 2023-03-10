@@ -14,10 +14,13 @@ import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.List;
+import java.util.ArrayList;
+
 import java.util.logging.Logger;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -93,24 +96,33 @@ public class ImagenMascotaServlet {
     return ResponseMessage.message(200, "Se cargó la imagen exitosamente");
   }
 
-  @GET
+  @POST
   @Path("/mascotasActivas")
   @Produces(MediaType.APPLICATION_JSON)
   @Consumes(MediaType.APPLICATION_JSON)
   public String findFirstForAll(String json) throws IOException {
     // Se modifica este método para que utilice el servicio
     int[] pagina;
-    Collection<ImagenMascota> imagenesMascotasActivas;
+    // Collection<ImagenMascota> imagenes = imagenMascotaService.findAllbyId(id);
+    // ImagenMascota imagen = (ImagenMascota) imagenes.toArray()[0];
+
     String data = "";
     try {
-      pagina = mapper.readValue(json, int[].class);  
-      imagenesMascotasActivas = imagenMascotaService.findFirstForAll(pagina);
+      Collection<ImagenMascota> allImagenesMascotasActivas = new ArrayList<ImagenMascota>();
+      Collection<ImagenMascota> imagenesMascotasActivas = new ArrayList<ImagenMascota>();
+      ImagenMascota primeraImagen;
+      pagina = mapper.readValue(json, int[].class);
+
+      for (int i = 0; i < pagina.length; i++){
+        imagenesMascotasActivas.add(findFirstImageByMascotaIdData(pagina[i]));
+      }
+
       Stream<String> lines;
       data = "[ ";
-      if (imagenesMascotasActivas == null) {
+      if (imagenesMascotasActivas.isEmpty() || imagenesMascotasActivas == null) {
         return ResponseMessage.message(500, " no hay imagenes");
       }
-  
+
       for (ImagenMascota imagen : imagenesMascotasActivas) {
         data += "{\"id\": " + imagen.getId() + ",";
         lines = Files.lines(Paths.get(imagen.getDirectory()));
@@ -124,7 +136,6 @@ public class ImagenMascotaServlet {
     } catch (Exception e) {
       // TODO: handle exception
     }
-
 
     return ResponseMessage.message(
         200,
@@ -208,6 +219,13 @@ public class ImagenMascotaServlet {
     data = data.substring(0, data.length() - 1);
 
     return ResponseMessage.message(200, "imagen obtenida correctamente", data);
+  }
+
+  public ImagenMascota findFirstImageByMascotaIdData(int id) throws IOException {
+
+    Collection<ImagenMascota> imagenes = imagenMascotaService.findAllbyId(id);
+
+    return (ImagenMascota) imagenes.toArray()[0];
   }
 
   @DELETE
