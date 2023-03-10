@@ -28,6 +28,11 @@ import java.util.Calendar;
         @NamedQuery(name = "findById", query = "SELECT i " +
                 "FROM ImagenMascota i " +
                 "WHERE i.mascota.id = :id"),
+
+        @NamedQuery(name = "findFirstForAll", query = "SELECT i " +
+                "FROM ImagenMascota i, Publicacion p " +
+                "WHERE (i.mascota.id=p.mascota.id) AND i.mascota.id IN :idList AND UPPER(p.estado)='ACTIVA'"),
+
         @NamedQuery(name = "Imagen.getMaxId", query = "SELECT MAX(imagen.id) " +
                 "FROM ImagenMascota imagen ")
 })

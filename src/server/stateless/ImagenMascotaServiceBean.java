@@ -35,13 +35,11 @@ public class ImagenMascotaServiceBean implements ImagenMascotaService {
   }
 
   @Override
-  public ImagenMascota create(int mascotaId,InputStream uploadedInputStream,String formatoImagen){ 
-    
-    String fileLocation = 
-    "/root/app/etc/images/m" + mascotaId + "_" + System.currentTimeMillis();
+  public ImagenMascota create(int mascotaId, InputStream uploadedInputStream, String formatoImagen) {
 
-    
-     try {
+    String fileLocation = "/root/app/etc/images/m" + mascotaId + "_" + System.currentTimeMillis();
+
+    try {
       File file = new File(fileLocation);
       file.createNewFile();
 
@@ -63,7 +61,7 @@ public class ImagenMascotaServiceBean implements ImagenMascotaService {
     Mascota mascota = mascotaService.findById(mascotaId);
 
     ImagenMascota imagenMascota = new ImagenMascota();
-    imagenMascota.setId(this.getMaxId()+1);
+    imagenMascota.setId(this.getMaxId() + 1);
     imagenMascota.setMascota(mascota);
     imagenMascota.setDirectory(fileLocation);
     imagenMascota.setFormat(formatoImagen);
@@ -73,61 +71,73 @@ public class ImagenMascotaServiceBean implements ImagenMascotaService {
   }
 
   @Override
-  public ImagenMascota update(int mascotaId,InputStream uploadedInputStream, String formatoImagen,int imagenId){
-      this.remove(imagenId);
-    ImagenMascota imagenMascota = this.create(mascotaId,uploadedInputStream,formatoImagen);
+  public ImagenMascota update(int mascotaId, InputStream uploadedInputStream, String formatoImagen, int imagenId) {
+    this.remove(imagenId);
+    ImagenMascota imagenMascota = this.create(mascotaId, uploadedInputStream, formatoImagen);
     return imagenMascota;
   }
-
 
   @Override
   public Collection<ImagenMascota> findAllbyId(int id) {
     try {
       return getEntityManager()
-        .createNamedQuery("findAllbyId", ImagenMascota.class)
-        .setParameter("id", id)
-        .getResultList();
+          .createNamedQuery("findAllbyId", ImagenMascota.class)
+          .setParameter("id", id)
+          .getResultList();
     } catch (NoResultException e) {
       return null;
     }
   }
 
   @Override
-  public Collection <ImagenMascota> findById(int id) {
-       try {
+  public Collection<ImagenMascota> findFirstForAll(int[] idList) {
+    try {
       return getEntityManager()
-        .createNamedQuery("findById", ImagenMascota.class)
-        .setParameter("id", id)
-        .getResultList();
+          .createNamedQuery("findFirstForAll", ImagenMascota.class)
+          .setParameter("idList", idList)
+          .getResultList();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
+
+  @Override
+  public Collection<ImagenMascota> findById(int id) {
+    try {
+      return getEntityManager()
+          .createNamedQuery("findById", ImagenMascota.class)
+          .setParameter("id", id)
+          .getResultList();
     } catch (NoResultException e) {
       return null;
     }
 
   }
-    public ImagenMascota find(int id){
+
+  public ImagenMascota find(int id) {
     return getEntityManager().find(ImagenMascota.class, id);
- }
+  }
 
-   @Override
-    public void remove(int id) {
-        ImagenMascota imagen=find(id);
-        //Files.delete(Paths.get(imagen.getDirectory());
-       try {
-          Files.delete(Paths.get(imagen.getDirectory()));
-        } catch (IOException e) {
-            return ;
-        }
-        //Files.deleteIfExists(Paths.get(imagen.getDirectory()));
-        em.remove(imagen);
+  @Override
+  public void remove(int id) {
+    ImagenMascota imagen = find(id);
+    // Files.delete(Paths.get(imagen.getDirectory());
+    try {
+      Files.delete(Paths.get(imagen.getDirectory()));
+    } catch (IOException e) {
+      return;
     }
+    // Files.deleteIfExists(Paths.get(imagen.getDirectory()));
+    em.remove(imagen);
+  }
 
-    public long getMaxId() {
-      try {
-        return getEntityManager()
-            .createNamedQuery("Imagen.getMaxId", Long.class)
-            .getSingleResult();
-      } catch (NoResultException e) {
-        return 0;
-      }
+  public long getMaxId() {
+    try {
+      return getEntityManager()
+          .createNamedQuery("Imagen.getMaxId", Long.class)
+          .getSingleResult();
+    } catch (NoResultException e) {
+      return 0;
     }
+  }
 }
