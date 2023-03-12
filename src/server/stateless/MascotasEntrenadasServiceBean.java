@@ -24,11 +24,12 @@ public class MascotasEntrenadasServiceBean implements MascotasEntrenadasService 
     }
 
     @Override
-    public Collection<Long> predictByEspecieAndModeloActivo(String nombreEspecie){
+    public Collection<Long> predictByEspecieAndModeloActivo(String nombreEspecie, long usuarioId){
         try {
             return getEntityManager()
                 .createNamedQuery("MascotasEntrenadas.getByModeloActivo", Long.class)
                 .setParameter("especie_nombre", nombreEspecie.toUpperCase())
+                .setParameter("usuario_id", usuarioId)
                 .getResultList();
         } catch (NoResultException e) {
             return null;

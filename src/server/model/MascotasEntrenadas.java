@@ -30,12 +30,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 FROM MODELO model JOIN MASCOTASENTRENADAS me ON (me.MODELO_ID = model.MODELO_ID)
 WHERE model.ACTIVO=1 AND model.ESPECIE_ID = 1
  */
-@NamedQueries({             
+@NamedQueries({        
     @NamedQuery(name="MascotasEntrenadas.getByModeloActivo",
-        query="SELECT mascotaEntrenada.mascota.id "+
-                "FROM MascotasEntrenadas mascotaEntrenada "+
-                "WHERE mascotaEntrenada.modelo.activo = TRUE "+
-                    "AND UPPER(mascotaEntrenada.modelo.especie.nombre) = :especie_nombre"),             
+        query="SELECT mascota.id "+
+                "FROM Publicacion publicacion JOIN publicacion.mascota mascota "+
+                "WHERE UPPER(publicacion.estado) = 'ACTIVA' "+
+                    "AND UPPER(mascota.especie.nombre) = :especie_nombre "+
+                    "AND publicacion.usuario.id != :usuario_id"),             
 })
 
 @Entity

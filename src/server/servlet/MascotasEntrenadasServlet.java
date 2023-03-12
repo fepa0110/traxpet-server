@@ -47,15 +47,17 @@ public class MascotasEntrenadasServlet {
   }
 
   @GET
-  @Path("/predict/{especieNombre}")
+  @Path("/predict")
   @Produces(MediaType.APPLICATION_JSON)
-  public String findMascotasEntrenadas(String json, @PathParam("especieNombre") String especieNombre)
+  public String findMascotasEntrenadas(String json, 
+      @QueryParam("especieNombre") String especieNombre,
+      @QueryParam("usuarioId") long usuarioId)
     throws IOException {
     String data;
 
     try {
       Collection<Long> mascotasEntrenadas = 
-        mascotasEntrenadasService.predictByEspecieAndModeloActivo(especieNombre);
+        mascotasEntrenadasService.predictByEspecieAndModeloActivo(especieNombre, usuarioId);
 
       data = mapper.writeValueAsString(mascotasEntrenadas);
     } catch (IOException e) {

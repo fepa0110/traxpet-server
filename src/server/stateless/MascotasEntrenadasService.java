@@ -5,5 +5,5 @@ import java.util.List;
 import model.MascotasEntrenadas;
 
 public interface MascotasEntrenadasService {
-    public Collection<Long> predictByEspecieAndModeloActivo(String nombreEspecie);
+    public Collection<Long> predictByEspecieAndModeloActivo(String nombreEspecie, long usuarioId);
 }
