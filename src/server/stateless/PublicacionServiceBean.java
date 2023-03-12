@@ -58,7 +58,6 @@ public class PublicacionServiceBean implements PublicacionService {
   @Override
   public Publicacion create(Publicacion publicacion, Ubicacion ubicacion) {
     publicacion.setId(this.getMaxId() + 1);
-    // publicacion.setUsuario("Hardcodeado2");
     publicacion.setEstado(Estado.ACTIVA);
 
     publicacion.setMascota(mascotaService.create(publicacion.getMascota()));

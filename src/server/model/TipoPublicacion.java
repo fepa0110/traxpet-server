@@ -2,7 +2,7 @@ package model;
 
 public enum TipoPublicacion{
     MASCOTA_BUSCADA,
-    MASCOTA_ENCONTRADA;
+    MASCOTA_VISTA;
 
     public String toDbValue() {
         return this.name().toUpperCase();
