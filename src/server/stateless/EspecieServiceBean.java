@@ -79,4 +79,14 @@ public class EspecieServiceBean implements EspecieService {
     em.merge(especie);
   }
 
+  public long getMaxId() {
+    try {
+      return getEntityManager()
+          .createNamedQuery("Especie.getMaxId", Long.class)
+          .getSingleResult();
+    } catch (NoResultException e) {
+      return 0;
+    }
+  }
+
 }

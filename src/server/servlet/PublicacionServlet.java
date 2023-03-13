@@ -75,7 +75,7 @@ public class PublicacionServlet {
     String data;
 
     if (publicaciones == null) {
-      return ResponseMessage.message(500, "publicacion no existen");
+      return ResponseMessage.message(500, "no hay publicaciones");
     }
     try {
       data = mapper.writeValueAsString(publicaciones);

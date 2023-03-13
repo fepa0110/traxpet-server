@@ -124,7 +124,7 @@ public class ImagenMascotaServlet {
       }
 
       for (ImagenMascota imagen : imagenesMascotasActivas) {
-        data += "{\"id\": " + imagen.getId() + ",";
+        data += "{\"id\": " + imagen.getMascota().getId() + ",";
         lines = Files.lines(Paths.get(imagen.getDirectory()));
         data += "\"ImagenData\":";
         data += "\"" +

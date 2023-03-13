@@ -16,4 +16,6 @@ public interface EspecieService {
   public Especie findByName(String nombre);
 
   public void darBaja(Especie especie);
+  
+  public long getMaxId();
 }
