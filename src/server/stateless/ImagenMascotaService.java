@@ -7,9 +7,9 @@ import model.ImagenMascota;
 
 public interface ImagenMascotaService {
     // public List<ImagenMascota> findAll();
-    public ImagenMascota create(int mascotaId, InputStream uploadedInputStream, String formatoImagen);
+    public ImagenMascota create(long mascotaId, InputStream uploadedInputStream, String formatoImagen);
 
-    public ImagenMascota update(int mascotaId, InputStream uploadedInputStream, String formatoImagen, int imagenId);
+    public ImagenMascota update(long mascotaId, InputStream uploadedInputStream, String formatoImagen, long imagenId);
 
     public Collection<ImagenMascota> findAllbyId(int id);
 

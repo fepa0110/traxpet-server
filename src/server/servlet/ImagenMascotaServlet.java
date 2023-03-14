@@ -241,9 +241,9 @@ public class ImagenMascotaServlet {
   @Produces(MediaType.APPLICATION_JSON)
   public String update(
       InputStream uploadedInputStream,
-      @QueryParam("mascotaId") int mascotaId,
+      @QueryParam("mascotaId") long mascotaId,
       @QueryParam("formatoImagen") String formatoImagen,
-      @QueryParam("imagenId") int imagenId) {
+      @QueryParam("imagenId") long imagenId) {
     if (mascotaService.findById(mascotaId) == null) {
       return ResponseMessage.message(501, "No existe la mascota " + mascotaId);
     }

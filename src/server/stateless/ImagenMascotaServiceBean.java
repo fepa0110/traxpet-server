@@ -71,7 +71,7 @@ public class ImagenMascotaServiceBean implements ImagenMascotaService {
   }
 
   @Override
-  public ImagenMascota update(int mascotaId, InputStream uploadedInputStream, String formatoImagen, int imagenId) {
+  public ImagenMascota update(long mascotaId, InputStream uploadedInputStream, String formatoImagen, long imagenId) {
     this.remove(imagenId);
     ImagenMascota imagenMascota = this.create(mascotaId, uploadedInputStream, formatoImagen);
     return imagenMascota;
