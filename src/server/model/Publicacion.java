@@ -25,16 +25,29 @@ import java.util.Calendar;
 import java.util.Objects;
 
 @NamedQueries({
-        @NamedQuery(name = "Publicacion.findAll", 
-            query = "SELECT publicacion " +
+        @NamedQuery(name = "Publicacion.findAll", query = "SELECT publicacion " +
                 "FROM Publicacion publicacion"),
 
-        @NamedQuery(name = "findAllPublicacionUsuario", 
-            query = "SELECT p " +
+        @NamedQuery(name = "findAllPublicacionUsuario", query = "SELECT p " +
                 "FROM Publicacion p " +
                 "WHERE p.usuario.username =:username " +
-                "AND UPPER(p.estado) = 'ACTIVA' "+
+                "AND UPPER(p.estado) = 'ACTIVA' " +
                 "ORDER BY p.fechaModificacion DESC"),
+
+        @NamedQuery(name = "findAllPublicacionVistasUsuario", query = "SELECT p " +
+                "FROM Publicacion p " +
+                "WHERE p.usuario.username =:username " +
+                "AND UPPER(p.estado) = 'ACTIVA' " +
+                "AND UPPER(p.tipoPublicacion) = 'MASCOTA_VISTA'"+
+                "ORDER BY p.fechaModificacion DESC"),
+
+        @NamedQuery(name = "findAllPublicacionBuscadasUsuario", query = "SELECT p " +
+                "FROM Publicacion p " +
+                "WHERE p.usuario.username =:username " +
+                "AND UPPER(p.estado) = 'ACTIVA' " +
+                "AND UPPER(p.tipoPublicacion) = 'MASCOTA_BUSCADA'"+
+                "ORDER BY p.fechaModificacion DESC"),
+                
         @NamedQuery(name = "Publicacion.getMaxId", query = "SELECT MAX(publicacion.id) " +
                 "FROM Publicacion publicacion ")
 })

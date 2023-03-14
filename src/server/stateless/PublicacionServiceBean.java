@@ -108,6 +108,30 @@ public class PublicacionServiceBean implements PublicacionService {
   }
 
   @Override
+  public Collection<Publicacion> findAllPublicacionVistasUsuario(String username) {
+    try {
+      return getEntityManager()
+          .createNamedQuery("findAllPublicacionVistasUsuario", Publicacion.class)
+          .setParameter("username", username)
+          .getResultList();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
+
+  @Override
+  public Collection<Publicacion> findAllPublicacionBuscadasUsuario(String username) {
+    try {
+      return getEntityManager()
+          .createNamedQuery("findAllPublicacionBuscadasUsuario", Publicacion.class)
+          .setParameter("username", username)
+          .getResultList();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
+
+  @Override
   public Publicacion findById(long id) {
     try {
       return em

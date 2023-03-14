@@ -93,6 +93,58 @@ public class PublicacionServlet {
   }
 
   @GET
+  @Path("/vistasByUsername/{username}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String findAllPublicacionVistasUsuario(@PathParam("username") String username) throws IOException {
+    Collection<Publicacion> publicaciones = publicacionService.findAllPublicacionVistasUsuario(username);
+
+    String data;
+
+    if (publicaciones == null) {
+      return ResponseMessage.message(500, "no hay publicaciones");
+    }
+    try {
+      data = mapper.writeValueAsString(publicaciones);
+    } catch (JsonProcessingException e) {
+      return ResponseMessage.message(
+          500,
+          "error al formatear las publicaciones",
+          e.getMessage());
+    }
+
+    return ResponseMessage.message(
+        200,
+        "publicaciones del usuario " + username + " recuperada exitosamente",
+        data);
+  }
+
+  @GET
+  @Path("/buscadasByUsername/{username}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String findAllPublicacionBuscadasUsuario(@PathParam("username") String username) throws IOException {
+    Collection<Publicacion> publicaciones = publicacionService.findAllPublicacionBuscadasUsuario(username);
+
+    String data;
+
+    if (publicaciones == null) {
+      return ResponseMessage.message(500, "no hay publicaciones");
+    }
+    try {
+      data = mapper.writeValueAsString(publicaciones);
+    } catch (JsonProcessingException e) {
+      return ResponseMessage.message(
+          500,
+          "error al formatear las publicaciones",
+          e.getMessage());
+    }
+
+    return ResponseMessage.message(
+        200,
+        "publicaciones del usuario " + username + " recuperada exitosamente",
+        data);
+  }
+
+  @GET
   @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public String findById(@PathParam("id") long id) throws IOException {
@@ -163,27 +215,27 @@ public class PublicacionServlet {
 
       dataPublicacion = mapper.writeValueAsString(publicacion);
 
-      if (publicacionRecibida.getNotificateSimilar() 
-        && publicacion != null 
-        && publicacionRecibida.getIdMascotaSimilar() != 0) {
+      if (publicacionRecibida.getNotificateSimilar()
+          && publicacion != null
+          && publicacionRecibida.getIdMascotaSimilar() != 0) {
         Notificacion notificacion = new Notificacion();
 
         notificacion.setPublicacion(publicacion);
         notificacion.setNotificante(publicacionRecibida.getPublicacion().getUsuario());
 
         Publicacion publicacionSimilar = new Publicacion();
-        
-          Mascota mascotaSimilar = new Mascota();
-          mascotaSimilar.setId(publicacionRecibida.getIdMascotaSimilar());
-          publicacionSimilar.setMascota(mascotaSimilar);
-          publicacionSimilar = publicacionService.findByMascotaId(publicacionSimilar);
-          Usuario usuarioSimilar = publicacionSimilar.getUsuario();
-  
-          notificacion.setFechaNotificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
-  
-          notificacion.setUsuario(usuarioSimilar);
-          notificacionService.create(notificacion);
-          this.usuarioService.updateScore(usuarioSimilar, PUNTAJE_NUEVA_PUBLICACION);
+
+        Mascota mascotaSimilar = new Mascota();
+        mascotaSimilar.setId(publicacionRecibida.getIdMascotaSimilar());
+        publicacionSimilar.setMascota(mascotaSimilar);
+        publicacionSimilar = publicacionService.findByMascotaId(publicacionSimilar);
+        Usuario usuarioSimilar = publicacionSimilar.getUsuario();
+
+        notificacion.setFechaNotificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
+
+        notificacion.setUsuario(usuarioSimilar);
+        notificacionService.create(notificacion);
+        this.usuarioService.updateScore(usuarioSimilar, PUNTAJE_NUEVA_PUBLICACION);
       }
 
       if (publicacion != null) {
