@@ -59,7 +59,7 @@ public class ImagenMascotaServiceBean implements ImagenMascotaService {
     }
 
     Mascota mascota = mascotaService.findById(mascotaId);
-
+   
     ImagenMascota imagenMascota = new ImagenMascota();
     imagenMascota.setId(this.getMaxId() + 1);
     imagenMascota.setMascota(mascota);
