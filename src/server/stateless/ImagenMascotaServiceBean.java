@@ -2,6 +2,7 @@ package stateless;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -29,6 +30,8 @@ public class ImagenMascotaServiceBean implements ImagenMascotaService {
 
   @EJB
   private MascotaService mascotaService;
+  Logger logger = Logger.getLogger(getClass().getName());
+
 
   public EntityManager getEntityManager() {
     return em;
@@ -59,7 +62,9 @@ public class ImagenMascotaServiceBean implements ImagenMascotaService {
     }
 
     Mascota mascota = mascotaService.findById(mascotaId);
-   
+    if (mascota == null) {
+      logger.info("mascota nulla");
+    }
     ImagenMascota imagenMascota = new ImagenMascota();
     imagenMascota.setId(this.getMaxId() + 1);
     imagenMascota.setMascota(mascota);

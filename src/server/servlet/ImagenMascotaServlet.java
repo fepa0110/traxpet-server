@@ -192,7 +192,7 @@ public class ImagenMascotaServlet {
     }
     data = data.substring(0, data.length() - 1);
     data += "]";
-
+     logger.info("asd23asd123"+data);
     return ResponseMessage.message(200, "imagen obtenida correctamente", data);
   }
 
