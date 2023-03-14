@@ -35,7 +35,7 @@ public class ImagenMascotaServiceBean implements ImagenMascotaService {
   }
 
   @Override
-  public ImagenMascota create(int mascotaId, InputStream uploadedInputStream, String formatoImagen) {
+  public ImagenMascota create(long mascotaId, InputStream uploadedInputStream, String formatoImagen) {
 
     String fileLocation = "/root/app/etc/images/m" + mascotaId + "_" + System.currentTimeMillis();
 
@@ -78,7 +78,7 @@ public class ImagenMascotaServiceBean implements ImagenMascotaService {
   }
 
   @Override
-  public Collection<ImagenMascota> findAllbyId(int id) {
+  public Collection<ImagenMascota> findAllbyId(long id) {
     try {
       return getEntityManager()
           .createNamedQuery("findAllbyId", ImagenMascota.class)
@@ -102,7 +102,7 @@ public class ImagenMascotaServiceBean implements ImagenMascotaService {
   }
 
   @Override
-  public Collection<ImagenMascota> findById(int id) {
+  public Collection<ImagenMascota> findById(long id) {
     try {
       return getEntityManager()
           .createNamedQuery("findById", ImagenMascota.class)
@@ -114,12 +114,12 @@ public class ImagenMascotaServiceBean implements ImagenMascotaService {
 
   }
 
-  public ImagenMascota find(int id) {
+  public ImagenMascota find(long id) {
     return getEntityManager().find(ImagenMascota.class, id);
   }
 
   @Override
-  public void remove(int id) {
+  public void remove(long id) {
     ImagenMascota imagen = find(id);
     // Files.delete(Paths.get(imagen.getDirectory());
     try {

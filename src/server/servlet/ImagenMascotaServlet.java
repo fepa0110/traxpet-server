@@ -252,7 +252,6 @@ public class ImagenMascotaServlet {
       return ResponseMessage.message(501, "Parametros incorrectos");
     }
 
-    // String output =;
     String data;
 
     try {

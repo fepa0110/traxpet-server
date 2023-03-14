@@ -11,11 +11,11 @@ public interface ImagenMascotaService {
 
     public ImagenMascota update(long mascotaId, InputStream uploadedInputStream, String formatoImagen, long imagenId);
 
-    public Collection<ImagenMascota> findAllbyId(int id);
+    public Collection<ImagenMascota> findAllbyId(long id);
 
-    public Collection<ImagenMascota> findById(int id);
+    public Collection<ImagenMascota> findById(long id);
 
-    public void remove(int id);
+    public void remove(long id);
 
     public Collection<ImagenMascota> findFirstForAll(int[] idList);
 
