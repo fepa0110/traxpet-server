@@ -195,11 +195,13 @@ public class PublicacionServiceBean implements PublicacionService {
 
     ubicacion.setUsuario(usuarioService.findByUsername(ubicacion.getUsuario()));
 
-    notificacion.setNotificante(ubicacion.getUsuario());
-    notificacion.setPublicacion(publicacionMascota);
-    notificacion.setFechaNotificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
-    notificacion.setUsuario(publicacionMascota.getUsuario());
-    notificacionService.create(notificacion);
+    if(!ubicacion.getUsuario().equals(publicacionMascota.getUsuario())){
+      notificacion.setNotificante(ubicacion.getUsuario());
+      notificacion.setPublicacion(publicacionMascota);
+      notificacion.setFechaNotificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
+      notificacion.setUsuario(publicacionMascota.getUsuario());
+      notificacionService.create(notificacion);
+    }
 
     return this.ubicacionService.create(ubicacion);
   }

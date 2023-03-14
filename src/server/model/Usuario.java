@@ -22,6 +22,7 @@ import javax.persistence.ManyToMany;
 import java.util.Collection;
 import java.util.Set;
 import java.util.Calendar;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -126,6 +127,23 @@ public class Usuario {
 
     public void setPuntaje(int puntaje) {
         this.puntaje = puntaje;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Usuario)) {
+            return false;
+        }
+        Usuario usuario = (Usuario) o;
+        return id == usuario.id && Objects.equals(username, usuario.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, correoElectronico, notificaciones, password, rol, puntaje);
     }
 
 }
