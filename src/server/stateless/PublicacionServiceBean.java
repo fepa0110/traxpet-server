@@ -72,6 +72,7 @@ public class PublicacionServiceBean implements PublicacionService {
 
     publicacion.setFechaModificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
 
+    ubicacion.setUsuario(publicacion.getUsuario());
     ubicacion.setFecha(Calendar.getInstance());
 
     em.persist(publicacion);
