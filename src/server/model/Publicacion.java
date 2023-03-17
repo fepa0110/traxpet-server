@@ -57,7 +57,8 @@ import java.util.Objects;
         @NamedQuery(name = "Publicacion.getMaxId", query = "SELECT MAX(publicacion.id) " +
                 "FROM Publicacion publicacion "),
         
-        @NamedQuery(name = "Publicacion.getCantidadByEspecie", query = "SELECT COUNT(publicacion) from Publicacion publicacion where publicacion.mascota.especie.nombre := nombre")
+        @NamedQuery(name =
+         "Publicacion.getCantidadByEspecie", query = "SELECT count(p) FROM Publicacion p where p.mascota.especie.nombre = :nombre")
 })
 
 @Entity
