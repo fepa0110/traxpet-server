@@ -438,4 +438,30 @@ public class PublicacionServlet {
         200,
         "Publicacion migrada correctamente a " + username);
   }
+
+  @GET
+  @Path("/getCantidadByEspecie/{nombre}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String findCountByEspecie(@PathParam("nombre") String nombre) throws IOException {
+    int publicaciones = publicacionService.findCountByEspecie(nombre);
+
+    String data;
+
+    if (publicaciones == 0) {
+      return ResponseMessage.message(500, "no hay publicaciones");
+    }
+    try {
+      data = mapper.writeValueAsString(publicaciones);
+    } catch (JsonProcessingException e) {
+      return ResponseMessage.message(
+          500,
+          "error al formatear las publicaciones",
+          e.getMessage());
+    }
+
+    return ResponseMessage.message(
+        200,
+        "publicaciones del usuario " + nombre + " recuperada exitosamente",
+        data);
+  }
 }

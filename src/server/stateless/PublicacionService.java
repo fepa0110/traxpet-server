@@ -36,4 +36,6 @@ public interface PublicacionService {
     public Collection<Publicacion> findActivasBySpecie(String nombreEspecie);
     
     public Collection<Publicacion> marcarInactivaByEspecie(String nombreEspecie);
+
+    public int findCountByEspecie(String nombre);
 }
