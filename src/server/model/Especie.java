@@ -23,12 +23,14 @@ import javax.persistence.TemporalType;
     @NamedQuery(
       name = "Especie.findAllEnable",
       query = "SELECT especie " +
-      "FROM Especie especie Where especie.deshabilitado=false"
+      "FROM Especie especie WHERE especie.deshabilitado=false"
     ),
     @NamedQuery(
       name = "Especie.findAllUsable",
       query = "SELECT especie " +
-      "FROM Especie especie Where especie.deshabilitado=false"
+              "FROM Especie especie "+
+              "WHERE especie.deshabilitado=false AND "+
+              " especie IN (SELECT valor.especie FROM Valor valor)"
     ),
     @NamedQuery(
       name = "Especie.findAll",
