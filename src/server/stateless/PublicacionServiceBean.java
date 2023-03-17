@@ -170,7 +170,7 @@ public class PublicacionServiceBean implements PublicacionService {
         .setNombre(publicacion.getMascota().getNombre());
 
     publicacionEdit.setFechaModificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
-    
+
     em.merge(publicacionEdit);
 
     return publicacionEdit;
@@ -186,17 +186,17 @@ public class PublicacionServiceBean implements PublicacionService {
     Notificacion notificacion = new Notificacion();
 
     publicacionMascota = this.findByMascotaId(publicacionMascota);
-    
+
     publicacionMascota.setFechaModificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
     publicacionMascota = em.merge(publicacionMascota);
-    
+
     ubicacion.setPublicacion(publicacionMascota);
 
     ubicacion.setFecha(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
 
     ubicacion.setUsuario(usuarioService.findByUsername(ubicacion.getUsuario()));
 
-    if(!ubicacion.getUsuario().equals(publicacionMascota.getUsuario())){
+    if (!ubicacion.getUsuario().equals(publicacionMascota.getUsuario())) {
       notificacion.setNotificante(ubicacion.getUsuario());
       notificacion.setPublicacion(publicacionMascota);
       notificacion.setFechaNotificacion(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")));
@@ -230,7 +230,7 @@ public class PublicacionServiceBean implements PublicacionService {
   }
 
   @Override
-  public Publicacion migrarDueño(Publicacion publicacion, Usuario nuevoDueño){
+  public Publicacion migrarDueño(Publicacion publicacion, Usuario nuevoDueño) {
     publicacion = find(publicacion.getId());
 
     nuevoDueño = usuarioService.findByUsername(nuevoDueño);
@@ -240,6 +240,20 @@ public class PublicacionServiceBean implements PublicacionService {
 
     em.merge(publicacion);
     return publicacion;
+  }
+
+  public Collection<Publicacion> marcarInactivaByEspecie(String nombreEspecie) {
+    try {
+      em.createQuery(
+              "UPDATE Publicacion publicacion " +
+                  "SET publicacion.estado='INACTIVA' " +
+                  "WHERE publicacion.mascota.especie.nombre=:nombreEspecie ",
+              Publicacion.class)
+          .setParameter("nombreEspecie", nombreEspecie);
+    } catch (NoResultException e) {
+      return null;
+    }
+    return null;
   }
 
 }

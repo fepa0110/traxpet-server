@@ -26,6 +26,11 @@ import javax.persistence.TemporalType;
       "FROM Especie especie Where especie.deshabilitado=false"
     ),
     @NamedQuery(
+      name = "Especie.findAllUsable",
+      query = "SELECT especie " +
+      "FROM Especie especie Where especie.deshabilitado=false"
+    ),
+    @NamedQuery(
       name = "Especie.findAll",
       query = "SELECT especie " + "FROM Especie especie "
     ),

@@ -102,6 +102,34 @@ public class EspecieServlet {
     );
   }
 
+  @GET
+  @Path("/usables")
+  @Produces(MediaType.APPLICATION_JSON)
+  public String findAllUsable() throws IOException {
+    // Se modifica este método para que utilice el servicio
+    List<Especie> especies = especieService.findAllUsable();
+
+    // Se contruye el resultado en base a lo recuperado desde la capa de negocio.
+    String data;
+
+    try {
+      data = mapper.writeValueAsString(especies);
+    } catch (IOException e) {
+      return ResponseMessage.message(
+        501,
+        "Formato incorrecto en datos de entrada",
+        e.getMessage()
+      );
+    }
+
+    return ResponseMessage.message(
+      200,
+      "Especies obtenidas exitosamente",
+      data
+    );
+  }
+
+
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
@@ -137,8 +165,6 @@ public class EspecieServlet {
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public String desabilitarEspecie(String json) {
-    // especie
-    //logger.info("espeice : "+json);
     String data;
     Especie especie = especieService.findByName(json);
      if(especie== null )

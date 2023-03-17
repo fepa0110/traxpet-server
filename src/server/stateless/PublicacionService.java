@@ -32,4 +32,6 @@ public interface PublicacionService {
     public Publicacion findByMascotaId(Publicacion publicacion);
 
     public Publicacion markAsFound(Publicacion publicacion);
+    
+    public Collection<Publicacion> marcarInactivaByEspecie(String nombreEspecie);
 }

@@ -7,6 +7,8 @@ import model.Especie;
 public interface EspecieService {
   public List<Especie> findAllEnable();
 
+  public List<Especie> findAllUsable();
+
   public List<Especie> findAll();
 
   public Especie findByNombre(Especie especie);

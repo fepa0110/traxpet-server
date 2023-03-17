@@ -18,6 +18,9 @@ public class EspecieServiceBean implements EspecieService {
   @PersistenceContext(unitName = "traxpet")
   protected EntityManager em;
 
+  @EJB
+  private PublicacionService publicacionService;
+
   public EntityManager getEntityManager() {
     return em;
   }
@@ -32,50 +35,61 @@ public class EspecieServiceBean implements EspecieService {
   @Override
   public Especie findByName(String nombre) {
     return em
-      .createQuery(
-        "select especie from Especie especie " +
-        "where especie.nombre = :nombre",
-        Especie.class
-      )
-      .setParameter("nombre", nombre)
-      .getSingleResult();
+        .createQuery(
+            "select especie from Especie especie " +
+                "where especie.nombre = :nombre",
+            Especie.class)
+        .setParameter("nombre", nombre)
+        .getSingleResult();
   }
 
   @Override
   public List<Especie> findAllEnable() {
     try {
       return getEntityManager()
-        .createNamedQuery("Especie.findAllEnable", Especie.class)
-        .getResultList();
-    } catch (NoResultException e) {
-      return null;
-    }
-  }
-  
-   @Override
-  public List<Especie> findAll() {
-    try {
-      return getEntityManager()
-        .createNamedQuery("Especie.findAll", Especie.class)
-        .getResultList();
-    } catch (NoResultException e) {
-      return null;
-    }
-  }
-  public Especie findByNombre(Especie especie){
-    try {
-      return getEntityManager()
-        .createNamedQuery("Especie.findByNombre", Especie.class)
-        .setParameter("nombre_especie", especie.getNombre())
-        .getSingleResult();
+          .createNamedQuery("Especie.findAllEnable", Especie.class)
+          .getResultList();
     } catch (NoResultException e) {
       return null;
     }
   }
 
-  
+  @Override
+  public List<Especie> findAllUsable() {
+    try {
+      return getEntityManager()
+          .createNamedQuery("Especie.findAllUsable", Especie.class)
+          .getResultList();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
+
+  @Override
+  public List<Especie> findAll() {
+    try {
+      return getEntityManager()
+          .createNamedQuery("Especie.findAll", Especie.class)
+          .getResultList();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
+
+  public Especie findByNombre(Especie especie) {
+    try {
+      return getEntityManager()
+          .createNamedQuery("Especie.findByNombre", Especie.class)
+          .setParameter("nombre_especie", especie.getNombre())
+          .getSingleResult();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
+
   @Override
   public void darBaja(Especie especie) {
+    // publicacionService.marcarInactivaByEspecie(especie.getNombre());
     em.merge(especie);
   }
 

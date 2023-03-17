@@ -127,6 +127,49 @@ public class ValorServlet {
     return ResponseMessage.message(200, "Se creó el valor correctamente", data);
   }
 
+  @POST
+  @Path("/byList")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String createValues(String json) {
+    Valor[] valores;
+    String data;
+    Especie especie;
+    Caracteristica caracteristica;
+    ArrayList<Valor> valoresCreados = new ArrayList<Valor>();
+
+    String name;
+
+    try {
+      valores = mapper.readValue(json, Valor[].class);
+      for (int i = 0; i < valores.length; i++) {
+        name = valores[i].getCaracteristica().getNombre();
+        especie = especieService.findByName(valores[i].getEspecie().getNombre());
+        caracteristica = caracteristicaService.findByName(name);
+        Valor valor = valores[i];
+        valor.setEspecie(especie);
+        valor.setCaracteristica(caracteristica);
+        valor.setDeshabilitado(false);
+        valor = valorService.create(valor);
+        valoresCreados.add(valor);
+      }
+
+      data = mapper.writeValueAsString(valoresCreados);
+    } catch (JsonProcessingException e) {
+      return ResponseMessage.message(
+          502,
+          "No se pudo dar formato a la salida",
+          e.getMessage());
+    } catch (IOException e) {
+      return ResponseMessage.message(
+          501,
+          "Formato incorrecto en datos de entrada",
+          e.getMessage());
+    }
+
+    return ResponseMessage.message(200, "Se creó el valor correctamente", data);
+  }
+
   @GET
   @Path("/byEspecie")
   @Produces(MediaType.APPLICATION_JSON)
@@ -161,8 +204,8 @@ public class ValorServlet {
   @Path("/byMascota")
   @Produces(MediaType.APPLICATION_JSON)
   public String findByMascota(
-  @QueryParam("idMascota") long mascotaId)
-  throws IOException {
+      @QueryParam("idMascota") long mascotaId)
+      throws IOException {
     Mascota mascota = mascotaService.findById(mascotaId);
     if (mascota == null) {
       return ResponseMessage.message(500, mascotaId + " no encontrada.");
@@ -170,17 +213,16 @@ public class ValorServlet {
     String data;
     try {
       data = mapper.writeValueAsString(mascota.getValores());
-    } 
-    catch (IOException e) {
+    } catch (IOException e) {
       return ResponseMessage.message(
-      501,
-      "Formato incorrecto en datos de entrada",
-      e.getMessage());
+          501,
+          "Formato incorrecto en datos de entrada",
+          e.getMessage());
     }
     return ResponseMessage.message(
-    200,
-    "Valores de la mascota " + mascotaId + " recuperados con éxito",
-    data);
+        200,
+        "Valores de la mascota " + mascotaId + " recuperados con éxito",
+        data);
   }
 
   @POST
