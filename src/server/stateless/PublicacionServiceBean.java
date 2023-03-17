@@ -269,7 +269,7 @@ public class PublicacionServiceBean implements PublicacionService {
   }
 
   @Override
-  public int findCountByEspecie(String nombre){
+  public Integer findCountByEspecie(String nombre){
     try {
       return em
           .createQuery(

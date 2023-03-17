@@ -1,4 +1,4 @@
-package servlet;
+Upackage servlet;
 
 import model.Publicacion;
 import model.Ubicacion;
