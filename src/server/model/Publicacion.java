@@ -58,7 +58,7 @@ import java.util.Objects;
                 "FROM Publicacion publicacion "),
         
         @NamedQuery(name =
-         "Publicacion.getCantidadByEspecie", query = "SELECT COUNT(*) FROM Publicacion p")
+         "Publicacion.getCantidadByEspecie", query = "SELECT COUNT(p.id) FROM Publicacion p")
 })
 
 @Entity
