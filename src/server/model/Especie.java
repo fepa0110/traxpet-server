@@ -38,7 +38,7 @@ import javax.persistence.TemporalType;
       name = "Especie.findByNombre",
       query = "SELECT especie " +
       "FROM Especie especie " +
-      "WHERE especie.nombre = :nombre_especie"
+      "WHERE UPPER(especie.nombre) = :nombre_especie"
     ),
     @NamedQuery(name="Especie.getMaxId",
         query="SELECT MAX(especie.id) "+ 

@@ -48,31 +48,37 @@ public class EspecieServlet {
   @Produces(MediaType.APPLICATION_JSON)
   public String create(String json) {
     Especie especie;
-    String data;
+    Especie especieBuscada;
+    String data = "";
 
     try {
       especie = mapper.readValue(json, Especie.class);
-      especie = especieService.create(especie);
-      data = mapper.writeValueAsString(especie);
+
+      especieBuscada = this.especieService.findByNombre(especie);
+      if(especieBuscada == null){
+        especie = especieService.create(especie);
+        data = mapper.writeValueAsString(especie);
+      }
+      else return ResponseMessage.message(
+        500,
+        "La especie ya existe",
+        data);
     } catch (JsonProcessingException e) {
       return ResponseMessage.message(
-        502,
-        "No se pudo dar formato a la salida",
-        e.getMessage()
-      );
+          502,
+          "No se pudo dar formato a la salida",
+          e.getMessage());
     } catch (IOException e) {
       return ResponseMessage.message(
-        501,
-        "Formato incorrecto en datos de entrada",
-        e.getMessage()
-      );
+          501,
+          "Formato incorrecto en datos de entrada",
+          e.getMessage());
     }
 
     return ResponseMessage.message(
-      200,
-      "Se modificó correctamente la especie",
-      data
-    );
+        200,
+        "Se modificó correctamente la especie",
+        data);
   }
 
   @GET
@@ -89,17 +95,15 @@ public class EspecieServlet {
       data = mapper.writeValueAsString(especies);
     } catch (IOException e) {
       return ResponseMessage.message(
-        501,
-        "Formato incorrecto en datos de entrada",
-        e.getMessage()
-      );
+          501,
+          "Formato incorrecto en datos de entrada",
+          e.getMessage());
     }
 
     return ResponseMessage.message(
-      200,
-      "Especies obtenidas exitosamente",
-      data
-    );
+        200,
+        "Especies obtenidas exitosamente",
+        data);
   }
 
   @GET
@@ -116,19 +120,16 @@ public class EspecieServlet {
       data = mapper.writeValueAsString(especies);
     } catch (IOException e) {
       return ResponseMessage.message(
-        501,
-        "Formato incorrecto en datos de entrada",
-        e.getMessage()
-      );
+          501,
+          "Formato incorrecto en datos de entrada",
+          e.getMessage());
     }
 
     return ResponseMessage.message(
-      200,
-      "Especies obtenidas exitosamente",
-      data
-    );
+        200,
+        "Especies obtenidas exitosamente",
+        data);
   }
-
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
@@ -145,48 +146,48 @@ public class EspecieServlet {
       data = mapper.writeValueAsString(especie);
     } catch (JsonProcessingException e) {
       return ResponseMessage.message(
-        502,
-        "No se pudo dar formato a la salida",
-        e.getMessage()
-      );
+          502,
+          "No se pudo dar formato a la salida",
+          e.getMessage());
     } catch (IOException e) {
       return ResponseMessage.message(
-        501,
-        "Formato incorrecto en datos de entrada",
-        e.getMessage()
-      );
+          501,
+          "Formato incorrecto en datos de entrada",
+          e.getMessage());
     }
 
     return ResponseMessage.message(200, "Se cargó  especie exitosamente", data);
   }
 
   @PUT
-  @Path("/desabilitar")
-  @Consumes(MediaType.APPLICATION_JSON)
+  @Path("/deshabilitar/{especieNombre}")
   @Produces(MediaType.APPLICATION_JSON)
-  public String desabilitarEspecie(String json) {
+  public String deshabilitarEspecie(@PathParam("especieNombre") String especieNombre) {
     String data;
-    Especie especie = especieService.findByName(json);
-     if(especie== null )
-     return ResponseMessage.message(500, "la especie no existe");
+
+    Especie especie = new Especie();
+    especie.setNombre(especieNombre);
+
+    especie = especieService.findByNombre(especie);
+    
+    if (especie == null)
+      return ResponseMessage.message(500, "la especie no existe");
+      
     try {
-      //  especie = mapper.readValue(json, Especie.class);
-      especie.setDeshabilitado(true);
       especieService.darBaja(especie);
+      
       data = mapper.writeValueAsString(especie);
     } catch (JsonProcessingException e) {
       return ResponseMessage.message(
-        502,
-        "No se pudo dar formato a la salida",
-        e.getMessage()
-      );
-    } 
+          502,
+          "No se pudo dar formato a la salida",
+          e.getMessage());
+    }
 
     return ResponseMessage.message(
-      200,
-      "Se dio de baja la especie correctamente",
-      data
-    );
+        200,
+        "Se dio de baja la especie correctamente",
+        data);
   }
 
   @GET
@@ -202,16 +203,14 @@ public class EspecieServlet {
       data = mapper.writeValueAsString(especies);
     } catch (IOException e) {
       return ResponseMessage.message(
-        501,
-        "Formato incorrecto en datos de entrada",
-        e.getMessage()
-      );
+          501,
+          "Formato incorrecto en datos de entrada",
+          e.getMessage());
     }
 
     return ResponseMessage.message(
-      200,
-      "Especies obtenidas exitosamente",
-      data
-    );
+        200,
+        "Especies obtenidas exitosamente",
+        data);
   }
 }

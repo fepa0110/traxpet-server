@@ -47,6 +47,12 @@ import java.util.Objects;
                 "AND UPPER(p.estado) = 'ACTIVA' " +
                 "AND UPPER(p.tipoPublicacion) = 'MASCOTA_BUSCADA'"+
                 "ORDER BY p.fechaModificacion DESC"),
+
+        @NamedQuery(name = "findActivasBySpecie", query = 
+                "SELECT pub " +
+                "FROM Publicacion pub JOIN pub.mascota masc " +
+                "WHERE masc.especie.nombre = :nombre_especie " +
+                "AND UPPER(pub.estado) = 'ACTIVA' "),
                 
         @NamedQuery(name = "Publicacion.getMaxId", query = "SELECT MAX(publicacion.id) " +
                 "FROM Publicacion publicacion ")

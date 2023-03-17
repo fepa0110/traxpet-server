@@ -80,7 +80,7 @@ public class EspecieServiceBean implements EspecieService {
     try {
       return getEntityManager()
           .createNamedQuery("Especie.findByNombre", Especie.class)
-          .setParameter("nombre_especie", especie.getNombre())
+          .setParameter("nombre_especie", especie.getNombre().toUpperCase())
           .getSingleResult();
     } catch (NoResultException e) {
       return null;
@@ -89,7 +89,10 @@ public class EspecieServiceBean implements EspecieService {
 
   @Override
   public void darBaja(Especie especie) {
-    // publicacionService.marcarInactivaByEspecie(especie.getNombre());
+    especie.setDeshabilitado(true);
+
+    this.publicacionService.marcarInactivaByEspecie(especie.getNombre());
+
     em.merge(especie);
   }
 

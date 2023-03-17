@@ -220,6 +220,7 @@ public class PublicacionServiceBean implements PublicacionService {
     } catch (NoResultException e) {
       return null;
     }
+    
   }
 
   @Override
@@ -242,18 +243,29 @@ public class PublicacionServiceBean implements PublicacionService {
     return publicacion;
   }
 
-  public Collection<Publicacion> marcarInactivaByEspecie(String nombreEspecie) {
+  public Collection<Publicacion> findActivasBySpecie(String nombreEspecie) {
     try {
-      em.createQuery(
-              "UPDATE Publicacion publicacion " +
-                  "SET publicacion.estado='INACTIVA' " +
-                  "WHERE publicacion.mascota.especie.nombre=:nombreEspecie ",
-              Publicacion.class)
-          .setParameter("nombreEspecie", nombreEspecie);
+      return getEntityManager()
+          .createNamedQuery("findActivasBySpecie", Publicacion.class)
+          .setParameter("nombre_especie", nombreEspecie)
+          .getResultList();
     } catch (NoResultException e) {
       return null;
     }
-    return null;
+  }
+
+  public Collection<Publicacion> marcarInactivaByEspecie(String nombreEspecie){
+    Collection<Publicacion> publicacionesParaDesactivar = this.findActivasBySpecie(nombreEspecie);
+
+    Collection<Publicacion> publicacionesDesactivadas = new ArrayList<>();
+    
+    for(Publicacion publicacion : publicacionesParaDesactivar){
+      publicacion.setEstado(Estado.INACTIVA);
+      em.merge(publicacion);
+      publicacionesDesactivadas.add(publicacion);
+    }
+
+    return publicacionesDesactivadas;
   }
 
 }
