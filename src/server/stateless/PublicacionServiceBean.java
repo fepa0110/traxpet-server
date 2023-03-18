@@ -268,13 +268,14 @@ public class PublicacionServiceBean implements PublicacionService {
     return publicacionesDesactivadas;
   }
 
+
+
+
   @Override
-  public Integer findCountByEspecie(String nombre){
+  public long findCountByEspecie(String nombre){
     try {
-      return em
-          .createQuery(
-              "Publicacion.getCantidadByEspecie",
-              Integer.class)
+      return getEntityManager()
+          .createNamedQuery("getCantidadByEspecie", Long.class)
           .setParameter("nombre", nombre)
           .getSingleResult();
     } catch (NoResultException e) {

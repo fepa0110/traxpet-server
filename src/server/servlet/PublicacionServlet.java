@@ -443,13 +443,10 @@ public class PublicacionServlet {
   @Path("/getCantidadByEspecie/{nombre}")
   @Produces(MediaType.APPLICATION_JSON)
   public String findCountByEspecie(@PathParam("nombre") String nombre) throws IOException {
-    int publicaciones = publicacionService.findCountByEspecie(nombre);
+    long publicaciones = publicacionService.findCountByEspecie(nombre);
 
     String data;
-
-    if (publicaciones == 0) {
-      return ResponseMessage.message(500, "no hay publicaciones");
-    }
+ 
     try {
       data = mapper.writeValueAsString(publicaciones);
     } catch (JsonProcessingException e) {
